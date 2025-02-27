@@ -10,7 +10,7 @@
 ## Планируемые технологии разработки
 1. Backend: NodeJS, NestJS
 2. Frontend: Typescript, React, Redux
-3. Database: MongoDB/PostgreSQL
+3. Database: MongoDB/PostgreSQL, LucidApp, DBeaver,Lucidchart
 4. Other: Redis, Socket.IO, Axios, TypeORM
 
 ## Правила ведения веток
