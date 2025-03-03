@@ -12,6 +12,9 @@
 2. Frontend: Typescript, React, Redux
 3. Database: MongoDB/PostgreSQL, LucidApp, DBeaver,Lucidchart
 4. Other: Redis, Socket.IO, Axios, TypeORM
+   
+## Postman с API документацией и описанием запросов
+https://www.postman.com/messanger-6226/messanger
 
 ## Правила ведения веток
 1. Под каждое направление(Дизайн, Бэкенд и т.д.) создаются ветки, откуда уже выходят конкретные ветки фич.
