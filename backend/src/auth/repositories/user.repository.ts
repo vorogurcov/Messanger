@@ -23,15 +23,14 @@ export class UserRepository{
     }
     async findUser(loginUserDto:LoginUserDto){
         try{
-            const {login, password} = loginUserDto;
+            const {login} = loginUserDto;
             const user = await this.repository.findOne({
                 where: [
-                    { email: login, password: password },
-                    { name: login, password: password },
-                    { phone_number: login, password: password }
+                    { email: login },
+                    { name: login },
+                    { phone_number: login }
                 ]
             });
-
             return user;
 
         }catch(error:any){
