@@ -5,12 +5,12 @@ import {
     ConflictException,
     UnauthorizedException,
     HttpStatus,
-    InternalServerErrorException
+    InternalServerErrorException, Res
 } from "@nestjs/common";
 import {RegisterUserDto} from "./dto/register-user.dto";
 import {LoginUserDto} from "./dto/login-user.dto";
 import {AuthService} from "./auth.service";
-
+import {Response} from 'express'
 @Controller('auth')
 export class AuthController{
     constructor(private authService:AuthService){}
@@ -27,13 +27,22 @@ export class AuthController{
         }
     }
     @Post('login')
-    async loginUser(@Body() loginUserDto:LoginUserDto){
+    async loginUser(@Body() loginUserDto:LoginUserDto, @Res({ passthrough: true }) res: Response){
         try{
-            const user = await this.authService.loginUser(loginUserDto)
+            const {accessToken, refreshToken, ...user} = await this.authService.loginUser(loginUserDto)
+
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                secure: true,
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                sameSite: 'strict',
+            });
+
             return {
                 statusCode: HttpStatus.OK,
                 message: 'Login successful',
-                user
+                user,
+                accessToken
             };
         }catch(error){
             if(error instanceof UnauthorizedException)
