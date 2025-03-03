@@ -6,10 +6,10 @@ export class User{
     id:string;
 
     @Column({unique:true})
-    name:string;
+    login:string;
 
     @Column('char', {length:11, unique:true})
-    phone_number:string;
+    phoneNumber:string;
 
     @Column("varchar", { length: 254, nullable:true, unique:true })
     email:string;
@@ -18,6 +18,6 @@ export class User{
     password:string;
 
     @Column('varchar', {length:255, nullable:true})
-    avatar_url:string;
+    avatarUrl:string;
 
 }

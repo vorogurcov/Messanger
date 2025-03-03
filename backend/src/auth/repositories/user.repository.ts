@@ -27,8 +27,8 @@ export class UserRepository{
             const user = await this.repository.findOne({
                 where: [
                     { email: login },
-                    { name: login },
-                    { phone_number: login }
+                    { login: login },
+                    { phoneNumber: login }
                 ]
             });
             return user;
