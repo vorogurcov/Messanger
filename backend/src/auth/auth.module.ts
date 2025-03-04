@@ -6,6 +6,7 @@ import {User} from "./entities/user.entity";
 import {UserRepository} from "./repositories/user.repository";
 import {PassportModule} from "@nestjs/passport";
 import {JwtModule} from "@nestjs/jwt";
+import {JwtStrategy} from "./jwt.strategy";
 
 @Module({
     imports:[
@@ -14,6 +15,7 @@ import {JwtModule} from "@nestjs/jwt";
         JwtModule.register({secret:process.env.JWT_SECRET_KEY})
     ],
     controllers:[AuthController],
-    providers:[AuthService, UserRepository],
+    providers:[AuthService, UserRepository, JwtStrategy],
+    exports:[JwtStrategy,PassportModule],
 })
 export class AuthModule{}

@@ -4,6 +4,7 @@ import {LoginUserDto} from "./dto/login-user.dto";
 import {UserRepository} from "./repositories/user.repository";
 import * as bcrypt from 'bcrypt'
 import {JwtService} from "@nestjs/jwt";
+import {JwtPayloadDto} from "./dto/jwt-payload.dto";
 
 @Injectable()
 export class AuthService{
@@ -27,14 +28,13 @@ export class AuthService{
 
     async loginUser(loginUserDto:LoginUserDto){
         try{
-            const {password, ...other} = loginUserDto;
+            const {password,login, ...other} = loginUserDto;
 
-            const user = await this.userRepository.findUser(loginUserDto)
+            const user = await this.userRepository.findUser(login)
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 throw new UnauthorizedException('Invalid credentials');
             }
-
-            const { password: _, ...userData } = user;
+            const userData:JwtPayloadDto = {id:user.id, login:user.login}
 
             const accessToken = await this.jwtService.signAsync(userData,{
                 expiresIn:'15m'
