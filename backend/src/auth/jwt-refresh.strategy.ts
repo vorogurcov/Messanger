@@ -1,16 +1,18 @@
-import {Injectable, UnauthorizedException} from "@nestjs/common";
-import {PassportStrategy} from "@nestjs/passport";
-import {ExtractJwt, Strategy} from "passport-jwt";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
+import { ExtractJwt, Strategy } from "passport-jwt";
+import {Request} from 'express'
 import {UserRepository} from "./repositories/user.repository";
 import {JwtPayloadDto} from "./dto/jwt-payload.dto";
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt'){
+export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
     constructor(private userRepository:UserRepository) {
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJwt.fromExtractors( [
+                (req: Request) => req.cookies?.refreshToken]),
             ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET_KEY as string,
+            secretOrKey: process.env.JWT_REFRESH_SECRET_KEY as string,
         });
     }
 

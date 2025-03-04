@@ -5,6 +5,7 @@ import {UserRepository} from "./repositories/user.repository";
 import * as bcrypt from 'bcrypt'
 import {JwtService} from "@nestjs/jwt";
 import {JwtPayloadDto} from "./dto/jwt-payload.dto";
+import {User} from "./entities/user.entity";
 
 @Injectable()
 export class AuthService{
@@ -48,5 +49,20 @@ export class AuthService{
         }catch(error:any){
             throw error;
         }
+    }
+
+    async refreshToken(user:User){
+        const userData:JwtPayloadDto = {id:user.id, login:user.login}
+
+        const accessToken = await this.jwtService.signAsync(userData,{
+            expiresIn:'15m'
+        })
+        const refreshToken = await this.jwtService.signAsync(userData,
+            {
+                secret:process.env.JWT_REFRESH_SECRET_KEY,
+                expiresIn:'10080m'
+            })
+
+        return {...userData, accessToken, refreshToken};
     }
 }
