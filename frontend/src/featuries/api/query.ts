@@ -31,7 +31,7 @@ authInstance.interceptors.response.use(
             try {
                 // Выполняем запрос к серверу для обновления токена
                 const newToken = await ApiQuery.updateRefreshToken();
-                localStorage.setItem('accessToken', newToken);
+                localStorage.setItem(core.localStorageKeys.access_token, newToken);
                 authInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
                 // Повторяем оригинальный запрос с новым токеном
                 originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
@@ -55,7 +55,7 @@ export default class ApiQuery{
     }
 
     static async register(data: RegisrationProp){
-        return authInstance.post(core.serverEdnpoints.regAuth, data).then(({data}) => localStorage.setItem(core.localStorageKeys.access_token, data.accessToken))
+        return authInstance.post(core.serverEdnpoints.regAuth, data)
     }
 
     static async updateRefreshToken() : Promise<string>{
