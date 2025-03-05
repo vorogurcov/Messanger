@@ -1,6 +1,7 @@
 .reg, .enter{
     width: auto;
     height: auto;
+    width: 300px;
 }
 
 .reg{
@@ -8,7 +9,9 @@
     border-radius: 41px;
     padding: 40px 60px 40px 70px;
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid #C5C6CC 
+    border: 1px solid #C5C6CC ;
+    width: 500px;
+    
 }
 
 .inner{

@@ -13,7 +13,7 @@ export default class Validators{
             .test(
                 'not-only-numbers',
                 'Неверный номер телефона',
-                value => Validators.validatePhone(value)
+                value => /[A-Za-zА-Яа-яЁё]/.test(value??"")
             )
             .test(
             'invalid-email',
@@ -22,7 +22,7 @@ export default class Validators{
                 // Проверка на пустое значение
                 if (!value) return true;
                 // Если в строке есть символ '@', но это не валидный email — ошибка
-                return !value.includes('@') || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                return !value.includes('@') || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value??"");
             }
             )
             .min(2, 'Минимум 2 символа')

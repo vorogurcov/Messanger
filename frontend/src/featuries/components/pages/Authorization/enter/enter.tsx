@@ -32,12 +32,16 @@ export const EnterForm = ({callbackToggle}: {callbackToggle: () => void}) => {
       setErrors(initialAuthorizationProp)
       ApiQuery.enter(data)
       .then(() => navigate(core.frontendEndpoints.home))
-      .catch((error) => setApiError(error.message))
+      .catch((error) => {
+        if (error.status === 401)
+          setApiError("Такой пользователь не существует")
+        else setApiError("Неизвестная ошибка (")
+      })
     })
     .catch((errors) => setErrors(errors[0]))
     .finally(() => setIsDisabledButton(false))
   } // realese api
-
+  // console.log(errors, "errros")
   return(
     <AuthorizationBaseForm isEnter={true} style={{ minWidth: "300px"}}>
       <TypeAuthorization>Вход</TypeAuthorization>

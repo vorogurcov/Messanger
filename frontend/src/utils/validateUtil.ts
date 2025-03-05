@@ -10,7 +10,6 @@ export const validateUtil = async<T extends AuthorizationProp> (schemas: Yup.Obj
         } catch (error){
             if (error instanceof Yup.ValidationError) {
                 const newError = createErrorObjFromValidationError<T>(errorsKeys, error.inner)
-                console.log(newError, "er")
                 if (newError)
                     newErrors = [...newErrors, newError]
             } else {

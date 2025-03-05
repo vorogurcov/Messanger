@@ -11,6 +11,9 @@ authInstance.interceptors.request.use(config => {
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
     }
+    if (config.method?.toLowerCase() === 'post') {
+        config.withCredentials = true; // Устанавливаем withCredentials для POST-запросов
+    }
     return config;
 }, error => {
     return Promise.reject(error);
@@ -48,14 +51,14 @@ authInstance.interceptors.response.use(
 
 export default class ApiQuery{
     static async enter(data: AuthorizationProp){
-        return authInstance.post(core.serverEdnpoints.enterAuth, data)
+        return authInstance.post(core.serverEdnpoints.enterAuth, data).then(({data}) => localStorage.setItem(core.localStorageKeys.access_token, data.accessToken))
     }
 
     static async register(data: RegisrationProp){
-        return authInstance.post(core.serverEdnpoints.regAuth, data)
+        return authInstance.post(core.serverEdnpoints.regAuth, data).then(({data}) => localStorage.setItem(core.localStorageKeys.access_token, data.accessToken))
     }
 
     static async updateRefreshToken() : Promise<string>{
-        return authInstance.get(core.serverEdnpoints.updateRefresh)
+        return authInstance.post(core.serverEdnpoints.updateRefresh).then(({data}) => data.accessToken)
     }
 }

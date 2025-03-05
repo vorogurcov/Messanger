@@ -21,6 +21,7 @@ export const MobileValidationSchema =
 
 export const PasswordValidateSchema = 
   Yup.string()
+  .matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, "Пароль должен иметь заглавную, строчную буквы и спец. символ или цифру")
   .min(6, "Минимум 6 символов")
   .max(50, "Максимум 50 символов")
   .required('Пустое поле')
