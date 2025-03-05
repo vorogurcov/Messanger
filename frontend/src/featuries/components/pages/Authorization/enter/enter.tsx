@@ -49,7 +49,7 @@ export const EnterForm = ({callbackToggle}: {callbackToggle: () => void}) => {
       <div style={{margin: "10px 0px 15px 0px"}}>
         <BlueLink>Забыли пароль?</BlueLink>
       </div>
-      <SubmitionMemoized onClick={submit} style={{backgroundColor: isDisabledButton ? "#0055C3" : "#006FFD"}} disabled={isDisabledButton}>
+      <SubmitionMemoized onClick={submit} style={{backgroundColor: isDisabledButton ? "#0055C3" : undefined}} disabled={isDisabledButton}>
         Войти
       </SubmitionMemoized>
       <WayAuthorization nameLink="Зарегистрироваться" nameQuestion="Нет аккаунта?" callback={callbackToggle}/>      

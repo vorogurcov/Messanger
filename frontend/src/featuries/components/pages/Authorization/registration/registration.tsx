@@ -18,13 +18,16 @@ const SubmitionMemoized = memo(AuthorizationBatton)
 export default function Registration({callbackToggle}: {callbackToggle: () => void}){
     const [data, setData] = useState<RegisrationProp>(initialRegisrationProp)
     const [errors, setErrors] = useState<RegisrationProp>(initialRegisrationProp)
+    const [isDisabledButton, setIsDisabledButton] = useState(false)
 
     const submit = () => {
-        validateUtil<RegisrationProp>(schemas, errorsKeys, data).then(() => {
+        setIsDisabledButton(true)
+        validateUtil<RegisrationProp>(schemas, errorsKeys, data).then(() => { // можно вынести отдельно
           setErrors(initialRegisrationProp)
           ApiQuery.register(data)
         })
         .catch((errors) => setErrors(errors[0]))
+        .finally(() => setIsDisabledButton(false))
       }
 
     return(
@@ -43,7 +46,7 @@ export default function Registration({callbackToggle}: {callbackToggle: () => vo
                     error={errors[key as keyof typeof errors]}
                 />
             )}
-            <SubmitionMemoized onClick={submit} style={{marginTop: "20px"}}>Зарегистрироваться</SubmitionMemoized>
+            <SubmitionMemoized onClick={submit} style={{marginTop: "20px", backgroundColor: isDisabledButton ? "#0055C3" : undefined}} disabled={isDisabledButton}>Зарегистрироваться</SubmitionMemoized>
             <WayAuthorization nameLink="Войти" nameQuestion="Есть аккаунт?" callback={callbackToggle}/>
         </AuthorizationBaseForm>
     )
