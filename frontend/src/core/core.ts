@@ -1,5 +1,9 @@
-class ServerEndpoints{
+const apiBaseUrl = ""
 
+class ServerEndpoints{
+    enterAuth = `${apiBaseUrl}/auth/login`
+    regAuth = `${apiBaseUrl}/auth/register`
+    updateRefresh = `${apiBaseUrl}/auth/refresh`
 }
 
 class FrontendEndpoints{
@@ -17,7 +21,7 @@ class Core{
         this.frontendEndpoints = new FrontendEndpoints()
         this.localStorageKeys = LocalStorageKeys
     }
-    apiBaseUrl = ""
+    apiBaseUrl = apiBaseUrl
     serverEdnpoints
     frontendEndpoints
     localStorageKeys

@@ -10,6 +10,9 @@ import TypeAuthorization from '../components/TypeAuthorization';
 import BlueLink from '../../../components/lowLevel/UI/links/blueLink/BlueLink';
 import { PlaceholderEnter } from '../../../../entities/schemes/enums/convertObjKeysToSmth';
 import WayAuthorization from '../components/wayAuthUnderSubmit';
+import { useNavigate } from 'react-router';
+import core from '../../../../../core/core';
+import ErrorMessage from '../../../components/lowLevel/stylingString/errorMessage';
 
 const schemas = Validators.getEnterValidateSchema()
 const errorsKeys = Object.keys(initialAuthorizationProp)
@@ -20,12 +23,16 @@ export const EnterForm = ({callbackToggle}: {callbackToggle: () => void}) => {
   const [data, setData] = useState<AuthorizationProp>(initialAuthorizationProp)
   const [errors, setErrors] = useState<AuthorizationProp>(initialAuthorizationProp)
   const [isDisabledButton, setIsDisabledButton] = useState(false)
+  const [apiError, setApiError] = useState("")
+  const navigate = useNavigate()
 
   const submit = () => {
     setIsDisabledButton(true)
     validateUtil<AuthorizationProp>(schemas, errorsKeys, data).then(() => {
       setErrors(initialAuthorizationProp)
       ApiQuery.enter(data)
+      .then(() => navigate(core.frontendEndpoints.home))
+      .catch((error) => setApiError(error.message))
     })
     .catch((errors) => setErrors(errors[0]))
     .finally(() => setIsDisabledButton(false))
@@ -52,7 +59,10 @@ export const EnterForm = ({callbackToggle}: {callbackToggle: () => void}) => {
       <SubmitionMemoized onClick={submit} style={{backgroundColor: isDisabledButton ? "#0055C3" : undefined}} disabled={isDisabledButton}>
         Войти
       </SubmitionMemoized>
-      <WayAuthorization nameLink="Зарегистрироваться" nameQuestion="Нет аккаунта?" callback={callbackToggle}/>      
+      <WayAuthorization nameLink="Зарегистрироваться" nameQuestion="Нет аккаунта?" callback={callbackToggle}/>
+      <div>
+        <ErrorMessage>{apiError}</ErrorMessage>
+      </div>  
     </AuthorizationBaseForm>
   )
 }

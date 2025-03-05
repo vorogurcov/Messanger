@@ -1,14 +1,14 @@
 import { initialRegisrationProp } from "../dto/Authorization"; // не удалая, пусть для удобства перехода
 
 export enum LabelRegistration{ // совпадать с regProps должен 
-    login =  "Имя",
+    login =  "Логин",
     phoneNumber = "Телефон",
     password = "Придумайте пароль",
     repeatPassword = "Повторите пароль"
 }
 
 export enum PlaceholderRegistration{ // совпадать с regProps должен
-    login =  "Иван",
+    login =  "Ivan2020",
     phoneNumber = "7 999 999 99 99",
     password = "******",
     repeatPassword = "******"

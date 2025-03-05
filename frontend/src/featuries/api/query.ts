@@ -48,14 +48,14 @@ authInstance.interceptors.response.use(
 
 export default class ApiQuery{
     static async enter(data: AuthorizationProp){
-
+        return authInstance.post(core.serverEdnpoints.enterAuth, data)
     }
 
     static async register(data: RegisrationProp){
-        
+        return authInstance.post(core.serverEdnpoints.regAuth, data)
     }
 
     static async updateRefreshToken() : Promise<string>{
-        return "as"
+        return authInstance.get(core.serverEdnpoints.updateRefresh)
     }
 }
