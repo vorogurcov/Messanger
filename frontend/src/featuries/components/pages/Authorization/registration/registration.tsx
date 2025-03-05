@@ -9,8 +9,6 @@ import ApiQuery from "../../../../api/query";
 import TypeAuthorization from "../components/TypeAuthorization";
 import { LabelRegistration, PlaceholderRegistration } from "../../../../entities/schemes/enums/convertObjKeysToSmth";
 import WayAuthorization from "../components/wayAuthUnderSubmit";
-import core from "../../../../../core/core";
-import { useNavigate } from "react-router";
 import ErrorMessage from "../../../components/lowLevel/stylingString/errorMessage";
 
 const schemas = Validators.getRegisterValidateSchema()
@@ -23,19 +21,18 @@ export default function Registration({callbackToggle}: {callbackToggle: () => vo
     const [errors, setErrors] = useState<RegisrationProp>(initialRegisrationProp)
     const [isDisabledButton, setIsDisabledButton] = useState(false)
     const [apiError, setApiError] = useState("")
-    const navigate = useNavigate()
 
     const submit = () => {
         setIsDisabledButton(true)
         validateUtil<RegisrationProp>(schemas, errorsKeys, data).then(() => { // можно вынести отдельно
           setErrors(initialRegisrationProp)
           ApiQuery.register(data)
-          .then(() => navigate(core.frontendEndpoints.home))
-            .catch((error) => {
-                if (error.status === 409)
-                    setApiError("Такой пользователь существует")
-                else setApiError("Неизвестная ошибка (")
-            })
+          .then(() => callbackToggle())
+        .catch((error) => {
+            if (error.status === 409)
+                setApiError("Такой пользователь существует")
+            else setApiError("Неизвестная ошибка (")
+        })
         })
         .catch((errors) => setErrors(errors[0]))
         .finally(() => setIsDisabledButton(false))

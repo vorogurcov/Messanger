@@ -12,7 +12,7 @@ class FrontendEndpoints{
 }
 
 enum LocalStorageKeys{
-    access_token = "access_token"
+    access_token = "accessToken"
 }
 
 class Core{
