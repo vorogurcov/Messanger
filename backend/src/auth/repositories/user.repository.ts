@@ -21,9 +21,8 @@ export class UserRepository{
             throw error;
         }
     }
-    async findUser(loginUserDto:LoginUserDto){
+    async findUser(login:string){
         try{
-            const {login} = loginUserDto;
             const user = await this.repository.findOne({
                 where: [
                     { email: login },
