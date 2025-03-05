@@ -14,5 +14,5 @@ export default function Authorization(): React.ReactElement{
             {isEnter ? <EnterForm callbackToggle={() => setIsEnter(false)}/> : <Registration callbackToggle={() => setIsEnter(true)}/>}
         </div>
         </>
-    )
+    ) //
 }
