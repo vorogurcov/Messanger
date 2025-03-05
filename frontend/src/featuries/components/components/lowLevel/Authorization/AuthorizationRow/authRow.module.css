@@ -1,0 +1,22 @@
+.wrapper div{
+    margin-bottom: 5px;
+}
+
+.wrapper{
+    margin-bottom: 10px;
+}
+
+.toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.container {
+    position: relative;
+}
