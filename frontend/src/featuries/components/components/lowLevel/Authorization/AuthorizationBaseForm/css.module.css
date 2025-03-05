@@ -1,0 +1,17 @@
+.reg, .enter{
+    width: auto;
+    height: auto;
+}
+
+.reg{
+    backdrop-filter: blur(5px);
+    border-radius: 41px;
+    padding: 40px 60px 40px 70px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #C5C6CC 
+}
+
+.inner{
+    width: 100%;
+    height: 100%;
+}

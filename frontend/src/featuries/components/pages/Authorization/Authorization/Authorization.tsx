@@ -1,20 +1,18 @@
 import { useState } from "react"
 import { EnterForm } from "../enter/enter"
 import Registration from "../registration/registration"
+import RegistrationSVGcomp from "../../../components/lowLevel/SVGcomp/registrationSVGcomp/registrationSVGcomp"
 
-export default function Authorization(){
-    const [isReg, setIsReg] = useState(true)
+import css from "./css.module.css"
+
+export default function Authorization(): React.ReactElement{
+    const [isEnter, setIsEnter] = useState(true)
     return(
-        <div>
-            <div style={{display: "flex"}}>
-                <div>
-                    <button onClick={() => setIsReg(true)}>Вход</button>
-                </div>
-                <div>
-                    <button onClick={() => setIsReg(false)}>Регистрация</button>
-                </div>
-            </div>
-            {isReg ? <EnterForm/> : <Registration/>}
+        <>
+        <div className={css.main}>
+            {isEnter ? null : <RegistrationSVGcomp/>}
+            {isEnter ? <EnterForm callbackToggle={() => setIsEnter(false)}/> : <Registration callbackToggle={() => setIsEnter(true)}/>}
         </div>
+        </>
     )
 }

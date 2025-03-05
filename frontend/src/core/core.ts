@@ -3,17 +3,24 @@ class ServerEndpoints{
 }
 
 class FrontendEndpoints{
+    login = "/login"
+    home = "/"
+}
 
+enum LocalStorageKeys{
+    access_token = "access_token"
 }
 
 class Core{
     constructor(){
-        this.serverEnpoints = new ServerEndpoints()
+        this.serverEdnpoints = new ServerEndpoints()
         this.frontendEndpoints = new FrontendEndpoints()
+        this.localStorageKeys = LocalStorageKeys
     }
     apiBaseUrl = ""
-    serverEnpoints
+    serverEdnpoints
     frontendEndpoints
+    localStorageKeys
 }
 
 const core = new Core()

@@ -1,9 +1,18 @@
-import { ReactNode } from "react"
+import { HTMLAttributes } from "react"
+import css from "./css.module.css"
 
-export default function AuthorizationBaseForm({children}: {children: ReactNode}){
+interface Props extends HTMLAttributes<HTMLDivElement>{
+    isEnter: boolean
+}
+
+export default function AuthorizationBaseForm({children, isEnter, ...props}: Props){
     return(
-        <div>
-            {children}
+        <div className={isEnter ? css.enter : css.reg} {...props}>
+            <div className={css.inner}>
+                <>
+                    {children}
+                </>
+            </div>
         </div>
     )
 }

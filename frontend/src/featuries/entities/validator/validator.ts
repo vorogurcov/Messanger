@@ -14,17 +14,21 @@ export default class Validators{
                 'not-only-numbers',
                 'Неверный номер телефона',
                 value => Validators.validatePhone(value)
-              )
-              .test(
-                'invalid-email',
-                'Некорректная почта',
-                (value) => {
-                  // Проверка на пустое значение
-                  if (!value) return true;
-                  // Если в строке есть символ '@', но это не валидный email — ошибка
-                  return !value.includes('@') || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-                }
-              ),
+            )
+            .test(
+            'invalid-email',
+            'Некорректная почта',
+            (value) => {
+                // Проверка на пустое значение
+                if (!value) return true;
+                // Если в строке есть символ '@', но это не валидный email — ошибка
+                return !value.includes('@') || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+            }
+            )
+            .min(2, 'Минимум 2 символа')
+            .max(50, 'Максимум 50 символов')
+            .required("Пустое поле")
+            ,
             password: PasswordValidateSchema
         })
         const emailValidate = Yup.object().shape({
@@ -41,9 +45,9 @@ export default class Validators{
     static getRegisterValidateSchema(){
         return [Yup.object().shape({
             login: LoginValidationSchema
-                .matches(/^(?!\d+$)(?!.*@).*$/, "Поле не должно состоять только из цифр и не должно содержать символ @"),
+                .matches(/^(?!\d+$)(?!.*@).*$/, "Логин не содержит @ и не может быть численным"),
             password: PasswordValidateSchema,
-            phone_number: MobileValidationSchema,
+            phoneNumber: MobileValidationSchema,
             repeatPassword: Yup.string()
                 .oneOf([Yup.ref('password'), undefined], 'Пароли должны совпадать')
                 .required('Пустое поле')

@@ -1,0 +1,12 @@
+.css{
+    background-color: #006FFD;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    height: 40px;
+    width: 100%;
+}
+
+.css:hover{
+    background-color: #0055C3;
+}

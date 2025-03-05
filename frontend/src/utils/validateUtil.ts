@@ -9,11 +9,12 @@ export const validateUtil = async<T extends AuthorizationProp> (schemas: Yup.Obj
             await schema.validate(data, { abortEarly: false })
         } catch (error){
             if (error instanceof Yup.ValidationError) {
-            const newError = createErrorObjFromValidationError<T>(errorsKeys, error.inner)
-            if (newError)
-                newErrors = [...newErrors, newError]
+                const newError = createErrorObjFromValidationError<T>(errorsKeys, error.inner)
+                console.log(newError, "er")
+                if (newError)
+                    newErrors = [...newErrors, newError]
             } else {
-            console.error("Unexpected error:", error);
+                console.error("Unexpected error:", error);
             }
         }
     }
