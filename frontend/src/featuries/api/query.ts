@@ -26,7 +26,7 @@ authInstance.interceptors.response.use(
     },
     async error => {
         const originalRequest = error.config;
-        if (error.response && error.response.status === 401 && !originalRequest._retry) {
+        if (localStorage.getItem(core.localStorageKeys.access_token) && error.response && error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
                 // Выполняем запрос к серверу для обновления токена
@@ -59,6 +59,6 @@ export default class ApiQuery{
     }
 
     static async updateRefreshToken() : Promise<string>{
-        return authInstance.post(core.serverEdnpoints.updateRefresh).then(({data}) => data.accessToken)
+        return axios.post(core.serverEdnpoints.updateRefresh).then(({data}) => data.accessToken)
     }
 }
