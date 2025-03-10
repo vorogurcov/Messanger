@@ -25,6 +25,6 @@ async function bootstrap() {
   app.use(cookieParser());
 
 
-  await app.listen(process.env.PORT ?? 80);
+  await app.listen(process.env.PORT ?? 8080);
 }
 bootstrap();
