@@ -1,6 +1,6 @@
 import { InputHTMLAttributes } from "react"
-import show from "../images/show.png"
-import hide from "../images/hide.png"
+import show from "../../../../../../assets/img/show.png"
+import hide from "../../../../../../assets/img/hide.png"
 
 export function ShowButton({...props}: InputHTMLAttributes<HTMLInputElement>){
     return(

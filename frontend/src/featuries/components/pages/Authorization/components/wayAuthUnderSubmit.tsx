@@ -1,4 +1,4 @@
-import BlueLink from "../../../components/lowLevel/UI/links/blueLink/BlueLink";
+import BlueLink from "../../../components/UI/links/blueLink/BlueLink";
 
 interface Props{
     nameLink: string,

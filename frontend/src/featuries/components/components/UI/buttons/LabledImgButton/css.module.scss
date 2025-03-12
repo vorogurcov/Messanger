@@ -1,0 +1,8 @@
+@import "../../../../../../mixins/mixinsCss/colors.scss";
+
+.label{
+    color: $primary-blue;
+    font-size: 90%;
+    display: flex;
+    justify-content: center;
+}
