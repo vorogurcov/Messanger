@@ -1,0 +1,10 @@
+.hide_scroll {
+    overflow: auto; /* или scroll */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE и Edge */
+}
+
+/* Для Webkit браузеров (Chrome, Safari) */
+.hide_scroll::-webkit-scrollbar {
+    display: none;
+}

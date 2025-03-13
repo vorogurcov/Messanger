@@ -1,4 +1,4 @@
-const apiBaseUrl = "http://localhost:3000"
+const apiBaseUrl = "http://localhost:8000"
 
 class ServerEndpoints{
     enterAuth = `${apiBaseUrl}/auth/login`

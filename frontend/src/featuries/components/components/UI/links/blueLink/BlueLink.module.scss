@@ -1,0 +1,6 @@
+@import '../../../../../../mixins/mixinsCss/colors.scss'; // Импортируем файл _colors.scss
+
+.css {
+  color: $primary-blue;
+  font-size: 70%;
+}

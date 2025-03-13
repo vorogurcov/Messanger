@@ -1,4 +1,10 @@
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+
+const envFilePath = process.env.DOCKER_ENV? 'docker.env' :
+        'local.env';
+
+dotenv.config({ path: envFilePath });
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
@@ -19,6 +25,6 @@ async function bootstrap() {
   app.use(cookieParser());
 
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 80);
 }
 bootstrap();

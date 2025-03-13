@@ -1,18 +1,18 @@
 import { initialAuthorizationProp, AuthorizationProp } from '../../../../entities/schemes/dto/Authorization';
 import { memo, useState } from 'react';
-import AuthorizationBaseForm from '../../../components/lowLevel/Authorization/AuthorizationBaseForm/Authorization';
+import AuthorizationBaseForm from '../../../components/Authorization/AuthorizationBaseForm/Authorization';
 import ApiQuery from '../../../../api/query';
-import AuthorizationBatton from '../../../components/lowLevel/UI/buttons/AuthorizationButtons/AuthorizationButton';
-import { InputAuthorizationRow } from '../../../components/lowLevel/Authorization/AuthorizationRow/AuthorizationRow';
+import AuthorizationBatton from '../../../components/UI/buttons/AuthorizationButtons/AuthorizationButton';
+import { InputAuthorizationRow } from '../../../components/Authorization/AuthorizationRow/AuthorizationRow';
 import Validators from '../../../../entities/validator/validator';
 import { validateUtil } from '../../../../../utils/validateUtil';
 import TypeAuthorization from '../components/TypeAuthorization';
-import BlueLink from '../../../components/lowLevel/UI/links/blueLink/BlueLink';
+import BlueLink from '../../../components/UI/links/blueLink/BlueLink';
 import { PlaceholderEnter } from '../../../../entities/schemes/enums/convertObjKeysToSmth';
 import WayAuthorization from '../components/wayAuthUnderSubmit';
 import { useNavigate } from 'react-router';
 import core from '../../../../../core/core';
-import ErrorMessage from '../../../components/lowLevel/stylingString/errorMessage';
+import ErrorMessage from '../../../components/stylingString/errorMessage';
 
 const schemas = Validators.getEnterValidateSchema()
 const errorsKeys = Object.keys(initialAuthorizationProp)

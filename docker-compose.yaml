@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: 'postgres'
+    env_file:
+      - ./backend/docker.env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
+
+  backend:
+    build: ./backend
+    environment:
+      DOCKER_ENV: true
+    env_file:
+      - ./backend/docker.env
+    ports:
+      - '8000:80'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+
+
+volumes:
+  db_data:
