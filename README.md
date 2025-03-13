@@ -23,7 +23,7 @@ bd = backend
 fd = frontend  
 d = design  
 db = database  
-o = other
+o = other  
 do = devops
 ## Пример:
 Под backend разработку создается ветка backend-dev, от нее создаются ветки для фич например bd-auth-module, bd-refactor-auth.  
