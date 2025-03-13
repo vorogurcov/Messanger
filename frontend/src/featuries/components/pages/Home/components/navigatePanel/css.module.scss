@@ -1,0 +1,13 @@
+@import "../../../../../../mixins/mixinsCss/sizes.scss";
+
+.panel{
+    width: 70px;
+    height: 100%;
+}
+
+.menu{
+    width: 100%;
+    height: $chat-header;
+    display: flex;
+    align-items: center;
+}

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { EnterForm } from "../enter/enter"
 import Registration from "../registration/registration"
-import RegistrationSVGcomp from "../../../components/lowLevel/SVGcomp/registrationSVGcomp/registrationSVGcomp"
+import RegistrationSVGcomp from "../../../components/SVGcomp/registrationSVGcomp/registrationSVGcomp"
 
 import css from "./css.module.css"
 

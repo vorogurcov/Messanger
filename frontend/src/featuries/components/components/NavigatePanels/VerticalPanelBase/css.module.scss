@@ -1,0 +1,7 @@
+@import '../../../../../mixins//mixinsCss/sizes.scss';
+
+.oneBut{
+    height: $chat-height;
+    width: 100%;
+    padding: $chat-list-padding;
+}

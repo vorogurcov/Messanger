@@ -4,6 +4,7 @@ import Validators from '../validator';
 export const LoginValidationSchema = Yup.string()
   .min(2, 'Минимум 2 символа')
   .max(50, 'Максимум 50 символов')
+  .matches(/^[a-zA-Z0-9]+$/, "Латинские буквы или цифры")
   .required("Пустое поле")
 
 export const EmailValidationSchema = 

@@ -23,7 +23,8 @@ function App() {
     >
       <Routes>
         <Route path={core.frontendEndpoints.login} element={<Authorization />} />
-        <Route path={core.frontendEndpoints.home} element={<ProtectedRoute />}>
+        <Route path={core.frontendEndpoints.home} element={<ProtectedRoute />}> {/* прод */}
+        {/* <Route path={core.frontendEndpoints.home} element={<ProtectedRoute />}> тест без поднятия бека */}
           <Route index element={<Home/>} />
           {/* Ваши защищенные маршруты */}
         </Route>

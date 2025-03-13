@@ -1,0 +1,7 @@
+@import "../../../../../../mixins/mixinsCss/sizes.scss";
+
+.but{
+    height: $chat-header;
+    width: 100%;
+    padding: $chat-list-padding;
+}

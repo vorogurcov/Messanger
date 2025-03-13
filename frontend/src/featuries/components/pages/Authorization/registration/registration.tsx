@@ -1,15 +1,15 @@
 import { memo, useState } from "react";
-import AuthorizationBaseForm from "../../../components/lowLevel/Authorization/AuthorizationBaseForm/Authorization";
+import AuthorizationBaseForm from "../../../components/Authorization/AuthorizationBaseForm/Authorization";
 import { initialRegisrationProp, RegisrationProp } from "../../../../entities/schemes/dto/Authorization";
-import { InputAuthorizationRow } from "../../../components/lowLevel/Authorization/AuthorizationRow/AuthorizationRow";
-import AuthorizationBatton from "../../../components/lowLevel/UI/buttons/AuthorizationButtons/AuthorizationButton";
+import { InputAuthorizationRow } from "../../../components/Authorization/AuthorizationRow/AuthorizationRow";
+import AuthorizationBatton from "../../../components/UI/buttons/AuthorizationButtons/AuthorizationButton";
 import { validateUtil } from "../../../../../utils/validateUtil";
 import Validators from "../../../../entities/validator/validator";
 import ApiQuery from "../../../../api/query";
 import TypeAuthorization from "../components/TypeAuthorization";
 import { LabelRegistration, PlaceholderRegistration } from "../../../../entities/schemes/enums/convertObjKeysToSmth";
 import WayAuthorization from "../components/wayAuthUnderSubmit";
-import ErrorMessage from "../../../components/lowLevel/stylingString/errorMessage";
+import ErrorMessage from "../../../components/stylingString/errorMessage";
 
 const schemas = Validators.getRegisterValidateSchema()
 const errorsKeys = Object.keys(initialRegisrationProp)

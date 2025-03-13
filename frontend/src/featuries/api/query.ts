@@ -1,6 +1,8 @@
 import axios from "axios";
 import { AuthorizationProp, RegisrationProp } from "../entities/schemes/dto/Authorization";
 import core from "../../core/core";
+import { ChatType } from "../entities/schemes/enums/chatEnum";
+import { PanelButtons } from "../entities/schemes/dto/Chat";
 
 const authInstance = axios.create({
     baseURL: core.apiBaseUrl
@@ -60,5 +62,9 @@ export default class ApiQuery{
 
     static async updateRefreshToken() : Promise<string>{
         return axios.post(core.serverEdnpoints.updateRefresh).then(({data}) => data.accessToken)
+    }
+
+    static async getChats(type: ChatType): Promise<PanelButtons[]>{
+        return [{id: 1, name: "Группа 1", active: false}, {id: 2, name: "Группа 2", active: false}]
     }
 }
