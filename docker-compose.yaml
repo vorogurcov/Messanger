@@ -19,7 +19,11 @@ services:
     env_file:
       - ./backend/docker.env
     ports:
+<<<<<<< HEAD
       - '8000:80'
+=======
+      - '8080:8080'
+>>>>>>> dev
     depends_on:
       postgres:
         condition: service_healthy
