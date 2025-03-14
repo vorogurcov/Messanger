@@ -6,7 +6,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { User } from './entities/user.entity';
 import { JwtPayloadDto } from './dto/jwt-payload.dto';
-
+import * as bcrypt from 'bcrypt'
 const mockUserRepository = () => ({
     saveUser: jest.fn(),
     findUser: jest.fn(),
@@ -63,10 +63,10 @@ describe('AuthService test suite', () => {
 
     describe('"registerUser" test suite', () => {
         beforeEach(() => {
-            jest.spyOn(require('bcrypt'), 'genSalt').mockImplementation(
+            jest.spyOn(bcrypt, 'genSalt').mockImplementation(
                 mockBcrypt.genSalt,
             );
-            jest.spyOn(require('bcrypt'), 'hash').mockImplementation(
+            jest.spyOn(bcrypt, 'hash').mockImplementation(
                 mockBcrypt.hash,
             );
         });
@@ -119,7 +119,7 @@ describe('AuthService test suite', () => {
 
     describe('"loginUser" test suite', () => {
         beforeEach(() => {
-            jest.spyOn(require('bcrypt'), 'compare').mockImplementation(
+            jest.spyOn(bcrypt, 'compare').mockImplementation(
                 mockBcrypt.compare,
             );
         });
