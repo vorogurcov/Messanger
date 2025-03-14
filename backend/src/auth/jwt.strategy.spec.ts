@@ -1,5 +1,5 @@
-import { JwtStrategy } from "./jwt.strategy";
-import { JwtPayloadDto } from "./dto/jwt-payload.dto";
+import { JwtStrategy } from './jwt.strategy';
+import { JwtPayloadDto } from './dto/jwt-payload.dto';
 import { UnauthorizedException } from '@nestjs/common';
 
 describe('JwtStrategy test suite', () => {
@@ -35,9 +35,13 @@ describe('JwtStrategy test suite', () => {
             userRepositoryMock.findUser.mockResolvedValue(null);
 
             // Act
-            await expect(sut.validate(jwtPayloadDtoMock)).rejects.toThrow(UnauthorizedException);
+            await expect(sut.validate(jwtPayloadDtoMock)).rejects.toThrow(
+                UnauthorizedException,
+            );
             expect(userRepositoryMock.findUser).toHaveBeenCalledTimes(1);
-            expect(userRepositoryMock.findUser).toHaveBeenCalledWith(jwtPayloadDtoMock.login);
+            expect(userRepositoryMock.findUser).toHaveBeenCalledWith(
+                jwtPayloadDtoMock.login,
+            );
         });
 
         it('should return user if user exists', async () => {
@@ -49,7 +53,9 @@ describe('JwtStrategy test suite', () => {
 
             // Assert
             expect(userRepositoryMock.findUser).toHaveBeenCalledTimes(1);
-            expect(userRepositoryMock.findUser).toHaveBeenCalledWith(jwtPayloadDtoMock.login);
+            expect(userRepositoryMock.findUser).toHaveBeenCalledWith(
+                jwtPayloadDtoMock.login,
+            );
             expect(result).toEqual(mockUser);
         });
     });

@@ -1,5 +1,5 @@
-import { JwtRefreshStrategy } from "./jwt-refresh.strategy";
-import { JwtPayloadDto } from "./dto/jwt-payload.dto";
+import { JwtRefreshStrategy } from './jwt-refresh.strategy';
+import { JwtPayloadDto } from './dto/jwt-payload.dto';
 import { UnauthorizedException } from '@nestjs/common';
 
 describe('JwtRefreshStrategy test suite', () => {
@@ -9,7 +9,9 @@ describe('JwtRefreshStrategy test suite', () => {
     const jwtSecret = 'mockSecret';
     process.env.JWT_REFRESH_SECRET_KEY = jwtSecret;
 
-    const sut: JwtRefreshStrategy = new JwtRefreshStrategy(userRepositoryMock as any);
+    const sut: JwtRefreshStrategy = new JwtRefreshStrategy(
+        userRepositoryMock as any,
+    );
 
     const mockUser = {
         id: 'someId',
@@ -35,9 +37,13 @@ describe('JwtRefreshStrategy test suite', () => {
             userRepositoryMock.findUser.mockResolvedValue(null);
 
             // Act
-            await expect(sut.validate(jwtPayloadDtoMock)).rejects.toThrow(UnauthorizedException);
+            await expect(sut.validate(jwtPayloadDtoMock)).rejects.toThrow(
+                UnauthorizedException,
+            );
             expect(userRepositoryMock.findUser).toHaveBeenCalledTimes(1);
-            expect(userRepositoryMock.findUser).toHaveBeenCalledWith(jwtPayloadDtoMock.login);
+            expect(userRepositoryMock.findUser).toHaveBeenCalledWith(
+                jwtPayloadDtoMock.login,
+            );
         });
 
         it('should return user if user exists', async () => {
@@ -49,7 +55,9 @@ describe('JwtRefreshStrategy test suite', () => {
 
             // Assert
             expect(userRepositoryMock.findUser).toHaveBeenCalledTimes(1);
-            expect(userRepositoryMock.findUser).toHaveBeenCalledWith(jwtPayloadDtoMock.login);
+            expect(userRepositoryMock.findUser).toHaveBeenCalledWith(
+                jwtPayloadDtoMock.login,
+            );
             expect(result).toEqual(mockUser);
         });
     });
