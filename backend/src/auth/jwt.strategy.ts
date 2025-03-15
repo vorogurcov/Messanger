@@ -1,12 +1,12 @@
-import {Injectable, UnauthorizedException} from "@nestjs/common";
-import {PassportStrategy} from "@nestjs/passport";
-import {ExtractJwt, Strategy} from "passport-jwt";
-import {UserRepository} from "./repositories/user.repository";
-import {JwtPayloadDto} from "./dto/jwt-payload.dto";
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { UserRepository } from './repositories/user.repository';
+import { JwtPayloadDto } from './dto/jwt-payload.dto';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt'){
-    constructor(private userRepository:UserRepository) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+    constructor(private userRepository: UserRepository) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
@@ -14,12 +14,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt'){
         });
     }
 
-    async validate(payload:JwtPayloadDto){
-        const {login} = payload
-        const user= await this.userRepository.findUser(login)
-        if(!user)
-            throw new UnauthorizedException()
+    async validate(payload: JwtPayloadDto) {
+        const { login } = payload;
+        const user = await this.userRepository.findUser(login);
+        if (!user) throw new UnauthorizedException();
 
-        return user
+        return user;
     }
 }

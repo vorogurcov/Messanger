@@ -1,5 +1,4 @@
-export class JwtPayloadDto{
-
-    id:string;
-    login:string;
+export class JwtPayloadDto {
+    id: string;
+    login: string;
 }

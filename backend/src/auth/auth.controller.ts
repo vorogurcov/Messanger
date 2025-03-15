@@ -5,33 +5,40 @@ import {
     ConflictException,
     UnauthorizedException,
     HttpStatus,
-    InternalServerErrorException, Res, UseGuards, Req
-} from "@nestjs/common";
-import {RegisterUserDto} from "./dto/register-user.dto";
-import {LoginUserDto} from "./dto/login-user.dto";
-import {AuthService} from "./auth.service";
-import {Request, Response} from 'express'
-import {AuthGuard} from "@nestjs/passport";
-import {User} from "./entities/user.entity";
+    InternalServerErrorException,
+    Res,
+    UseGuards,
+    Req,
+} from '@nestjs/common';
+import { RegisterUserDto } from './dto/register-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
+import { AuthService } from './auth.service';
+import { Request, Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from './entities/user.entity';
 @Controller('auth')
-export class AuthController{
-    constructor(private authService:AuthService){}
+export class AuthController {
+    constructor(private authService: AuthService) {}
     @Post('register')
-    async registerUser(@Body() registerUserDto:RegisterUserDto){
-        try{
-            await this.authService.registerUser(registerUserDto)
+    async registerUser(@Body() registerUserDto: RegisterUserDto) {
+        try {
+            await this.authService.registerUser(registerUserDto);
             return {
                 statusCode: HttpStatus.CREATED,
-                message: 'User registered successfully'
+                message: 'User registered successfully',
             };
-        }catch(error){
+        } catch (error) {
             throw new ConflictException('User already exists!');
         }
     }
     @Post('login')
-    async loginUser(@Body() loginUserDto:LoginUserDto, @Res({ passthrough: true }) res: Response){
-        try{
-            const {accessToken, refreshToken, ...user} = await this.authService.loginUser(loginUserDto)
+    async loginUser(
+        @Body() loginUserDto: LoginUserDto,
+        @Res({ passthrough: true }) res: Response,
+    ) {
+        try {
+            const { accessToken, refreshToken, ...user } =
+                await this.authService.loginUser(loginUserDto);
 
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
@@ -44,21 +51,23 @@ export class AuthController{
                 statusCode: HttpStatus.OK,
                 message: 'Login successful',
                 user,
-                accessToken
+                accessToken,
             };
-        }catch(error){
-            if(error instanceof UnauthorizedException)
-                throw error;
-            throw new InternalServerErrorException()
+        } catch (error) {
+            if (error instanceof UnauthorizedException) throw error;
+            throw new InternalServerErrorException();
         }
-
     }
 
     @Post('refresh')
     @UseGuards(AuthGuard('jwt-refresh'))
-    async refreshToken(@Req() req:Request, @Res({passthrough:true}) res:Response){
-        try{
-            const {accessToken, refreshToken, ...user} = await this.authService.refreshToken(req.user as User)
+    async refreshToken(
+        @Req() req: Request,
+        @Res({ passthrough: true }) res: Response,
+    ) {
+        try {
+            const { accessToken, refreshToken, ...user } =
+                await this.authService.refreshToken(req.user as User);
 
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
@@ -71,12 +80,11 @@ export class AuthController{
                 statusCode: HttpStatus.OK,
                 message: 'Refresh token successful',
                 user,
-                accessToken
+                accessToken,
             };
-        }catch(error){
-            if(error instanceof UnauthorizedException)
-                throw error;
-            throw new InternalServerErrorException()
+        } catch (error) {
+            if (error instanceof UnauthorizedException) throw error;
+            throw new InternalServerErrorException();
         }
     }
 }
