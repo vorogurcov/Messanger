@@ -1,7 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
+//import {UserProfile} from "../../profile/entities/user-profile.entity";
 
 @Entity()
-export class User {
+export class UserAuth {
+    // @OneToOne(()=>UserProfile)
+    // @JoinColumn()
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -17,6 +20,6 @@ export class User {
     @Column('text')
     password: string;
 
-    @Column('varchar', { length: 255, nullable: true })
-    avatarUrl: string;
+    @Column('boolean', { default:false} )
+    isConfirmed:boolean
 }
