@@ -1,10 +1,16 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
-//import {UserProfile} from "../../profile/entities/user-profile.entity";
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    OneToOne,
+    JoinColumn,
+} from 'typeorm';
+import { UserProfile } from '../../profile/entities/user-profile.entity';
 
 @Entity()
 export class UserAuth {
-    // @OneToOne(()=>UserProfile)
-    // @JoinColumn()
+    @OneToOne(() => UserProfile)
+    @JoinColumn()
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -20,6 +26,6 @@ export class UserAuth {
     @Column('text')
     password: string;
 
-    @Column('boolean', { default:false} )
-    isConfirmed:boolean
+    @Column('boolean', { default: false })
+    isConfirmed: boolean;
 }

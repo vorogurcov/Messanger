@@ -20,7 +20,10 @@ export class JwtRefreshStrategy extends PassportStrategy(
     }
 
     async validate(payload: JwtPayloadDto) {
-        const user = {id:payload.id, login:payload.login};
+        const user: { id: string; login: string } = {
+            id: payload.id,
+            login: payload.login,
+        };
 
         return user;
     }

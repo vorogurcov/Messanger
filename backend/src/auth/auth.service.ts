@@ -5,7 +5,7 @@ import { UserAuthRepository } from './repositories/user-auth.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtPayloadDto } from './dto/jwt-payload.dto';
 import { UserAuth } from './entities/user-auth.entity';
-import {JwtService} from "@nestjs/jwt";
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -45,12 +45,12 @@ export class AuthService {
                 secret: process.env.JWT_SECRET_KEY,
                 expiresIn: '15m',
             });
-            console.log(accessToken, process.env.JWT_SECRET_KEY)
+            console.log(accessToken, process.env.JWT_SECRET_KEY);
             const refreshToken = await this.jwtService.signAsync(userData, {
                 secret: process.env.JWT_REFRESH_SECRET_KEY,
                 expiresIn: '10080m',
             });
-            console.log(refreshToken, process.env.JWT_REFRESH_SECRET_KEY)
+            console.log(refreshToken, process.env.JWT_REFRESH_SECRET_KEY);
             return { ...userData, accessToken, refreshToken };
         } catch (error: any) {
             throw error;
@@ -70,5 +70,9 @@ export class AuthService {
         });
 
         return { ...userData, accessToken, refreshToken };
+    }
+
+    async confirmEmail() {
+        // Todo
     }
 }
