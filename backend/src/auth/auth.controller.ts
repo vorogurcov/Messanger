@@ -15,7 +15,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from './entities/user.entity';
+import { UserAuth } from './entities/user-auth.entity';
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) {}
@@ -67,7 +67,7 @@ export class AuthController {
     ) {
         try {
             const { accessToken, refreshToken, ...user } =
-                await this.authService.refreshToken(req.user as User);
+                await this.authService.refreshToken(req.user as UserAuth);
 
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,

@@ -1,13 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { UserRepository } from './repositories/user.repository';
+import { UserAuthRepository } from './repositories/user-auth.repository';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { User } from './entities/user.entity';
+import { UserAuth } from './entities/user-auth.entity';
 import { JwtPayloadDto } from './dto/jwt-payload.dto';
 import * as bcrypt from 'bcrypt'
-const mockUserRepository = () => ({
+const mockUserAuthRepository = () => ({
     saveUser: jest.fn(),
     findUser: jest.fn(),
 });
@@ -32,17 +32,17 @@ const mockLoginUserDto: LoginUserDto = {
     password: 'asdASD!1',
 };
 
-const mockUser: User = {
+const mockUserAuth: UserAuth = {
     id: '1',
     login: 'login',
     phoneNumber: '79990000000',
     email: 'email',
     password: 'hashedPassword',
-    avatarUrl: 'url',
+    isConfirmed:false,
 };
 
 describe('AuthService test suite', () => {
-    let userRepository: ReturnType<typeof mockUserRepository>;
+    let userRepository: ReturnType<typeof mockUserAuthRepository>;
     let authService: AuthService;
     let jwtService: JwtService;
 
@@ -50,13 +50,13 @@ describe('AuthService test suite', () => {
         const testingModule = await Test.createTestingModule({
             providers: [
                 AuthService,
-                { provide: UserRepository, useFactory: mockUserRepository },
+                { provide: UserAuthRepository, useFactory: mockUserAuthRepository },
                 { provide: JwtService, useFactory: mockJwtService },
             ],
         }).compile();
 
         authService = testingModule.get(AuthService);
-        userRepository = testingModule.get(UserRepository);
+        userRepository = testingModule.get(UserAuthRepository);
         jwtService = testingModule.get(JwtService);
         jest.clearAllMocks();
     });
@@ -126,11 +126,11 @@ describe('AuthService test suite', () => {
 
         it('should compare passwords and return tokens if passwords valid', async () => {
             // Arrange
-            userRepository.findUser.mockResolvedValue(mockUser);
+            userRepository.findUser.mockResolvedValue(mockUserAuth);
             mockBcrypt.compare.mockResolvedValue(true);
             const mockJwtPayloadDto: JwtPayloadDto = {
-                id: mockUser.id,
-                login: mockUser.login,
+                id: mockUserAuth.id,
+                login: mockUserAuth.login,
             };
             // Act
             const result = await authService.loginUser(mockLoginUserDto);
@@ -139,7 +139,7 @@ describe('AuthService test suite', () => {
             expect(mockBcrypt.compare).toHaveBeenCalledTimes(1);
             expect(mockBcrypt.compare).toHaveBeenCalledWith(
                 mockLoginUserDto.password,
-                mockUser.password,
+                mockUserAuth.password,
             );
             expect(result).toHaveProperty('accessToken');
             expect(result).toHaveProperty('refreshToken');
@@ -158,7 +158,7 @@ describe('AuthService test suite', () => {
 
         it('should throw UnauthorizedException if password is incorrect', async () => {
             // Arrange
-            userRepository.findUser.mockResolvedValue(mockUser);
+            userRepository.findUser.mockResolvedValue(mockUserAuth);
             mockBcrypt.compare.mockResolvedValue(false);
             // Act
             await expect(
@@ -169,7 +169,7 @@ describe('AuthService test suite', () => {
             expect(mockBcrypt.compare).toHaveBeenCalledTimes(1);
             expect(mockBcrypt.compare).toHaveBeenCalledWith(
                 mockLoginUserDto.password,
-                mockUser.password,
+                mockUserAuth.password,
             );
         });
     });
@@ -184,13 +184,13 @@ describe('AuthService test suite', () => {
         it('should refresh tokens', async () => {
             // Arrange
             const mockJwtPayloadDto: JwtPayloadDto = {
-                id: mockUser.id,
-                login: mockUser.login,
+                id: mockUserAuth.id,
+                login: mockUserAuth.login,
             };
             const newAccessToken = 'accessToken123';
             const newRefreshToken = 'refreshToken456';
             // Act
-            const result = await authService.refreshToken(mockUser);
+            const result = await authService.refreshToken(mockUserAuth);
 
             // Assert
             expect(jwtService.signAsync).toHaveBeenCalledTimes(2);
