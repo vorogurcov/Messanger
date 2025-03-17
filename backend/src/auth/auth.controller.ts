@@ -16,6 +16,7 @@ import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { UserAuth } from './entities/user-auth.entity';
+import * as process from "process";
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) {}
@@ -55,6 +56,8 @@ export class AuthController {
             };
         } catch (error) {
             if (error instanceof UnauthorizedException) throw error;
+            console.log(error)
+            console.log(process.env.JWT_SECRET_KEY,'/n',process.env.JWT_REFRESH_SECRET_KEY)
             throw new InternalServerErrorException();
         }
     }
