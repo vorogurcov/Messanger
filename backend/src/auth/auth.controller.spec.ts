@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UserRepository } from './repositories/user.repository';
+import { UserAuthRepository } from './repositories/user-auth.repository';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterUserDto } from './dto/register-user.dto';
 import {
@@ -10,7 +10,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
-import { User } from './entities/user.entity';
+import { UserAuth } from './entities/user-auth.entity';
 
 describe('AuthController test suite', () => {
     let authService: AuthService;
@@ -20,7 +20,7 @@ describe('AuthController test suite', () => {
         const testingModule = await Test.createTestingModule({
             providers: [
                 AuthService,
-                { provide: UserRepository, useValue: {} },
+                { provide: UserAuthRepository, useValue: {} },
                 { provide: JwtService, useValue: {} },
             ],
             controllers: [AuthController],
@@ -141,8 +141,7 @@ describe('AuthController test suite', () => {
                 login: 'someLogin',
                 phoneNumber: '79999999999',
                 email: 'email',
-                avatarUrl: '',
-            } as User,
+            } as UserAuth,
         };
 
         const mockResponse = {
