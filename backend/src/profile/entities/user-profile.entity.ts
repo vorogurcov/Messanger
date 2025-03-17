@@ -1,26 +1,25 @@
-import {Entity, Column, PrimaryGeneratedColumn} from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class UserProfile{
-
+export class UserProfile {
     @PrimaryGeneratedColumn('uuid')
-    id:string;
+    id: string;
 
     @Column('text')
-    userName:string;
+    userName: string;
 
-    @Column('date')
-    birthDate:string;
+    @Column('date', { nullable: true })
+    birthDate: string;
 
     @Column('varchar', { length: 255, nullable: true })
     avatarUrl: string;
 
-    @Column('text')
-    bio:string;
+    @Column('text', { default: 'Programmer from Saint-Petersburg' })
+    bio: string;
 
-    @Column('boolean')
-    isOnline:boolean;
+    @Column('boolean', { default: false })
+    isOnline: boolean;
 
-    @Column('timestamp')
-    lastSeen:string;
+    @Column('timestamp', { nullable: true })
+    lastSeen: string;
 }
