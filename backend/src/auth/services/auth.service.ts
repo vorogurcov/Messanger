@@ -14,6 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import { EmailVerificationService } from './email-verification.service';
 import { EmailConfirmationDto } from '../dto/email-confirmation.dto';
 import { ProfileService } from '../../profile/profile.service';
+import {EmailSenderService} from "../../email-sender/email-sender.service";
 
 @Injectable()
 export class AuthService {
@@ -22,6 +23,7 @@ export class AuthService {
         private jwtService: JwtService,
         private emailVerificationService: EmailVerificationService,
         private profileService: ProfileService,
+        private emailSenderService:EmailSenderService,
     ) {}
     async registerUser(registerUserDto: RegisterUserDto) {
         try {
@@ -35,11 +37,11 @@ export class AuthService {
                 password: hashedPassword,
             };
 
-            const { id, email } =
+            const { id, email, login } =
                 await this.userRepository.saveUser(userCredentials);
             const verificationCode =
                 await this.emailVerificationService.generateAndSaveCode(id);
-            // TODO: Call method from email-sender to send verification email to user's email
+            await this.emailSenderService.sendConfirmationEmail(email, login, verificationCode)
         } catch (error: any) {
             throw error;
         }
@@ -58,11 +60,10 @@ export class AuthService {
                 !user ||
                 !(await this.userRepository.getIsEmailVerified(user.id))
             ) {
-                const { id, email } = user;
+                const { id, email, login } = user;
                 const verificationCode =
                     await this.emailVerificationService.generateAndSaveCode(id);
-                // TODO: Call method from email-sender to send verification email to user's email
-
+                await this.emailSenderService.sendConfirmationEmail(email, login, verificationCode)
                 throw new ForbiddenException('Email is not verified!');
             }
             console.log(user);
@@ -108,7 +109,6 @@ export class AuthService {
             emailConfirmDto.userId,
             true,
         );
-        console.log(user);
         await this.profileService.createProfileForUser(
             user.id,
             user.login,
