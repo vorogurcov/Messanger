@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    OneToOne,
+    JoinColumn,
+} from 'typeorm';
+import { UserAuth } from '../../auth/entities/user-auth.entity';
 
 @Entity()
 export class UserProfile {
@@ -22,4 +29,8 @@ export class UserProfile {
 
     @Column('timestamp', { nullable: true })
     lastSeen: string;
+
+    @OneToOne(() => UserAuth)
+    @JoinColumn()
+    userAuth: UserAuth;
 }

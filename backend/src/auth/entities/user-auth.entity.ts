@@ -9,8 +9,6 @@ import { UserProfile } from '../../profile/entities/user-profile.entity';
 
 @Entity()
 export class UserAuth {
-    @OneToOne(() => UserProfile)
-    @JoinColumn()
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -27,5 +25,8 @@ export class UserAuth {
     password: string;
 
     @Column('boolean', { default: false })
-    isConfirmed: boolean;
+    isEmailVerified: boolean;
+
+    @OneToOne(() => UserProfile, (userProfile) => userProfile.userAuth)
+    userProfile: UserProfile;
 }
