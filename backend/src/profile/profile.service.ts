@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserProfileRepository } from './repositories/user-profile.repository';
 import { UpdateProfileInfoDto } from './dto/update-profile-info.dto';
 import { UpdateProfileStatusDto } from './dto/update-profile-status.dto';
+import { UserAuth } from '../auth/entities/user-auth.entity';
 
 @Injectable()
 export class ProfileService {
@@ -20,10 +21,15 @@ export class ProfileService {
         // TODO
     }
 
-    async createProfileForUser(userId: string, userLogin: string) {
+    async createProfileForUser(
+        userId: string,
+        userLogin: string,
+        userAuth: UserAuth,
+    ) {
         await this.userProfileRepository.createProfileForUser(
             userId,
             userLogin,
+            userAuth,
         );
     }
 }
