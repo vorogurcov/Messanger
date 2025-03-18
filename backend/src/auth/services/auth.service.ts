@@ -1,17 +1,27 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { UserAuthRepository } from './repositories/user-auth.repository';
+import {
+    BadRequestException,
+    ForbiddenException,
+    Injectable,
+    UnauthorizedException,
+} from '@nestjs/common';
+import { RegisterUserDto } from '../dto/register-user.dto';
+import { LoginUserDto } from '../dto/login-user.dto';
+import { UserAuthRepository } from '../repositories/user-auth.repository';
 import * as bcrypt from 'bcrypt';
-import { JwtPayloadDto } from './dto/jwt-payload.dto';
-import { UserAuth } from './entities/user-auth.entity';
+import { JwtPayloadDto } from '../dto/jwt-payload.dto';
+import { UserAuth } from '../entities/user-auth.entity';
 import { JwtService } from '@nestjs/jwt';
+import { EmailVerificationService } from './email-verification.service';
+import { EmailConfirmationDto } from '../dto/email-confirmation.dto';
+import { ProfileService } from '../../profile/profile.service';
 
 @Injectable()
 export class AuthService {
     constructor(
         private userRepository: UserAuthRepository,
         private jwtService: JwtService,
+        private emailVerificationService: EmailVerificationService,
+        private profileService: ProfileService,
     ) {}
     async registerUser(registerUserDto: RegisterUserDto) {
         try {
@@ -25,7 +35,11 @@ export class AuthService {
                 password: hashedPassword,
             };
 
-            await this.userRepository.saveUser(userCredentials);
+            const { id, email } =
+                await this.userRepository.saveUser(userCredentials);
+            const verificationCode =
+                await this.emailVerificationService.generateAndSaveCode(id);
+            // TODO: Call method from email-sender to send verification email to user's email
         } catch (error: any) {
             throw error;
         }
@@ -39,18 +53,30 @@ export class AuthService {
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 throw new UnauthorizedException('Invalid credentials');
             }
+
+            if (
+                !user ||
+                !(await this.userRepository.getIsEmailVerified(user.id))
+            ) {
+                const { id, email } = user;
+                const verificationCode =
+                    await this.emailVerificationService.generateAndSaveCode(id);
+                // TODO: Call method from email-sender to send verification email to user's email
+
+                throw new ForbiddenException('Email is not verified!');
+            }
+            console.log(user);
+
             const userData: JwtPayloadDto = { id: user.id, login: user.login };
 
             const accessToken = await this.jwtService.signAsync(userData, {
                 secret: process.env.JWT_SECRET_KEY,
                 expiresIn: '15m',
             });
-            console.log(accessToken, process.env.JWT_SECRET_KEY);
             const refreshToken = await this.jwtService.signAsync(userData, {
                 secret: process.env.JWT_REFRESH_SECRET_KEY,
                 expiresIn: '10080m',
             });
-            console.log(refreshToken, process.env.JWT_REFRESH_SECRET_KEY);
             return { ...userData, accessToken, refreshToken };
         } catch (error: any) {
             throw error;
@@ -72,7 +98,21 @@ export class AuthService {
         return { ...userData, accessToken, refreshToken };
     }
 
-    async confirmEmail() {
-        // Todo
+    async confirmEmail(emailConfirmDto: EmailConfirmationDto) {
+        const isVerified =
+            await this.emailVerificationService.verifyCode(emailConfirmDto);
+        if (!isVerified) {
+            throw new BadRequestException('Confirmation code is invalid!');
+        }
+        const user = await this.userRepository.setIsEmailVerified(
+            emailConfirmDto.userId,
+            true,
+        );
+        console.log(user);
+        await this.profileService.createProfileForUser(
+            user.id,
+            user.login,
+            user,
+        );
     }
 }
