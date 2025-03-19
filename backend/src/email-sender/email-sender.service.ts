@@ -12,8 +12,7 @@ export class EmailSenderService{
     }
 
     async sendConfirmationEmail(email:string, login:string, confirmationCode:string){
-        console.log(email, login, confirmationCode)
-        const sentFrom = new Sender("noreply@trial-z3m5jgr33pxgdpyo.mlsender.net", "Verification Bot");
+        const sentFrom = new Sender("noreply@trial-z3m5jgr33pxgdpyo.mlsender.net", "Messenger Bot");
 
         const recipients = [
             new Recipient(email, login)

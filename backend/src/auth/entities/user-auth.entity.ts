@@ -15,10 +15,10 @@ export class UserAuth {
     @Column({ unique: true })
     login: string;
 
-    @Column('char', { length: 11, unique: true })
+    @Column('char', { length: 11, unique: true, nullable: true, })
     phoneNumber: string;
 
-    @Column('varchar', { length: 254, nullable: true, unique: true })
+    @Column('varchar', { length: 254, unique: true })
     email: string;
 
     @Column('text')

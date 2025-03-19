@@ -66,7 +66,6 @@ export class AuthService {
                 await this.emailSenderService.sendConfirmationEmail(email, login, verificationCode)
                 throw new ForbiddenException('Email is not verified!');
             }
-            console.log(user);
 
             const userData: JwtPayloadDto = { id: user.id, login: user.login };
 
