@@ -1,12 +1,12 @@
 import { Test } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { UserAuthRepository } from './repositories/user-auth.repository';
+import { UserAuthRepository } from '../repositories/user-auth.repository';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { UserAuth } from './entities/user-auth.entity';
-import { JwtPayloadDto } from './dto/jwt-payload.dto';
-import * as bcrypt from 'bcrypt'
+import { RegisterUserDto } from '../dto/register-user.dto';
+import { LoginUserDto } from '../dto/login-user.dto';
+import { UserAuth } from '../entities/user-auth.entity';
+import { JwtPayloadDto } from '../dto/jwt-payload.dto';
+import * as bcrypt from 'bcrypt';
 const mockUserAuthRepository = () => ({
     saveUser: jest.fn(),
     findUser: jest.fn(),
@@ -38,7 +38,7 @@ const mockUserAuth: UserAuth = {
     phoneNumber: '79990000000',
     email: 'email',
     password: 'hashedPassword',
-    isConfirmed:false,
+    isConfirmed: false,
 };
 
 describe('AuthService test suite', () => {
@@ -50,7 +50,10 @@ describe('AuthService test suite', () => {
         const testingModule = await Test.createTestingModule({
             providers: [
                 AuthService,
-                { provide: UserAuthRepository, useFactory: mockUserAuthRepository },
+                {
+                    provide: UserAuthRepository,
+                    useFactory: mockUserAuthRepository,
+                },
                 { provide: JwtService, useFactory: mockJwtService },
             ],
         }).compile();
@@ -66,9 +69,7 @@ describe('AuthService test suite', () => {
             jest.spyOn(bcrypt, 'genSalt').mockImplementation(
                 mockBcrypt.genSalt,
             );
-            jest.spyOn(bcrypt, 'hash').mockImplementation(
-                mockBcrypt.hash,
-            );
+            jest.spyOn(bcrypt, 'hash').mockImplementation(mockBcrypt.hash);
         });
 
         it('should hash password and call userRepository.saveUser with correct data', async () => {

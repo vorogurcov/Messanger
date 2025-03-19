@@ -1,22 +1,26 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserAuth } from './entities/user-auth.entity';
 import { UserAuthRepository } from './repositories/user-auth.repository';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy';
-import { JwtRefreshStrategy } from './jwt-refresh.strategy';
+import { JwtStrategyModule } from '../jwt-strategy/jwt-strategy.module';
+import { ProfileModule } from '../profile/profile.module';
+import { EmailVerificationService } from './services/email-verification.service';
+import { RedisModule } from '../redis/redis.module';
+import {EmailVerificationModule} from "mailersend/lib/modules/EmailVerification.module";
+import {EmailSenderModule} from "../email-sender/email-sender.module";
 
 @Module({
     imports: [
+        JwtStrategyModule,
         TypeOrmModule.forFeature([UserAuth]),
-        PassportModule.register({ defaultStrategy: 'jwt' }),
-        JwtModule.register({ secret: process.env.JWT_SECRET_KEY }),
+        ProfileModule,
+        RedisModule,
+        EmailVerificationModule,
+        EmailSenderModule,
     ],
     controllers: [AuthController],
-    providers: [AuthService, UserAuthRepository, JwtStrategy, JwtRefreshStrategy],
-    exports: [JwtStrategy, PassportModule],
+    providers: [AuthService, UserAuthRepository, EmailVerificationService],
 })
 export class AuthModule {}
