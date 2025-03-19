@@ -15,7 +15,7 @@ export class UserAuth {
     @Column({ unique: true })
     login: string;
 
-    @Column('char', { length: 11, unique: true, nullable: true, })
+    @Column('char', { length: 11, unique: true, nullable: true })
     phoneNumber: string;
 
     @Column('varchar', { length: 254, unique: true })

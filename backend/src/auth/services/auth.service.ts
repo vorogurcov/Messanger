@@ -14,7 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import { EmailVerificationService } from './email-verification.service';
 import { EmailConfirmationDto } from '../dto/email-confirmation.dto';
 import { ProfileService } from '../../profile/profile.service';
-import {EmailSenderService} from "../../email-sender/email-sender.service";
+import { EmailSenderService } from '../../email-sender/email-sender.service';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +23,7 @@ export class AuthService {
         private jwtService: JwtService,
         private emailVerificationService: EmailVerificationService,
         private profileService: ProfileService,
-        private emailSenderService:EmailSenderService,
+        private emailSenderService: EmailSenderService,
     ) {}
     async registerUser(registerUserDto: RegisterUserDto) {
         try {
@@ -41,7 +41,11 @@ export class AuthService {
                 await this.userRepository.saveUser(userCredentials);
             const verificationCode =
                 await this.emailVerificationService.generateAndSaveCode(id);
-            await this.emailSenderService.sendConfirmationEmail(email, login, verificationCode)
+            await this.emailSenderService.sendConfirmationEmail(
+                email,
+                login,
+                verificationCode,
+            );
         } catch (error: any) {
             throw error;
         }
@@ -63,7 +67,11 @@ export class AuthService {
                 const { id, email, login } = user;
                 const verificationCode =
                     await this.emailVerificationService.generateAndSaveCode(id);
-                await this.emailSenderService.sendConfirmationEmail(email, login, verificationCode)
+                await this.emailSenderService.sendConfirmationEmail(
+                    email,
+                    login,
+                    verificationCode,
+                );
                 throw new ForbiddenException('Email is not verified!');
             }
 

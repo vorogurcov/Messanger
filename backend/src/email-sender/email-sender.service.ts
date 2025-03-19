@@ -1,29 +1,35 @@
-import {Injectable} from "@nestjs/common";
-import {EmailParams, MailerSend, Recipient, Sender} from "mailersend";
+import { Injectable } from '@nestjs/common';
+import { EmailParams, MailerSend, Recipient, Sender } from 'mailersend';
 
 @Injectable()
-export class EmailSenderService{
-    private mailerSend
+export class EmailSenderService {
+    private mailerSend;
 
-    onModuleInit(){
+    onModuleInit() {
         this.mailerSend = new MailerSend({
-            apiKey:process.env.MAIL_API_KEY as string,
-        })
+            apiKey: process.env.MAIL_API_KEY as string,
+        });
     }
 
-    async sendConfirmationEmail(email:string, login:string, confirmationCode:string){
-        const sentFrom = new Sender("noreply@trial-z3m5jgr33pxgdpyo.mlsender.net", "Messenger Bot");
+    async sendConfirmationEmail(
+        email: string,
+        login: string,
+        confirmationCode: string,
+    ) {
+        const sentFrom = new Sender(
+            'noreply@trial-z3m5jgr33pxgdpyo.mlsender.net',
+            'Messenger Bot',
+        );
 
-        const recipients = [
-            new Recipient(email, login)
-        ];
+        const recipients = [new Recipient(email, login)];
 
         const emailParams = new EmailParams()
             .setFrom(sentFrom)
             .setTo(recipients)
             .setReplyTo(sentFrom)
-            .setSubject("Email verification")
-            .setHtml(`
+            .setSubject('Email verification')
+            .setHtml(
+                `
     <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; background-color: #f9f9f9; padding: 30px; border-radius: 10px; max-width: 600px; margin: auto; border: 1px solid #ddd;">
       <h2 style="color: #2c3e50; text-align: center;">Email Verification</h2>
       <p>Hello, <strong>${login}</strong>!</p>
@@ -38,12 +44,12 @@ export class EmailSenderService{
       <hr style="margin: 40px 0; border: none; border-top: 1px solid #ccc;" />
       <p style="font-size: 14px; color: #888;">This is an automated message. Please do not reply.</p>
     </div>
-  `)
-            .setText(`Hello, ${login}!\nYou've got this message because you have to validate your email!\nThis is your confirmation code: ${confirmationCode}`);
+  `,
+            )
+            .setText(
+                `Hello, ${login}!\nYou've got this message because you have to validate your email!\nThis is your confirmation code: ${confirmationCode}`,
+            );
 
         await this.mailerSend.email.send(emailParams);
     }
-
-
-
 }
