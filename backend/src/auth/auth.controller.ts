@@ -9,13 +9,18 @@ import {
     Res,
     UseGuards,
     Req,
+    BadRequestException,
+    ForbiddenException,
 } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from './entities/user.entity';
+import { UserAuth } from './entities/user-auth.entity';
+import * as process from 'process';
+import { EmailVerificationService } from './services/email-verification.service';
+import { EmailConfirmationDto } from './dto/email-confirmation.dto';
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) {}
@@ -25,7 +30,8 @@ export class AuthController {
             await this.authService.registerUser(registerUserDto);
             return {
                 statusCode: HttpStatus.CREATED,
-                message: 'User registered successfully',
+                message: 'Waiting for verification',
+                isEmailVerified: false,
             };
         } catch (error) {
             throw new ConflictException('User already exists!');
@@ -55,6 +61,7 @@ export class AuthController {
             };
         } catch (error) {
             if (error instanceof UnauthorizedException) throw error;
+            if (error instanceof ForbiddenException) throw error;
             throw new InternalServerErrorException();
         }
     }
@@ -67,7 +74,7 @@ export class AuthController {
     ) {
         try {
             const { accessToken, refreshToken, ...user } =
-                await this.authService.refreshToken(req.user as User);
+                await this.authService.refreshToken(req.user as UserAuth);
 
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
@@ -85,6 +92,26 @@ export class AuthController {
         } catch (error) {
             if (error instanceof UnauthorizedException) throw error;
             throw new InternalServerErrorException();
+        }
+    }
+
+    @Post('verify')
+    async confirmEmail(@Body() emailConfirmationDto: EmailConfirmationDto) {
+        try {
+            await this.authService.confirmEmail(emailConfirmationDto);
+            return {
+                statusCode: HttpStatus.OK,
+                message: 'Email verification successful',
+                isEmailVerified: true,
+            };
+        } catch (error) {
+            if (error instanceof BadRequestException)
+                return {
+                    statusCode: HttpStatus.BAD_REQUEST,
+                    message: error.message,
+                    isEmailVerified: false,
+                };
+            throw new InternalServerErrorException('Something went wrong!');
         }
     }
 }
