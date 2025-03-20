@@ -53,7 +53,7 @@ export class EmailSenderService {
 
             await this.mailerSend.email.send(emailParams);
         }catch(error){
-            console.log('Email was not send due ', error.message)
+            console.log('Email was not send due ', error)
         }
 
     }
