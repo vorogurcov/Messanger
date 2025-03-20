@@ -16,20 +16,21 @@ export class EmailSenderService {
         login: string,
         confirmationCode: string,
     ) {
-        const sentFrom = new Sender(
-            'noreply@trial-z3m5jgr33pxgdpyo.mlsender.net',
-            'Messenger Bot',
-        );
+        try{
+            const sentFrom = new Sender(
+                `noreply@${process.env.MAIL_API_DOMAIN}`,
+                'Messenger Bot',
+            );
 
-        const recipients = [new Recipient(email, login)];
+            const recipients = [new Recipient(email, login)];
 
-        const emailParams = new EmailParams()
-            .setFrom(sentFrom)
-            .setTo(recipients)
-            .setReplyTo(sentFrom)
-            .setSubject('Email verification')
-            .setHtml(
-                `
+            const emailParams = new EmailParams()
+                .setFrom(sentFrom)
+                .setTo(recipients)
+                .setReplyTo(sentFrom)
+                .setSubject('Email verification')
+                .setHtml(
+                    `
     <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; background-color: #f9f9f9; padding: 30px; border-radius: 10px; max-width: 600px; margin: auto; border: 1px solid #ddd;">
       <h2 style="color: #2c3e50; text-align: center;">Email Verification</h2>
       <p>Hello, <strong>${login}</strong>!</p>
@@ -45,11 +46,16 @@ export class EmailSenderService {
       <p style="font-size: 14px; color: #888;">This is an automated message. Please do not reply.</p>
     </div>
   `,
-            )
-            .setText(
-                `Hello, ${login}!\nYou've got this message because you have to validate your email!\nThis is your confirmation code: ${confirmationCode}`,
-            );
+                )
+                .setText(
+                    `Hello, ${login}!\nYou've got this message because you have to validate your email!\nThis is your confirmation code: ${confirmationCode}`,
+                );
 
-        await this.mailerSend.email.send(emailParams);
+            await this.mailerSend.email.send(emailParams);
+        }catch(error){
+            console.log('Email was not send due ', error.message)
+        }
+
     }
+
 }
