@@ -1,18 +1,19 @@
 import {
     Body,
-    Controller,
+    Controller, Delete, Get,
     HttpStatus,
     InternalServerErrorException,
     Patch,
     Post,
-    Req,
-    UseGuards,
+    Req, UploadedFile,
+    UseGuards, UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateProfileInfoDto } from './dto/update-profile-info.dto';
 import { UpdateProfileStatusDto } from './dto/update-profile-status.dto';
 import { ProfileService } from './profile.service';
 import { Request } from 'express';
+import {FileInterceptor} from "@nestjs/platform-express";
 @Controller('profile')
 @UseGuards(AuthGuard('jwt'))
 export class ProfileController {
@@ -60,7 +61,31 @@ export class ProfileController {
         }
     }
     @Post('avatar')
-    updateAvatar() {
-        // TODO:Implement update Avatar feature
+    @UseInterceptors(FileInterceptor('file'))
+    async updateAvatar(@Req() req:Request, @UploadedFile() avatar: Express.Multer.File) {
+        const userId = (req.user as any).id
+        return await this.profileService.updateAvatar(userId,avatar)
+    }
+
+    @Delete('avatar')
+    async deleteAvatar(@Req() req: Request) {
+        const {id} = req.user as any
+        await this.profileService.deleteAvatar(id);
+    }
+
+    @Get('me')
+    async getMyProfile(@Req() req:Request){
+        const {id} = req.user as any
+        try{
+            const userProfile = await this.profileService.getUserProfileById(id)
+            return {
+                statusCode:HttpStatus.OK,
+                message:'User profie was found!',
+                userProfile,
+            }
+        }catch(error){
+            throw error;
+        }
+
     }
 }

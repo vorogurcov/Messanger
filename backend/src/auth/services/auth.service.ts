@@ -46,6 +46,11 @@ export class AuthService {
                 login,
                 verificationCode,
             );
+            return {
+                id,
+                email,
+                login
+            }
         } catch (error: any) {
             throw error;
         }

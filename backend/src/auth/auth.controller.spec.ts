@@ -33,7 +33,7 @@ describe('AuthController test suite', () => {
     describe('"registerUser" test suite', () => {
         const registerUserDtoMock: RegisterUserDto = {
             login: 'someLogin',
-            phoneNumber: '79999999999',
+            email: '79999999999',
             password: 'somePassword',
         };
 

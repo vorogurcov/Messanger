@@ -1,4 +1,17 @@
 services:
+  redis:
+    image: 'redis'
+    volumes:
+      - redis_data:/data
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
   postgres:
     image: 'postgres'
     env_file:
@@ -23,6 +36,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
 
   frontend:
     build: ./frontend
@@ -36,3 +51,4 @@ services:
 
 volumes:
   db_data:
+  redis_data:

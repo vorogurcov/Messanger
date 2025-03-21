@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserProfile } from '../entities/user-profile.entity';
 import { UpdateProfileInfoDto } from '../dto/update-profile-info.dto';
 import { UpdateProfileStatusDto } from '../dto/update-profile-status.dto';
 import { UserAuth } from '../../auth/entities/user-auth.entity';
+import {NotFoundError} from "rxjs";
 
 @Injectable()
 export class UserProfileRepository {
@@ -12,6 +13,15 @@ export class UserProfileRepository {
         @InjectRepository(UserProfile)
         private repository: Repository<UserProfile>,
     ) {}
+
+    async getUserProfile(userId:string){
+        try{
+            return await this.repository.findOneBy({id:userId})
+        }catch{
+            throw new NotFoundException(`User with id ${userId} was not found`)
+        }
+    }
+
 
     async updateUserProfile(
         userId: string,
@@ -42,6 +52,14 @@ export class UserProfileRepository {
             await this.repository.save(userProfile);
         } catch (error) {
             console.log('Can not create profile for user!', error.message);
+            throw error;
+        }
+    }
+    async updateAvatarUrl(userId: string, avatarUrl: string) {
+        try {
+            await this.repository.update(userId, { avatarUrl });
+        } catch (error) {
+            console.log('Can not update avatar URL!', error.message);
             throw error;
         }
     }

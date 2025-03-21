@@ -23,7 +23,7 @@ const mockBcrypt = {
 
 const mockRegisterDto: RegisterUserDto = {
     login: 'login',
-    phoneNumber: '79990000000',
+    email: 'email@email.com',
     password: 'asdASD!1',
 };
 
@@ -38,8 +38,10 @@ const mockUserAuth: UserAuth = {
     phoneNumber: '79990000000',
     email: 'email',
     password: 'hashedPassword',
-    isConfirmed: false,
+    isEmailVerified: false,
+    userProfile:undefined as any,
 };
+
 
 describe('AuthService test suite', () => {
     let userRepository: ReturnType<typeof mockUserAuthRepository>;
@@ -89,7 +91,7 @@ describe('AuthService test suite', () => {
 
             expect(userRepository.saveUser).toHaveBeenCalledWith({
                 login: mockRegisterDto.login,
-                phoneNumber: mockRegisterDto.phoneNumber,
+                phoneNumber: mockRegisterDto.email,
                 password: hashedPassword,
             });
         });
