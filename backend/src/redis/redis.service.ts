@@ -4,7 +4,10 @@ import { Redis } from 'ioredis';
 export class RedisService {
     private client: Redis;
     onModuleInit() {
-        this.client = new Redis();
+        this.client = new Redis({
+            host: process.env.REDIS_HOST ?? 'localhost',
+            port: Number(process.env.REDIS_PORT) ?? 6379,
+        });
     }
 
     onModuleDestroy() {
