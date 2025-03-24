@@ -7,7 +7,7 @@ export class UserProfileAndAuth1742557853253 implements MigrationInterface {
             CREATE TABLE "user_auth" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "login" character varying NOT NULL, 
-                "phoneNumber" character(11) NOT NULL, 
+                "phoneNumber" character(11), 
                 "email" character varying(254) NOT NULL, 
                 "password" text NOT NULL, 
                 "isEmailVerified" boolean NOT NULL DEFAULT false, 
