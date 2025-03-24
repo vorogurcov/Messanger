@@ -6,7 +6,6 @@ import { UserAuth } from './entities/user-auth.entity';
 import { UserAuthRepository } from './repositories/user-auth.repository';
 import { JwtStrategyModule } from '../jwt-strategy/jwt-strategy.module';
 import { ProfileModule } from '../profile/profile.module';
-import { EmailVerificationService } from '../email-sender/services/email-verification.service';
 import { RedisModule } from '../redis/redis.module';
 import { EmailSenderModule } from '../email-sender/email-sender.module';
 
