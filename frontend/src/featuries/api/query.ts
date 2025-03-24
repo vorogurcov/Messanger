@@ -51,8 +51,28 @@ authInstance.interceptors.response.use(
     }
 );
 
+function generateUrlServer(url: string){
+    return core.apiBaseUrl + url
+}
 
+type AvatarAction = 'keep' | 'delete' | 'update'
 export default class ApiQuery{
+    private static getTypeUpdateProfile(user: UserLK, files: FileList | null): AvatarAction{
+        let type: AvatarAction
+        if (!user.avatarUrl){
+            if (files){
+                type = 'update'
+            }
+            else{
+                type = 'delete'
+            }
+        }
+        else{
+            type = 'keep'
+        }
+        return type
+    }
+
     static async enter(data: AuthorizationProp){
         return axios.post(core.serverEdnpoints.enterAuth, data).then(({data}) => localStorage.setItem(core.localStorageKeys.access_token, data.accessToken))
     }
@@ -83,7 +103,19 @@ export default class ApiQuery{
         }
     }
 
-    static async saveUserLK(user: UserLK){
-        return
+    static async saveUserLK(user: UserLK, files: FileList | null){
+        let type: AvatarAction = ApiQuery.getTypeUpdateProfile(user, files)
+        
+        const formData = new FormData()
+        formData.append('avatarAction', type)
+        if (files)
+            formData.append('files', files[0])
+        Object.keys(user).forEach((key) => {
+            const value = user[key as keyof typeof user];
+            if (value !== undefined) {  // Проверка на undefined
+              formData.append(key, value as string); // Предполагается, что все значения user являются строками
+            }
+        })
+        return authInstance.post(generateUrlServer("/profile"), formData)
     }
 }

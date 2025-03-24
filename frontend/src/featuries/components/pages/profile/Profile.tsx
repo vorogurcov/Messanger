@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/useStore";
 import { UserLK } from "../../../entities/schemes/dto/User";
 import {UserSliceManager} from "../../../entities/store/featuries/userSlice";
 import MainWrapper from "../../components/MainWrapper/MainWrapper";
+import ApiQuery from "../../../api/query";
 
 export default function Profile(){
     const dispatch = useAppDispatch()
@@ -13,7 +14,9 @@ export default function Profile(){
     console.log(files, "files")
 
     const handleClick = () => {
-        dispatch(UserSliceManager.fetching.save(localUser))
+        ApiQuery.saveUserLK(localUser, files)
+        .then(() => dispatch(UserSliceManager.fetching.save(localUser)))
+        .catch((error) => console.log(error))
     }
 
     const keys = Object.keys(localUser)
@@ -21,7 +24,7 @@ export default function Profile(){
     return(
         <MainWrapper>
             <div>
-                {keys.map(key => key !== "avatarUrl" && 
+                {keys.map(key => key !== "avatarUrl" && key !== "birthDate" && 
                 <div>
                     {key}
                     <input 
@@ -30,6 +33,9 @@ export default function Profile(){
                         onChange={(e) => setLocalUser({...localUser, [key]: e.target.value})}
                     />
                 </div>)}
+                <div>
+                    <input type="date" onChange={(e) => setLocalUser({...localUser, birthDate: e.target.value})}/>
+                </div>
                 <div>
                     <form action="">
                         <label htmlFor="fileInput">Выберите файл:</label>
