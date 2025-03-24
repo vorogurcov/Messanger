@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { UserProfileRepository } from './repositories/user-profile.repository';
-import { UpdateProfileInfoDto } from './dto/update-profile-info.dto';
-import { UpdateProfileStatusDto } from './dto/update-profile-status.dto';
-import { UserAuth } from '../auth/entities/user-auth.entity';
+import {Injectable} from '@nestjs/common';
+import {UserProfileRepository} from './repositories/user-profile.repository';
+import {AvatarAction, UpdateProfileInfoDto} from './dto/update-profile-info.dto';
+import {UpdateProfileStatusDto} from './dto/update-profile-status.dto';
+import {UserAuth} from '../auth/entities/user-auth.entity';
 import {StorageService} from "../storage/storage.service";
 
 @Injectable()
@@ -43,15 +43,15 @@ export class ProfileService {
 
     }
 
-    async actOnAvatar(avatarAction:'keep'|'delete'|'update',userId: string, avatar: Express.Multer.File) {
+    async actOnAvatar(avatarAction:AvatarAction,userId: string, avatar: Express.Multer.File) {
         try {
-            if(avatarAction === 'delete'){
+            if(avatarAction === AvatarAction.DELETE){
                 const publicId = 'avatars/' + userId
                 await this.storageService.deleteFile(publicId)
                 await this.userProfileRepository.updateAvatarUrl(userId, '')
             }
 
-            if(avatarAction === 'update'){
+            if(avatarAction === AvatarAction.UPDATE){
                 const publicId = 'avatars/' + userId
                 await this.storageService.deleteFile(publicId)
                 const result = await this.storageService.uploadFile(avatar, `avatars`, userId);
