@@ -1,10 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository} from 'typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserAuth } from '../entities/user-auth.entity';
-import { RegisterUserDto } from '../../auth/dto/register-user.dto';
-
-// user-credentials.repository.ts — ЧИСТЫЙ data-access
 @Injectable()
 export class UserCredentialsRepository {
     constructor(
