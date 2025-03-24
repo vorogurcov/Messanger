@@ -5,7 +5,7 @@ import {
     UpdateProfileInfoDto,
 } from './dto/update-profile-info.dto';
 import { UpdateProfileStatusDto } from './dto/update-profile-status.dto';
-import { UserAuth } from '../auth/entities/user-auth.entity';
+import { UserAuth } from '../credentials/entities/user-auth.entity';
 import { StorageService } from '../storage/storage.service';
 
 @Injectable()

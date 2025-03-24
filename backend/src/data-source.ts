@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { UserAuth } from './auth/entities/user-auth.entity';
+import { UserAuth } from './credentials/entities/user-auth.entity';
 import { UserProfile } from './profile/entities/user-profile.entity';
 import { UserProfileAndAuth1742557853253 } from './migration/schema/1742557853253-UserProfileAndAuth';
 import { UserProfileAndAuthSeed1742557865532 } from './migration/seed/1742557865532-UserProfileAndAuthSeed';
