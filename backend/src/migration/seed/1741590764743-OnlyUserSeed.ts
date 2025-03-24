@@ -1,7 +1,6 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class DemoSeedData1741590764743 implements MigrationInterface {
-
+export class OnlyUserSeed1741590764743 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
           INSERT INTO "user" ("id", "login", "phoneNumber",  "password" ) VALUES
@@ -24,5 +23,4 @@ export class DemoSeedData1741590764743 implements MigrationInterface {
           )
         `);
     }
-
 }
