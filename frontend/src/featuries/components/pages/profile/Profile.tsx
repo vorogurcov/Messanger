@@ -9,22 +9,33 @@ export default function Profile(){
     const user: UserLK = useAppSelector(UserSliceManager.selectors.selectUser)
     const [localUser, setLocalUser] = useState(user); // Локальное состояние
     const [editable, setEditable] = useState(false);
+    const [files, setFile] = useState<FileList | null>(null)
+    console.log(files, "files")
 
     const handleClick = () => {
         dispatch(UserSliceManager.fetching.save(localUser))
     }
 
-    console.log(user, "userGlobal")
+    const keys = Object.keys(localUser)
 
     return(
         <MainWrapper>
             <div>
-                {localUser.userName}
+                {keys.map(key => key !== "avatarUrl" && 
                 <div>
-                    change name
+                    {key}
+                    <input 
+                        key={key} 
+                        value={localUser[key as keyof typeof localUser]} 
+                        onChange={(e) => setLocalUser({...localUser, [key]: e.target.value})}
+                    />
+                </div>)}
+                <div>
+                    <form action="">
+                        <label htmlFor="fileInput">Выберите файл:</label>
+                        <input type="file" id="fileInput" onChange={(e) => e.target.files && setFile(e.target.files)}/>
+                    </form>
                 </div>
-                <input type="text" onChange={(e) => setLocalUser({...localUser, userName: e.target.value})}/>
-                <button onClick={handleClick}>save</button>
             </div>
         </MainWrapper>
     )

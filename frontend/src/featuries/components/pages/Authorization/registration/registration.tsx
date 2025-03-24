@@ -28,13 +28,13 @@ export default function Registration({callbackToggle}: {callbackToggle: () => vo
     const submit = () => {
         setIsDisabledButton(true)
         validateUtil<RegisrationProp>(schemas, errorsKeys, data).then(() => { // можно вынести отдельно
-          setErrors(initialRegisrationProp)
-          ApiQuery.register(data)
-          .then(({data}) => navigate(`/verify/${data.user.id}`))
-        .catch((error) => {
-            if (error.status === 409)
-                setApiError("Такой пользователь существует")
-            else setApiError("Неизвестная ошибка (")
+            setErrors(initialRegisrationProp)
+            ApiQuery.register(data)
+            .then(({data}) => navigate(`/verify/${data.user.id}`))
+            .catch((error) => {
+                if (error.status === 409)
+                    setApiError("Такой пользователь существует")
+                else setApiError("Неизвестная ошибка (")
         })
         })
         .catch((errors) => setErrors(errors[0]))

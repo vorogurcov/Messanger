@@ -11,13 +11,13 @@ export const initialAuthorizationProp: AuthorizationProp = {
 }
 
 export interface RegisrationProp extends AuthorizationProp{ // mail в лич каб
-    phoneNumber: string
+    email: string
     repeatPassword: string // важно иметь подстрроку password для type input 
 }
 
 export const initialRegisrationProp: RegisrationProp = {
     login: "",
-    phoneNumber: "",
+    email: "",
     password: "",
     repeatPassword: ""
 }
