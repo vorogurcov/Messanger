@@ -39,9 +39,8 @@ const mockUserAuth: UserAuth = {
     email: 'email',
     password: 'hashedPassword',
     isEmailVerified: false,
-    userProfile:undefined as any,
+    userProfile: undefined as any,
 };
-
 
 describe('AuthService test suite', () => {
     let userRepository: ReturnType<typeof mockUserAuthRepository>;

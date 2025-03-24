@@ -1,5 +1,7 @@
 import {
-    IsDateString, IsEnum, IsNotEmpty,
+    IsDateString,
+    IsEnum,
+    IsNotEmpty,
     IsOptional,
     MaxLength,
     MinLength,
@@ -8,7 +10,7 @@ import {
 export enum AvatarAction {
     KEEP = 'keep',
     DELETE = 'delete',
-    UPDATE = 'update'
+    UPDATE = 'update',
 }
 
 export class UpdateProfileInfoDto {
@@ -25,5 +27,5 @@ export class UpdateProfileInfoDto {
 
     @IsNotEmpty()
     @IsEnum(AvatarAction)
-    avatarAction:AvatarAction;
+    avatarAction: AvatarAction;
 }

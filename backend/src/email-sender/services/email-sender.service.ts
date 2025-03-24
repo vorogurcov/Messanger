@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer'
+import * as nodemailer from 'nodemailer';
 @Injectable()
 export class EmailSenderService {
     private transporter;
 
     onModuleInit() {
         this.transporter = nodemailer.createTransport({
-            host:'smtp.gmail.com',
-            port:587,
-            secure:false,
-            auth:{
-                user:process.env.MAIL_GMAIL_ACCOUNT,
-                pass:process.env.MAIL_GMAIL_2FA_CODE,
-            }
-        })
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            auth: {
+                user: process.env.MAIL_GMAIL_ACCOUNT,
+                pass: process.env.MAIL_GMAIL_2FA_CODE,
+            },
+        });
     }
 
     async sendConfirmationEmail(
@@ -21,7 +21,7 @@ export class EmailSenderService {
         login: string,
         confirmationCode: string,
     ) {
-        try{
+        try {
             const info = await this.transporter.sendMail({
                 from: `"Messanger Bot" <${process.env.MAIL_GMAIL_ACCOUNT}>`, // sender address
                 to: email, // list of receivers
@@ -43,11 +43,9 @@ export class EmailSenderService {
     </div>`, // html body
             });
 
-            console.log("Message sent: %s", info.messageId);
-        }catch(error){
-            console.log('Email was not send due ', error)
+            console.log('Message sent: %s', info.messageId);
+        } catch (error) {
+            console.log('Email was not send due ', error);
         }
-
     }
-
 }
