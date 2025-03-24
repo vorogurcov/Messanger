@@ -20,14 +20,17 @@ export class ProfileController {
     constructor(private profileService: ProfileService) {}
 
     @Patch()
+    @UseInterceptors(FileInterceptor('file'))
     async updateProfileInfo(
         @Req() req: Request,
-        @Body() dto: UpdateProfileInfoDto,
+        @Body() updateUserProfileDto: UpdateProfileInfoDto,
+        @UploadedFile() avatar: Express.Multer.File,
     ) {
         try {
             const updatedProfile = await this.profileService.updateUserProfile(
                 (req.user as { id: string }).id,
-                dto,
+                updateUserProfileDto,
+                avatar,
             );
 
             return {
@@ -46,7 +49,7 @@ export class ProfileController {
         @Body() dto: UpdateProfileStatusDto,
     ) {
         try {
-            const updatedProfile = await this.profileService.updateUserProfile(
+            const updatedProfile = await this.profileService.updateUserProfileStatus(
                 (req.user as { id: string }).id,
                 dto,
             );
@@ -60,18 +63,7 @@ export class ProfileController {
             throw new InternalServerErrorException('Something went wrong!');
         }
     }
-    @Post('avatar')
-    @UseInterceptors(FileInterceptor('file'))
-    async updateAvatar(@Req() req:Request, @UploadedFile() avatar: Express.Multer.File) {
-        const userId = (req.user as any).id
-        return await this.profileService.updateAvatar(userId,avatar)
-    }
 
-    @Delete('avatar')
-    async deleteAvatar(@Req() req: Request) {
-        const {id} = req.user as any
-        await this.profileService.deleteAvatar(id);
-    }
 
     @Get('me')
     async getMyProfile(@Req() req:Request){
