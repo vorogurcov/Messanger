@@ -27,11 +27,12 @@ export class AuthController {
     @Post('register')
     async registerUser(@Body() registerUserDto: RegisterUserDto) {
         try {
-            await this.authService.registerUser(registerUserDto);
+            const user = await this.authService.registerUser(registerUserDto);
             return {
                 statusCode: HttpStatus.CREATED,
                 message: 'Waiting for verification',
                 isEmailVerified: false,
+                user,
             };
         } catch (error) {
             throw new ConflictException('User already exists!');

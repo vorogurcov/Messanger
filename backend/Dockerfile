@@ -10,6 +10,7 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD sh -c "npx typeorm migration:run -d dist/data-source.js && node dist/main "
+CMD sh -c "npx typeorm migration:run -d dist/src/data-source.js && node dist/src/main "
+# CMD ["npm","start"]
