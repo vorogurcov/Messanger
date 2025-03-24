@@ -10,6 +10,7 @@ import TypeAuthorization from "../components/TypeAuthorization";
 import { LabelRegistration, PlaceholderRegistration } from "../../../../entities/schemes/enums/convertObjKeysToSmth";
 import WayAuthorization from "../components/wayAuthUnderSubmit";
 import ErrorMessage from "../../../components/stylingString/errorMessage";
+import { useNavigate } from "react-router";
 
 const schemas = Validators.getRegisterValidateSchema()
 const errorsKeys = Object.keys(initialRegisrationProp)
@@ -22,12 +23,14 @@ export default function Registration({callbackToggle}: {callbackToggle: () => vo
     const [isDisabledButton, setIsDisabledButton] = useState(false)
     const [apiError, setApiError] = useState("")
 
+    const navigate = useNavigate()
+
     const submit = () => {
         setIsDisabledButton(true)
         validateUtil<RegisrationProp>(schemas, errorsKeys, data).then(() => { // можно вынести отдельно
           setErrors(initialRegisrationProp)
           ApiQuery.register(data)
-          .then(() => callbackToggle())
+          .then(({data}) => navigate(`/verify/${data.user.id}`))
         .catch((error) => {
             if (error.status === 409)
                 setApiError("Такой пользователь существует")

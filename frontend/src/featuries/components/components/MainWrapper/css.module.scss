@@ -7,4 +7,10 @@
     backdrop-filter: blur(5px);
     width: 100%;
     height: 100%;
+    display: flex;
+}
+
+.child{
+    flex: 1;
+    display: flex;
 }

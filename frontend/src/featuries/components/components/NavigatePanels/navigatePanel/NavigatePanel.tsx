@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
+import VerticalPanelBase from "../VerticalPanelBase/VerticalPanel";
 
 import css from "./css.module.scss"
-import MovableNavigatePanelModal from "../../../../modals/movableNavigatePanel/MovableNavigatePanel";
-import VerticalPanelBase from "../../../../components/NavigatePanels/VerticalPanelBase/VerticalPanel";
+import MovableNavigatePanelModal from "../../../modals/movableNavigatePanel/MovableNavigatePanel";
 
 export default function NavigatePanel({buttons}: {buttons: ReactNode[]}){
     return(

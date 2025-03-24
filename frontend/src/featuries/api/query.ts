@@ -3,6 +3,7 @@ import { AuthorizationProp, RegisrationProp } from "../entities/schemes/dto/Auth
 import core from "../../core/core";
 import { ChatType } from "../entities/schemes/enums/chatEnum";
 import { PanelButtons } from "../entities/schemes/dto/Chat";
+import { UserLK } from "../entities/schemes/dto/User";
 
 const authInstance = axios.create({
     baseURL: core.apiBaseUrl
@@ -66,5 +67,23 @@ export default class ApiQuery{
 
     static async getChats(type: ChatType): Promise<PanelButtons[]>{
         return [{id: 1, name: "Группа 1", active: false}, {id: 2, name: "Группа 2", active: false}]
+    }
+
+    static async confirmCode(id: string, code: string){
+        return axios.post(core.serverEdnpoints.confirmCode, {id: id, confirmationCode: code})
+    }
+
+    static async getUserLK(): Promise<UserLK>{
+        return {
+            id: "id",
+            userName: "ivan2004",
+            birthDate: undefined,
+            avatarUrl: undefined,
+            bio: "Programmer from Saint-Petersburg"
+        }
+    }
+
+    static async saveUserLK(user: UserLK){
+        return
     }
 }

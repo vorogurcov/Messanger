@@ -41,7 +41,7 @@ export const EnterForm = ({callbackToggle}: {callbackToggle: () => void}) => {
     .catch((errors) => setErrors(errors[0]))
     .finally(() => setIsDisabledButton(false))
   } // realese api
-  // console.log(errors, "errros")
+
   return(
     <AuthorizationBaseForm isEnter={true} style={{ minWidth: "300px"}}>
       <TypeAuthorization>Вход</TypeAuthorization>
