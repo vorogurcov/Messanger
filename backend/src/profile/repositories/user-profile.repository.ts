@@ -1,11 +1,11 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserProfile } from '../entities/user-profile.entity';
 import { UpdateProfileInfoDto } from '../dto/update-profile-info.dto';
 import { UpdateProfileStatusDto } from '../dto/update-profile-status.dto';
 import { UserAuth } from '../../auth/entities/user-auth.entity';
-import {NotFoundError} from "rxjs";
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class UserProfileRepository {
@@ -14,14 +14,13 @@ export class UserProfileRepository {
         private repository: Repository<UserProfile>,
     ) {}
 
-    async getUserProfile(userId:string){
-        try{
-            return await this.repository.findOneBy({id:userId})
-        }catch{
-            throw new NotFoundException(`User with id ${userId} was not found`)
+    async getUserProfile(userId: string) {
+        try {
+            return await this.repository.findOneBy({ id: userId });
+        } catch {
+            throw new NotFoundException(`User with id ${userId} was not found`);
         }
     }
-
 
     async updateUserProfile(
         userId: string,

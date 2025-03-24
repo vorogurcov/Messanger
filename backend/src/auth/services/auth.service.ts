@@ -49,8 +49,8 @@ export class AuthService {
             return {
                 id,
                 email,
-                login
-            }
+                login,
+            };
         } catch (error: any) {
             throw error;
         }

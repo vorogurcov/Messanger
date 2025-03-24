@@ -1,19 +1,23 @@
 import {
     Body,
-    Controller, Delete, Get,
+    Controller,
+    Delete,
+    Get,
     HttpStatus,
     InternalServerErrorException,
     Patch,
     Post,
-    Req, UploadedFile,
-    UseGuards, UseInterceptors,
+    Req,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateProfileInfoDto } from './dto/update-profile-info.dto';
 import { UpdateProfileStatusDto } from './dto/update-profile-status.dto';
 import { ProfileService } from './profile.service';
 import { Request } from 'express';
-import {FileInterceptor} from "@nestjs/platform-express";
+import { FileInterceptor } from '@nestjs/platform-express';
 @Controller('profile')
 @UseGuards(AuthGuard('jwt'))
 export class ProfileController {
@@ -49,10 +53,11 @@ export class ProfileController {
         @Body() dto: UpdateProfileStatusDto,
     ) {
         try {
-            const updatedProfile = await this.profileService.updateUserProfileStatus(
-                (req.user as { id: string }).id,
-                dto,
-            );
+            const updatedProfile =
+                await this.profileService.updateUserProfileStatus(
+                    (req.user as { id: string }).id,
+                    dto,
+                );
 
             return {
                 statusCode: HttpStatus.OK,
@@ -64,20 +69,19 @@ export class ProfileController {
         }
     }
 
-
     @Get('me')
-    async getMyProfile(@Req() req:Request){
-        const {id} = req.user as any
-        try{
-            const userProfile = await this.profileService.getUserProfileById(id)
+    async getMyProfile(@Req() req: Request) {
+        const { id } = req.user as any;
+        try {
+            const userProfile =
+                await this.profileService.getUserProfileById(id);
             return {
-                statusCode:HttpStatus.OK,
-                message:'User profie was found!',
+                statusCode: HttpStatus.OK,
+                message: 'User profie was found!',
                 userProfile,
-            }
-        }catch(error){
+            };
+        } catch (error) {
             throw error;
         }
-
     }
 }
