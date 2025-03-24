@@ -8,7 +8,6 @@ import { JwtStrategyModule } from '../jwt-strategy/jwt-strategy.module';
 import { ProfileModule } from '../profile/profile.module';
 import { EmailVerificationService } from './services/email-verification.service';
 import { RedisModule } from '../redis/redis.module';
-import { EmailVerificationModule } from 'mailersend/lib/modules/EmailVerification.module';
 import { EmailSenderModule } from '../email-sender/email-sender.module';
 
 @Module({
@@ -17,7 +16,6 @@ import { EmailSenderModule } from '../email-sender/email-sender.module';
         TypeOrmModule.forFeature([UserAuth]),
         ProfileModule,
         RedisModule,
-        EmailVerificationModule,
         EmailSenderModule,
     ],
     controllers: [AuthController],
