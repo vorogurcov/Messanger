@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import ApiQuery from "../../../api/query";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import core from "../../../../core/core";
+import ErrorMessage from "../../components/stylingString/errorMessage";
 
 function InputToNumber({
   index,
@@ -60,6 +62,8 @@ function InputToNumber({
 const ConfirmCode = () => {
   const size = 6; // Количество ячеек ввода
   const [values, setValues] = useState<string[]>(Array(size).fill("")); // Данные для каждой ячейки
+  const [apiError, setApiError] = useState("")
+  const navigate = useNavigate()
   const userId = useParams()
   const refs = useRef(Array.from({ length: size }, () => React.createRef<HTMLInputElement>())).current;
 
@@ -79,6 +83,11 @@ const ConfirmCode = () => {
   const handleSubmit = () => {
     if (checkValues() && userId.id){
       ApiQuery.confirmCode(userId.id, values.join())
+      .then(() => navigate(core.frontendEndpoints.login))
+      .catch((error) => {
+        console.log(error, "err")
+        setApiError("Неверный код")
+      })
     }
   }
 
@@ -103,6 +112,9 @@ const ConfirmCode = () => {
       >
         Подтвердить код
       </button>
+      <div>
+        <ErrorMessage>{apiError}</ErrorMessage>
+      </div>
     </div>
   );
 };
