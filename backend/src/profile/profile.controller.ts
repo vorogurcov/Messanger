@@ -1,12 +1,10 @@
 import {
     Body,
     Controller,
-    Delete,
     Get,
     HttpStatus,
     InternalServerErrorException,
     Patch,
-    Post,
     Req,
     UploadedFile,
     UseGuards,
