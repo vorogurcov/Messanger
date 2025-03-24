@@ -12,11 +12,24 @@ export class ProfileService {
     ) {}
     async updateUserProfile(
         userId: string,
-        updateUserProfile: UpdateProfileInfoDto | UpdateProfileStatusDto,
+        updateUserProfile: UpdateProfileInfoDto ,
+        avatar:Express.Multer.File,
     ) {
+        const {avatarAction, file, ...userProfileInfo} = updateUserProfile as any
+        await this.actOnAvatar(avatarAction,userId,avatar)
         return await this.userProfileRepository.updateUserProfile(
             userId,
-            updateUserProfile,
+            userProfileInfo,
+        );
+    }
+
+    async updateUserProfileStatus(
+        userId:string,
+        updateUserProfileStatus: UpdateProfileStatusDto,
+    ){
+        return await this.userProfileRepository.updateUserProfile(
+            userId,
+            updateUserProfileStatus,
         );
     }
 
@@ -30,26 +43,30 @@ export class ProfileService {
 
     }
 
-    async updateAvatar(userId: string, avatar: Express.Multer.File) {
+    async actOnAvatar(avatarAction:'keep'|'delete'|'update',userId: string, avatar: Express.Multer.File) {
         try {
-            const result = await this.storageService.uploadFile(avatar, `avatars`, userId);
+            if(avatarAction === 'delete'){
+                const publicId = 'avatars/' + userId
+                await this.storageService.deleteFile(publicId)
+                await this.userProfileRepository.updateAvatarUrl(userId, '')
+            }
 
-            await this.userProfileRepository.updateAvatarUrl(userId, result.url)
+            if(avatarAction === 'update'){
+                const publicId = 'avatars/' + userId
+                await this.storageService.deleteFile(publicId)
+                const result = await this.storageService.uploadFile(avatar, `avatars`, userId);
+                await this.userProfileRepository.updateAvatarUrl(userId, result.url)
 
-            return {
-                message: 'Avatar updated successfully',
-                avatarUrl: result.url,
-            };
+                return {
+                    message: 'Avatar updated successfully',
+                    avatarUrl: result.url,
+                };
+            }
+
         } catch (error) {
             throw new Error(`Error updating avatar: ${error.message}`);
         }
     }
-
-    async deleteAvatar(userId:string){
-        const publicId = 'avatars/' + userId
-        await this.storageService.deleteFile(publicId)
-    }
-
     async createProfileForUser(
         userId: string,
         userLogin: string,
