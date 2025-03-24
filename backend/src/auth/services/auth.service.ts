@@ -11,10 +11,10 @@ import * as bcrypt from 'bcrypt';
 import { JwtPayloadDto } from '../dto/jwt-payload.dto';
 import { UserAuth } from '../entities/user-auth.entity';
 import { JwtService } from '@nestjs/jwt';
-import { EmailVerificationService } from './email-verification.service';
-import { EmailConfirmationDto } from '../dto/email-confirmation.dto';
+import { EmailVerificationService } from '../../email-sender/services/email-verification.service';
+import { EmailConfirmationDto } from '../../email-sender/dto/email-confirmation.dto';
 import { ProfileService } from '../../profile/profile.service';
-import { EmailSenderService } from '../../email-sender/email-sender.service';
+import { EmailSenderService } from '../../email-sender/services/email-sender.service';
 
 @Injectable()
 export class AuthService {

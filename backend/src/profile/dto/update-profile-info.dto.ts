@@ -1,5 +1,5 @@
 import {
-    IsDateString,
+    IsDateString, IsNotEmpty,
     IsOptional,
     MaxLength,
     MinLength,
@@ -15,4 +15,7 @@ export class UpdateProfileInfoDto {
     birthDate: string;
     @IsOptional()
     bio: string;
+
+    @IsNotEmpty()
+    avatarAction:'keep'|'delete'|'update'
 }

@@ -19,8 +19,8 @@ import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { UserAuth } from './entities/user-auth.entity';
 import * as process from 'process';
-import { EmailVerificationService } from './services/email-verification.service';
-import { EmailConfirmationDto } from './dto/email-confirmation.dto';
+import { EmailVerificationService } from '../email-sender/services/email-verification.service';
+import { EmailConfirmationDto } from '../email-sender/dto/email-confirmation.dto';
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) {}
