@@ -6,7 +6,7 @@ import { UserAuth } from './entities/user-auth.entity';
 import { UserAuthRepository } from './repositories/user-auth.repository';
 import { JwtStrategyModule } from '../jwt-strategy/jwt-strategy.module';
 import { ProfileModule } from '../profile/profile.module';
-import { EmailVerificationService } from './services/email-verification.service';
+import { EmailVerificationService } from '../email-sender/services/email-verification.service';
 import { RedisModule } from '../redis/redis.module';
 import { EmailSenderModule } from '../email-sender/email-sender.module';
 
@@ -19,6 +19,6 @@ import { EmailSenderModule } from '../email-sender/email-sender.module';
         EmailSenderModule,
     ],
     controllers: [AuthController],
-    providers: [AuthService, UserAuthRepository, EmailVerificationService],
+    providers: [AuthService, UserAuthRepository],
 })
 export class AuthModule {}
