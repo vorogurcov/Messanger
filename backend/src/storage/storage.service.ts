@@ -15,14 +15,21 @@ export class StorageService implements OnModuleInit {
         });
     }
 
-    async uploadFile(file: Express.Multer.File, folderPath: string, publicId:string): Promise<UploadedFileDto> {
+    async uploadFile(
+        file: Express.Multer.File,
+        folderPath: string,
+        publicId: string,
+    ): Promise<UploadedFileDto> {
         try {
-            const result = await this.storageClient.uploader.upload(`data:${file.mimetype};base64,${file.buffer.toString('base64')}`, {
-                folder: folderPath,
-                public_id: publicId,
-                overwrite: true,
-                invalidate: true,
-            });
+            const result = await this.storageClient.uploader.upload(
+                `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
+                {
+                    folder: folderPath,
+                    public_id: publicId,
+                    overwrite: true,
+                    invalidate: true,
+                },
+            );
 
             return {
                 url: result.secure_url,
@@ -43,4 +50,3 @@ export class StorageService implements OnModuleInit {
         }
     }
 }
-

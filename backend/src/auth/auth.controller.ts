@@ -17,10 +17,9 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { AuthService } from './services/auth.service';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { UserAuth } from './entities/user-auth.entity';
-import * as process from 'process';
-import { EmailVerificationService } from '../email-sender/services/email-verification.service';
-import { EmailConfirmationDto } from '../email-sender/dto/email-confirmation.dto';
+import { UserAuth } from '../credentials/entities/user-auth.entity';
+import { ConfirmationDto } from '../email-sender/dto/email-confirmation.dto';
+
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) {}
@@ -97,7 +96,7 @@ export class AuthController {
     }
 
     @Post('verify')
-    async confirmEmail(@Body() emailConfirmationDto: EmailConfirmationDto) {
+    async confirmEmail(@Body() emailConfirmationDto: ConfirmationDto) {
         try {
             await this.authService.confirmEmail(emailConfirmationDto);
             return {

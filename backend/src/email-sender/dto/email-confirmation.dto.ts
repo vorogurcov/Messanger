@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsPositive, IsUUID, Max, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class EmailConfirmationDto {
+export class ConfirmationDto {
     @IsUUID()
     userId: string;
 

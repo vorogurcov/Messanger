@@ -1,9 +1,18 @@
 import {
-    IsDateString, IsNotEmpty,
+    IsDateString,
+    IsEnum,
+    IsNotEmpty,
     IsOptional,
     MaxLength,
     MinLength,
 } from 'class-validator';
+
+export enum AvatarAction {
+    KEEP = 'keep',
+    DELETE = 'delete',
+    UPDATE = 'update',
+}
+
 export class UpdateProfileInfoDto {
     @MinLength(4)
     @MaxLength(16)
@@ -17,5 +26,6 @@ export class UpdateProfileInfoDto {
     bio: string;
 
     @IsNotEmpty()
-    avatarAction:'keep'|'delete'|'update'
+    @IsEnum(AvatarAction)
+    avatarAction: AvatarAction;
 }
