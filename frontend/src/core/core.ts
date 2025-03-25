@@ -9,6 +9,7 @@ class ServerEndpoints{
 
 class FrontendEndpoints{
     login = "/login"
+    register = "/register"
     home = "/"
     profile = "/profile"
     confirmCode = "/:id"

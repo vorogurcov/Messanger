@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { memo, useRef, useState } from "react";
 import ApiQuery from "../../../api/query";
-import { useNavigate, useParams } from "react-router";
-import core from "../../../../core/core";
 import ErrorMessage from "../../components/stylingString/errorMessage";
 import ModalBase from "../modalBase/modalBase";
 import css from "./css.module.scss"
+import AuthorizationBatton from "../../components/UI/buttons/AuthorizationButtons/AuthorizationButton";
+import LoadingComponent from "../../components/LoadingComponent";
 
 function InputToNumber({
   index,
@@ -51,23 +51,19 @@ function InputToNumber({
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       ref={refs[index]}
-      style={{
-        width: "40px",
-        margin: "10px",
-        textAlign: "center",
-        fontSize: "20px",
-      }}
+      className={css.input}
     />
   );
 }
 
-const ConfirmCode = () => {
+const MemoizedInput = memo(InputToNumber)
+
+const ConfirmCode = ({userId, callbackSubmit}: {userId: string, callbackSubmit: () => void}) => {
   const size = 6; // Количество ячеек ввода
   const [values, setValues] = useState<string[]>(Array(size).fill("")); // Данные для каждой ячейки
   const [apiError, setApiError] = useState("")
-  const navigate = useNavigate()
-  const userId = useParams()
   const refs = useRef(Array.from({ length: size }, () => React.createRef<HTMLInputElement>())).current;
+  const [isLoading, setIsLoading] = useState(false)
 
   const setValue = (index: number, val: string) => {
     const newValues = [...values];
@@ -83,23 +79,25 @@ const ConfirmCode = () => {
   }
 
   const handleSubmit = () => {
-    if (checkValues() && userId.id){
-      ApiQuery.confirmCode(userId.id, values.join(""))
-      .then(() => navigate(core.frontendEndpoints.login))
+    if (checkValues()){
+      setIsLoading(true)
+      ApiQuery.confirmCode(userId, values.join(""))
+      .then(() => callbackSubmit())
       .catch((error) => {
         console.log(error, "err")
         setApiError("Неверный код")
       })
+      .finally(() => setIsLoading(false))
     }
   }
 
   return (
     <div>
-      <h1>Введите код</h1>
+      <h2>Введите код</h2>
       <h3>Код отправлен вам на почту</h3>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", margin: "10px 0px 10px 0px" }}>
         {values.map((value, index) => (
-          <InputToNumber
+          <MemoizedInput
             key={index}
             index={index}
             value={value}
@@ -108,29 +106,37 @@ const ConfirmCode = () => {
           />
         ))}
       </div>
-      <button
-        onClick={handleSubmit}
-        style={{ marginTop: "20px", padding: "10px 20px", fontSize: "16px", display: checkValues() ? "" : "none"}}
-      >
-        Подтвердить код
-      </button>
-      <div>
-        <ErrorMessage>{apiError}</ErrorMessage>
+      <div style={{position: "relative", display: 'flex', justifyContent: "center", width: "100%", marginTop: "20px"}}>
+        <LoadingComponent loading={isLoading}>
+          <div>
+            <AuthorizationBatton
+              onClick={handleSubmit}
+              style={{display: checkValues() ? "" : "none", width: "150px"}}
+            >
+              Подтвердить код
+            </AuthorizationBatton>
+            <ErrorMessage>{apiError}</ErrorMessage>
+          </div>
+        </LoadingComponent>
       </div>
     </div>
   );
 };
 
-function VerifyCodeModal({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}){
-    <ModalBase 
-        isOpen={isOpen}
-        onRequestClose={() => setIsOpen(false)}
-        className={css.modal}
-    >
-        <div>
-            <ConfirmCode/>
-        </div>
-    </ModalBase>
+function VerifyCodeModal({isOpen, setIsOpen, id, callbackSubmit}: 
+{isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, id: string, callbackSubmit: () => void}){
+    return(
+        <ModalBase 
+            isOpen={isOpen}
+            onRequestClose={() => setIsOpen(false)}
+            overlayClassName={css.modalOverlay}
+            className={css.modalContent}
+        >
+            <div className={css.wrapper}>
+                <ConfirmCode userId={id} callbackSubmit={callbackSubmit}/>
+            </div>
+        </ModalBase>
+    )
 }
 
 export default VerifyCodeModal;

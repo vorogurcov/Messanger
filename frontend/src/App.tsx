@@ -1,10 +1,10 @@
-import Authorization from './featuries/components/pages/Authorization/Authorization/Authorization';
 import core from './core/core';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { checkAuthToken } from './utils/authorizationUtils/checkAuthToken';
 import Home from './featuries/components/pages/Home/Home';
 import Profile from './featuries/components/pages/profile/Profile';
-import ConfirmCode from './featuries/components/pages/confirmCode/ConfirmCode';
+import { EnterForm } from './featuries/components/pages/Authorization/enter/enter';
+import Registration from './featuries/components/pages/Authorization/registration/registration';
 
 const ProtectedRoute: React.FC = () => {
   if (!checkAuthToken()) {
@@ -24,8 +24,8 @@ function App() {
       }}
     >
       <Routes>
-        <Route path={'/verify/:id'} element={<ConfirmCode/>} />
-        <Route path={core.frontendEndpoints.login} element={<Authorization />} />
+        <Route path={core.frontendEndpoints.login} element={<EnterForm />} />
+        <Route path={core.frontendEndpoints.register} element={<Registration />} />
         <Route path={core.frontendEndpoints.home} element={<ProtectedRoute />}> {/* прод */}
         {/* <Route path={core.frontendEndpoints.home} element={<ProtectedRoute />}> тест без поднятия /бека */}
           <Route index element={<Home/>} />

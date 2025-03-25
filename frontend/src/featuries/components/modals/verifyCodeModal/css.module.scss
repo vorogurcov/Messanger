@@ -1,10 +1,38 @@
-.modal{
-    position: relative;
-    height: 100%;
-    width: 300px;
-    background: white;
-    padding: 20px;
-    display: flex;
-    align-items: center;
+@import "../../../../mixins/mixinsCss/colors.scss";
+
+.modalOverlay {
+    background-color: rgba(0, 0, 0, 0.7); /* Тёмный фон */
+    display: flex; /* Центрирование */
     justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    width: 400px;
+    height: 300px;
+    border-radius: 12px; /* Закруглённые углы */
+    background-color: #fff; /* Белый фон */
+    padding: 20px; /* Отступ внутри окна */
+    border: 1px solid white; /* Убираем стандартную рамку */
+    position: relative;
+  }
+
+  .input{
+    width: 40px;
+    height: 40px;
+    border: 1px solid $primary-blue;
+    border-radius: 5px;
+    text-align: center;
+    color: #006FFD;
+  }
+  
+  .input:focus{
+    border-color: #006FFD;
+    outline: none;
 }
