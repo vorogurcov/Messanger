@@ -4,8 +4,8 @@ import ApiQuery from "../../../api/query";
 
 const saveUserLK = createAsyncThunk(
     'userLK/save',
-    async (user: UserLK) => {
-        await ApiQuery.saveUserLK(user)
+    async ({user, files}: {user: UserLK, files: FileList | null}) => {
+        await ApiQuery.saveUserLK(user, files)
         return user
     }
 )

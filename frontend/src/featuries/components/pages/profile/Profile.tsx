@@ -15,7 +15,7 @@ export default function Profile(){
 
     const handleClick = () => {
         ApiQuery.saveUserLK(localUser, files)
-        .then(() => dispatch(UserSliceManager.fetching.save(localUser)))
+        .then(() => dispatch(UserSliceManager.fetching.save({user: localUser, files: files})))
         .catch((error) => console.log(error))
     }
 
@@ -41,6 +41,9 @@ export default function Profile(){
                         <label htmlFor="fileInput">Выберите файл:</label>
                         <input type="file" id="fileInput" onChange={(e) => e.target.files && setFile(e.target.files)}/>
                     </form>
+                </div>
+                <div>
+                    <button onClick={handleClick}>Сохранить</button>
                 </div>
             </div>
         </MainWrapper>

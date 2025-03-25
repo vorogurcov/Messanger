@@ -33,6 +33,7 @@ authInstance.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 // Выполняем запрос к серверу для обновления токена
+                console.log("expired token")
                 const newToken = await ApiQuery.updateRefreshToken();
                 localStorage.setItem(core.localStorageKeys.access_token, newToken);
                 authInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
@@ -51,12 +52,12 @@ authInstance.interceptors.response.use(
     }
 );
 
-function generateUrlServer(url: string){
-    return core.apiBaseUrl + url
-}
-
 type AvatarAction = 'keep' | 'delete' | 'update'
 export default class ApiQuery{
+    private static generateUrlServer(url: string){
+        return core.apiBaseUrl + url
+    }
+
     private static getTypeUpdateProfile(user: UserLK, files: FileList | null): AvatarAction{
         let type: AvatarAction
         if (!user.avatarUrl){
@@ -74,15 +75,17 @@ export default class ApiQuery{
     }
 
     static async enter(data: AuthorizationProp){
-        return axios.post(core.serverEdnpoints.enterAuth, data).then(({data}) => localStorage.setItem(core.localStorageKeys.access_token, data.accessToken))
+        return axios.post(core.serverEdnpoints.enterAuth, data, {withCredentials: true})
+        .then(({data}) => localStorage.setItem(core.localStorageKeys.access_token, data.accessToken))
     }
 
     static async register(data: RegisrationProp){
-        return axios.post(core.serverEdnpoints.regAuth, data)
+        return axios.post(core.serverEdnpoints.regAuth, data, {withCredentials: true})
     }
 
     static async updateRefreshToken() : Promise<string>{
-        return axios.post(core.serverEdnpoints.updateRefresh).then(({data}) => data.accessToken)
+        return axios.post(core.serverEdnpoints.updateRefresh, {}, {withCredentials: true})
+        .then(({data}) => data.accessToken)
     }
 
     static async getChats(type: ChatType): Promise<PanelButtons[]>{
@@ -90,17 +93,11 @@ export default class ApiQuery{
     }
 
     static async confirmCode(id: string, code: string){
-        return axios.post(core.serverEdnpoints.confirmCode, {id: id, confirmationCode: code})
+        return axios.post(core.serverEdnpoints.confirmCode, {userId: id, confirmationCode: code}, {withCredentials: true})
     }
 
     static async getUserLK(): Promise<UserLK>{
-        return {
-            id: "id",
-            userName: "ivan2004",
-            birthDate: undefined,
-            avatarUrl: undefined,
-            bio: "Programmer from Saint-Petersburg"
-        }
+        return authInstance.get(this.generateUrlServer("/profile/me"))
     }
 
     static async saveUserLK(user: UserLK, files: FileList | null){
@@ -116,6 +113,6 @@ export default class ApiQuery{
               formData.append(key, value as string); // Предполагается, что все значения user являются строками
             }
         })
-        return authInstance.post(generateUrlServer("/profile"), formData)
+        return authInstance.post(this.generateUrlServer("/profile"), formData)
     }
 }

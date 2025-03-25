@@ -3,6 +3,8 @@ import ApiQuery from "../../../api/query";
 import { useNavigate, useParams } from "react-router";
 import core from "../../../../core/core";
 import ErrorMessage from "../../components/stylingString/errorMessage";
+import ModalBase from "../modalBase/modalBase";
+import css from "./css.module.scss"
 
 function InputToNumber({
   index,
@@ -119,4 +121,16 @@ const ConfirmCode = () => {
   );
 };
 
-export default ConfirmCode;
+function VerifyCodeModal({isOpen, setIsOpen}: {isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}){
+    <ModalBase 
+        isOpen={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+        className={css.modal}
+    >
+        <div>
+            <ConfirmCode/>
+        </div>
+    </ModalBase>
+}
+
+export default VerifyCodeModal;
