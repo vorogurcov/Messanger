@@ -76,10 +76,15 @@ export class EmailSenderService {
     </div>`,
             });
 
-            console.log('Profile update verification message sent: %s', info.messageId);
+            console.log(
+                'Profile update verification message sent: %s',
+                info.messageId,
+            );
         } catch (error) {
-            console.log('Profile update verification email was not sent due to:', error);
+            console.log(
+                'Profile update verification email was not sent due to:',
+                error,
+            );
         }
     }
-
 }

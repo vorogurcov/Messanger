@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository} from 'typeorm';
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { UserAuth } from '../entities/user-auth.entity';
 @Injectable()
@@ -19,11 +19,7 @@ export class UserCredentialsRepository {
 
     findByLogin(login: string) {
         return this.repository.findOne({
-            where: [
-                { email: login },
-                { login: login },
-                { phoneNumber: login },
-            ],
+            where: [{ email: login }, { login: login }, { phoneNumber: login }],
         });
     }
 
@@ -34,4 +30,3 @@ export class UserCredentialsRepository {
         });
     }
 }
-

@@ -1,4 +1,8 @@
-import {ForbiddenException, Injectable, NotFoundException} from '@nestjs/common';
+import {
+    ForbiddenException,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import { UserProfileRepository } from './repositories/user-profile.repository';
 import {
     AvatarAction,
@@ -7,21 +11,21 @@ import {
 import { UpdateProfileStatusDto } from './dto/update-profile-status.dto';
 import { UserAuth } from '../credentials/entities/user-auth.entity';
 import { StorageService } from '../storage/storage.service';
-import {CredentialsService} from "../credentials/credentials.service";
-import * as bcrypt from 'bcrypt'
-import {UpdateCredentialsDto} from "./dto/update-credentials.dto";
-import {EmailSenderService} from "../email-sender/services/email-sender.service";
-import {EmailVerificationService} from "../email-sender/services/email-verification.service";
+import { CredentialsService } from '../credentials/credentials.service';
+import * as bcrypt from 'bcrypt';
+import { UpdateCredentialsDto } from './dto/update-credentials.dto';
+import { EmailSenderService } from '../email-sender/services/email-sender.service';
+import { EmailVerificationService } from '../email-sender/services/email-verification.service';
 
 @Injectable()
 export class ProfileService {
-    private actionKey ='credentials_verification'
+    private actionKey = 'credentials_verification';
     constructor(
         private userProfileRepository: UserProfileRepository,
         private storageService: StorageService,
-        private credentialsService:CredentialsService,
-        private emailSenderService:EmailSenderService,
-        private emailVerificationService:EmailVerificationService,
+        private credentialsService: CredentialsService,
+        private emailSenderService: EmailSenderService,
+        private emailVerificationService: EmailVerificationService,
     ) {}
     async updateUserProfile(
         userId: string,
@@ -103,11 +107,13 @@ export class ProfileService {
         );
     }
 
-    async checkPassword(userLogin:string, password:string){
+    async checkPassword(userLogin: string, password: string) {
         const user = await this.credentialsService.findUserByLogin(userLogin);
 
         if (!user) {
-            throw new NotFoundException(`User with login "${userLogin}" not found`);
+            throw new NotFoundException(
+                `User with login "${userLogin}" not found`,
+            );
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -116,27 +122,49 @@ export class ProfileService {
             throw new ForbiddenException('Incorrect password');
         }
 
-        const passwordVerifiedMarker = await this.emailVerificationService.generateAndSaveCode(this.actionKey,user.id)
+        const passwordVerifiedMarker =
+            await this.emailVerificationService.generateAndSaveCode(
+                this.actionKey,
+                user.id,
+            );
 
         return passwordVerifiedMarker;
     }
 
-    async updateCredentials(login:string, userId:string, updateCredentialsDto:UpdateCredentialsDto){
-        const confirmationCode = Number(updateCredentialsDto.passwordVerifiedMarker)
-        const isVerified = await this.emailVerificationService.verifyCode(this.actionKey, {userId,confirmationCode})
-        if(!isVerified)
-            throw new ForbiddenException()
+    async updateCredentials(
+        login: string,
+        userId: string,
+        updateCredentialsDto: UpdateCredentialsDto,
+    ) {
+        const confirmationCode = Number(
+            updateCredentialsDto.passwordVerifiedMarker,
+        );
+        const isVerified = await this.emailVerificationService.verifyCode(
+            this.actionKey,
+            { userId, confirmationCode },
+        );
+        if (!isVerified) throw new ForbiddenException();
 
-        const userAuth = await this.credentialsService.updateCredentials(userId,updateCredentialsDto)
-        if(updateCredentialsDto.email){
-            const emailVerificationCode = await this.emailVerificationService.generateAndSaveCode('email_verification',userId)
-            await this.emailSenderService.sendProfileUpdateVerificationEmail(userAuth.email, userAuth.login, emailVerificationCode)
+        const userAuth = await this.credentialsService.updateCredentials(
+            userId,
+            updateCredentialsDto,
+        );
+        if (updateCredentialsDto.email) {
+            const emailVerificationCode =
+                await this.emailVerificationService.generateAndSaveCode(
+                    'email_verification',
+                    userId,
+                );
+            await this.emailSenderService.sendProfileUpdateVerificationEmail(
+                userAuth.email,
+                userAuth.login,
+                emailVerificationCode,
+            );
         }
 
         return {
-            id:userId,
+            id: userId,
             login,
-        }
+        };
     }
-
 }

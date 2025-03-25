@@ -1,9 +1,7 @@
+export class UpdateCredentialsDto {
+    email: string;
 
+    password: string;
 
-export class UpdateCredentialsDto{
-    email:string;
-
-    password:string;
-
-    passwordVerifiedMarker:string;
+    passwordVerifiedMarker: string;
 }

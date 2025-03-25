@@ -6,8 +6,8 @@ import { ProfileController } from './profile.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserProfile } from './entities/user-profile.entity';
 import { StorageModule } from '../storage/storage.module';
-import {CredentialsModule} from "../credentials/credentials.module";
-import {EmailSenderModule} from "../email-sender/email-sender.module";
+import { CredentialsModule } from '../credentials/credentials.module';
+import { EmailSenderModule } from '../email-sender/email-sender.module';
 
 @Module({
     imports: [

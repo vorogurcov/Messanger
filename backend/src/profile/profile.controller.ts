@@ -4,7 +4,8 @@ import {
     Get,
     HttpStatus,
     InternalServerErrorException,
-    Patch, Post,
+    Patch,
+    Post,
     Req,
     UploadedFile,
     UseGuards,
@@ -16,14 +17,16 @@ import { UpdateProfileStatusDto } from './dto/update-profile-status.dto';
 import { ProfileService } from './profile.service';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {UserAuth} from "../credentials/entities/user-auth.entity";
-import {UpdateCredentialsDto} from "./dto/update-credentials.dto";
-import {EmailSenderService} from "../email-sender/services/email-sender.service";
+import { UserAuth } from '../credentials/entities/user-auth.entity';
+import { UpdateCredentialsDto } from './dto/update-credentials.dto';
+import { EmailSenderService } from '../email-sender/services/email-sender.service';
 @Controller('profile')
 @UseGuards(AuthGuard('jwt'))
 export class ProfileController {
-    constructor(private profileService: ProfileService,
-                private emailSenderService: EmailSenderService) {}
+    constructor(
+        private profileService: ProfileService,
+        private emailSenderService: EmailSenderService,
+    ) {}
 
     @Patch()
     @UseInterceptors(FileInterceptor('file'))
@@ -88,34 +91,45 @@ export class ProfileController {
     }
 
     @Patch('credentials')
-    async updateCredentials(@Body() updateCredentialsDto:UpdateCredentialsDto,
-                            @Req() req:Request){
-        const {login, id} = req.user as UserAuth
-        try{
-            const user = await this.profileService.updateCredentials(login, id, updateCredentialsDto);
+    async updateCredentials(
+        @Body() updateCredentialsDto: UpdateCredentialsDto,
+        @Req() req: Request,
+    ) {
+        const { login, id } = req.user as UserAuth;
+        try {
+            const user = await this.profileService.updateCredentials(
+                login,
+                id,
+                updateCredentialsDto,
+            );
             return {
-                statusCode:HttpStatus.OK,
-                message:'Update credentials successful!',
+                statusCode: HttpStatus.OK,
+                message: 'Update credentials successful!',
                 user,
-            }
-        }catch(error){
+            };
+        } catch (error) {
             throw error;
         }
     }
 
     @Post('verify/password')
-    async verifyPassword(@Body('password') password: string,
-                         @Req() req:Request) {
-        try{
-            const passwordVerifiedMarker = await this.profileService.checkPassword((req.user as UserAuth).login ,password);
+    async verifyPassword(
+        @Body('password') password: string,
+        @Req() req: Request,
+    ) {
+        try {
+            const passwordVerifiedMarker =
+                await this.profileService.checkPassword(
+                    (req.user as UserAuth).login,
+                    password,
+                );
             return {
-                statusCode:HttpStatus.OK,
-                message:'Verify password successful!',
+                statusCode: HttpStatus.OK,
+                message: 'Verify password successful!',
                 passwordVerifiedMarker,
-            }
-        }catch(error) {
-            throw error
+            };
+        } catch (error) {
+            throw error;
         }
     }
-
 }

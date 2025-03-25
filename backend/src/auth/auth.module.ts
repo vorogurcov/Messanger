@@ -7,7 +7,7 @@ import { JwtStrategyModule } from '../jwt-strategy/jwt-strategy.module';
 import { ProfileModule } from '../profile/profile.module';
 import { RedisModule } from '../redis/redis.module';
 import { EmailSenderModule } from '../email-sender/email-sender.module';
-import {CredentialsModule} from "../credentials/credentials.module";
+import { CredentialsModule } from '../credentials/credentials.module';
 
 @Module({
     imports: [

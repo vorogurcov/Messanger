@@ -18,7 +18,7 @@ import { AuthService } from './services/auth.service';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { UserAuth } from '../credentials/entities/user-auth.entity';
-import {ConfirmationDto} from "../email-sender/dto/email-confirmation.dto";
+import { ConfirmationDto } from '../email-sender/dto/email-confirmation.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -114,6 +114,4 @@ export class AuthController {
             throw new InternalServerErrorException('Something went wrong!');
         }
     }
-
-
 }
