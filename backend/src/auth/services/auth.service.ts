@@ -6,20 +6,21 @@ import {
 } from '@nestjs/common';
 import { RegisterUserDto } from '../dto/register-user.dto';
 import { LoginUserDto } from '../dto/login-user.dto';
-import { UserAuthRepository } from '../repositories/user-auth.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtPayloadDto } from '../dto/jwt-payload.dto';
-import { UserAuth } from '../entities/user-auth.entity';
+import { UserAuth } from '../../credentials/entities/user-auth.entity';
 import { JwtService } from '@nestjs/jwt';
 import { EmailVerificationService } from '../../email-sender/services/email-verification.service';
-import { EmailConfirmationDto } from '../../email-sender/dto/email-confirmation.dto';
+import { ConfirmationDto } from '../../email-sender/dto/email-confirmation.dto';
 import { ProfileService } from '../../profile/profile.service';
 import { EmailSenderService } from '../../email-sender/services/email-sender.service';
+import { CredentialsService } from '../../credentials/credentials.service';
 
 @Injectable()
 export class AuthService {
+    private actionKey = 'email_verification';
     constructor(
-        private userRepository: UserAuthRepository,
+        private credentialsService: CredentialsService,
         private jwtService: JwtService,
         private emailVerificationService: EmailVerificationService,
         private profileService: ProfileService,
@@ -38,9 +39,12 @@ export class AuthService {
             };
 
             const { id, email, login } =
-                await this.userRepository.saveUser(userCredentials);
+                await this.credentialsService.register(registerUserDto);
             const verificationCode =
-                await this.emailVerificationService.generateAndSaveCode(id);
+                await this.emailVerificationService.generateAndSaveCode(
+                    this.actionKey,
+                    id,
+                );
             await this.emailSenderService.sendConfirmationEmail(
                 email,
                 login,
@@ -49,8 +53,8 @@ export class AuthService {
             return {
                 id,
                 email,
-                login
-            }
+                login,
+            };
         } catch (error: any) {
             throw error;
         }
@@ -60,18 +64,21 @@ export class AuthService {
         try {
             const { password, login, ...other } = loginUserDto;
 
-            const user = await this.userRepository.findUser(login);
+            const user = await this.credentialsService.findUserByLogin(login);
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 throw new UnauthorizedException('Invalid credentials');
             }
 
             if (
                 !user ||
-                !(await this.userRepository.getIsEmailVerified(user.id))
+                !(await this.credentialsService.getIsEmailVerified(user.id))
             ) {
                 const { id, email, login } = user;
                 const verificationCode =
-                    await this.emailVerificationService.generateAndSaveCode(id);
+                    await this.emailVerificationService.generateAndSaveCode(
+                        this.actionKey,
+                        id,
+                    );
                 await this.emailSenderService.sendConfirmationEmail(
                     email,
                     login,
@@ -111,14 +118,16 @@ export class AuthService {
         return { ...userData, accessToken, refreshToken };
     }
 
-    async confirmEmail(emailConfirmDto: EmailConfirmationDto) {
-        const isVerified =
-            await this.emailVerificationService.verifyCode(emailConfirmDto);
+    async confirmEmail(emailConfirmationDto: ConfirmationDto) {
+        const isVerified = await this.emailVerificationService.verifyCode(
+            this.actionKey,
+            emailConfirmationDto,
+        );
         if (!isVerified) {
             throw new BadRequestException('Confirmation code is invalid!');
         }
-        const user = await this.userRepository.setIsEmailVerified(
-            emailConfirmDto.userId,
+        const user = await this.credentialsService.setIsEmailVerified(
+            emailConfirmationDto.userId,
             true,
         );
         await this.profileService.createProfileForUser(

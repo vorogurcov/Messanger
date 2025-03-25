@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './services/auth.service';
-import { UserAuthRepository } from './repositories/user-auth.repository';
+import { UserAuthRepository } from '../credentials/repositories/user-credentials.repository';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterUserDto } from './dto/register-user.dto';
 import {
@@ -10,7 +10,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
-import { UserAuth } from './entities/user-auth.entity';
+import { UserAuth } from '../credentials/entities/user-auth.entity';
 
 describe('AuthController test suite', () => {
     let authService: AuthService;

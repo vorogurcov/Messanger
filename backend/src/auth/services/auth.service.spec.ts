@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { UserAuthRepository } from '../repositories/user-auth.repository';
+import { UserAuthRepository } from '../../credentials/repositories/user-credentials.repository';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterUserDto } from '../dto/register-user.dto';
 import { LoginUserDto } from '../dto/login-user.dto';
-import { UserAuth } from '../entities/user-auth.entity';
+import { UserAuth } from '../../credentials/entities/user-auth.entity';
 import { JwtPayloadDto } from '../dto/jwt-payload.dto';
 import * as bcrypt from 'bcrypt';
 const mockUserAuthRepository = () => ({
@@ -39,9 +39,8 @@ const mockUserAuth: UserAuth = {
     email: 'email',
     password: 'hashedPassword',
     isEmailVerified: false,
-    userProfile:undefined as any,
+    userProfile: undefined as any,
 };
-
 
 describe('AuthService test suite', () => {
     let userRepository: ReturnType<typeof mockUserAuthRepository>;
