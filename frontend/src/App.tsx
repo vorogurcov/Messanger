@@ -2,7 +2,7 @@ import core from './core/core';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { checkAuthToken } from './utils/authorizationUtils/checkAuthToken';
 import Home from './featuries/components/pages/Home/Home';
-import Profile from './featuries/components/pages/profile/Profile';
+import ProfilePage from './featuries/components/pages/profile/Profile';
 import { EnterForm } from './featuries/components/pages/Authorization/enter/enter';
 import Registration from './featuries/components/pages/Authorization/registration/registration';
 
@@ -29,7 +29,7 @@ function App() {
         <Route path={core.frontendEndpoints.home} element={<ProtectedRoute />}> {/* прод */}
         {/* <Route path={core.frontendEndpoints.home} element={<ProtectedRoute />}> тест без поднятия /бека */}
           <Route index element={<Home/>} />
-          <Route path={core.frontendEndpoints.profile} element={<Profile/>}/>
+          <Route path={core.frontendEndpoints.profile} element={<ProfilePage/>}/>
           {/* Ваши защищенные маршруты */}
         </Route>
       </Routes>

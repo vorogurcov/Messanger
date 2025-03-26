@@ -8,3 +8,26 @@
 .hide_scroll::-webkit-scrollbar {
     display: none;
 }
+
+.modalOverlay {
+    background-color: rgba(0, 0, 0, 0.3); /* Тёмный фон */
+    display: flex; /* Центрирование */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    width: 400px;
+    height: 300px;
+    border-radius: 12px; /* Закруглённые углы */
+    background-color: #fff; /* Белый фон */
+    padding: 20px; /* Отступ внутри окна */
+    border: 1px solid white; /* Убираем стандартную рамку */
+    position: relative;
+  }

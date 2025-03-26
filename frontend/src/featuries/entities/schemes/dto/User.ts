@@ -1,5 +1,5 @@
 export interface UserLK{
-    id: string
+    login: string
     userName: string
     birthDate?: string
     avatarUrl?: string
@@ -7,7 +7,7 @@ export interface UserLK{
 }
 
 export const userLKInitial: UserLK = {
-    id: "",
+    login: "",
     userName: "",
     birthDate: undefined,
     avatarUrl: undefined,

@@ -1,0 +1,25 @@
+.wrapper{
+    width: 100%;
+    height: 100%;
+}
+
+.wrapperAvatarModule{
+    width: 100%;
+}
+
+.wrappers{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.wrapperAvatar{
+    width: 100%;
+    position: relative;
+}
+
+.addWrapper{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

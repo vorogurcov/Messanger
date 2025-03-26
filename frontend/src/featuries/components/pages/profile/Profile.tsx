@@ -5,7 +5,7 @@ import {UserSliceManager} from "../../../entities/store/featuries/userSlice";
 import MainWrapper from "../../components/MainWrapper/MainWrapper";
 import ApiQuery from "../../../api/query";
 
-export default function Profile(){
+export default function ProfilePage(){
     const dispatch = useAppDispatch()
     const user: UserLK = useAppSelector(UserSliceManager.selectors.selectUser)
     const [localUser, setLocalUser] = useState(user); // Локальное состояние

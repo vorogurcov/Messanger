@@ -1,0 +1,16 @@
+@import "../../../../mixins/mixinsCss/sizes.scss";
+
+.avatar{
+    width: 40px;
+    aspect-ratio: 1/1;
+    border-radius: $border-radius-avatar;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar img{
+    max-height: 100%;
+    max-width: 100%;
+}
