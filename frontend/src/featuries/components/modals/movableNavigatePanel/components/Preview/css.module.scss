@@ -1,0 +1,23 @@
+@import "../../../../../../mixins/mixinsCss/sizes.scss";
+
+.wrapper{
+    min-height: 100px;
+    width: 100%;
+    position: relative;
+}
+
+.info{
+    position: absolute;
+    bottom: 0;
+    padding-left: $menu-padding-left;
+    padding-bottom: 10px;
+}
+
+.name{
+    margin-top: 10px;
+    font-size: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}

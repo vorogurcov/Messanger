@@ -1,0 +1,16 @@
+@import "../../../../mixins/mixinsCss/colors.scss";
+@import "../../../../mixins/mixinsCss/classes.module.scss";
+
+  .input{
+    width: 40px;
+    height: 40px;
+    border: 1px solid $primary-blue;
+    border-radius: 5px;
+    text-align: center;
+    color: #006FFD;
+  }
+  
+  .input:focus{
+    border-color: #006FFD;
+    outline: none;
+}

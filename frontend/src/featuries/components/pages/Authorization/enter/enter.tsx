@@ -19,7 +19,7 @@ const errorsKeys = Object.keys(initialAuthorizationProp)
 
 const SubmitionMemoized = memo(AuthorizationBatton)
  
-export const EnterForm = ({callbackToggle}: {callbackToggle: () => void}) => {
+export const EnterForm = () => {
   const [data, setData] = useState<AuthorizationProp>(initialAuthorizationProp)
   const [errors, setErrors] = useState<AuthorizationProp>(initialAuthorizationProp)
   const [isDisabledButton, setIsDisabledButton] = useState(false)
@@ -41,7 +41,7 @@ export const EnterForm = ({callbackToggle}: {callbackToggle: () => void}) => {
     .catch((errors) => setErrors(errors[0]))
     .finally(() => setIsDisabledButton(false))
   } // realese api
-  // console.log(errors, "errros")
+
   return(
     <AuthorizationBaseForm isEnter={true} style={{ minWidth: "300px"}}>
       <TypeAuthorization>Вход</TypeAuthorization>
@@ -63,7 +63,7 @@ export const EnterForm = ({callbackToggle}: {callbackToggle: () => void}) => {
       <SubmitionMemoized onClick={submit} style={{backgroundColor: isDisabledButton ? "#0055C3" : undefined}} disabled={isDisabledButton}>
         Войти
       </SubmitionMemoized>
-      <WayAuthorization nameLink="Зарегистрироваться" nameQuestion="Нет аккаунта?" callback={callbackToggle}/>
+      <WayAuthorization nameLink="Зарегистрироваться" nameQuestion="Нет аккаунта?" callback={() => navigate(core.frontendEndpoints.register)}/>
       <div>
         <ErrorMessage>{apiError}</ErrorMessage>
       </div>  

@@ -1,0 +1,42 @@
+@import "../../../../../../mixins/mixinsCss/colors.scss";
+
+.inner{
+    position: absolute;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    top: 50%;
+}
+
+.content{
+    width: 150px;
+    border: 2px solid $primary-grey;
+    border-radius: 5px;
+    background-color: white;
+    color: $primary-grey;
+    font-size: 90%;
+    padding: 10px;
+}
+
+.row{
+    width: 100%;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    opacity: 0.8;
+    &:hover{
+        cursor: pointer;
+        opacity: 1;
+        color: $primary-blue;
+    }
+}
+
+.rowImg{
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.rowImg img{
+    height: 100%;
+    width: 100%;
+}

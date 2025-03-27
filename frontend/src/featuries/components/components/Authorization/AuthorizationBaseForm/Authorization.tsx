@@ -7,11 +7,13 @@ interface Props extends HTMLAttributes<HTMLDivElement>{
 
 export default function AuthorizationBaseForm({children, isEnter, ...props}: Props){
     return(
-        <div className={isEnter ? css.enter : css.reg} {...props}>
-            <div className={css.inner}>
-                <>
-                    {children}
-                </>
+        <div className={css.main}>
+            <div className={isEnter ? css.enter : css.reg} {...props}>
+                <div className={css.inner}>
+                    <>
+                        {children}
+                    </>
+                </div>
             </div>
         </div>
     )

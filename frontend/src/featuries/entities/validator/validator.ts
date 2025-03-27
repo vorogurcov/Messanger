@@ -47,7 +47,7 @@ export default class Validators{
             login: LoginValidationSchema
                 .matches(/^(?!\d+$)(?!.*@).*$/, "Логин не содержит @ и не может быть численным"),
             password: PasswordValidateSchema,
-            phoneNumber: MobileValidationSchema,
+            email: EmailValidationSchema,
             repeatPassword: Yup.string()
                 .oneOf([Yup.ref('password'), undefined], 'Пароли должны совпадать')
                 .required('Пустое поле')

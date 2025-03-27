@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import MainWrapper from "../../components/MainWrapper/MainWrapper";
 import { ChatType } from "../../../entities/schemes/enums/chatEnum";
-import NavigatePanel from "./components/navigatePanel/NavigatePanel";
-import { useNavigateButtonsReduser } from "./hooks/useReducer/useNavigateButtosReduser";
+import { useNavigateButtonsReduser } from "../../../../hooks/useReducer/useNavigateButtosReduser";
 import ApiQuery from "../../../api/query";
 import ChatButton from "./components/buttons/chat";
 import FolderButton from "./components/buttons/folder";
@@ -20,11 +19,16 @@ export default function Home(){
 
     }, [typeChat])
     return(
-        <MainWrapper style={{display: "flex", fontSize: "80%"}}>
-            <NavigatePanel buttons={
-                buttonsState.map(but => but.id === -1 ? <ChatButton {...but} onClick={() => handleClick(but.id)}/>
-                 : <FolderButton {...but} onClick={() => handleClick(but.id)}/>)
-            }/>
+        <MainWrapper 
+            style={{display: "flex", fontSize: "80%"}}
+            buttons={
+                buttonsState.map(
+                    but => but.id === -1 ?
+                    <ChatButton {...but} onClick={() => handleClick(but.id)}/>
+                    : <FolderButton {...but} onClick={() => handleClick(but.id)}/>
+                )
+            }
+        >
             <ChatList typeChat={typeChat} setTypeChat={setTypeChat}/>
             <Chat/>
         </MainWrapper>

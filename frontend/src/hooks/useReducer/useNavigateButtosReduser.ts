@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { PanelButtons } from "../../../../../entities/schemes/dto/Chat";
+import { PanelButtons } from "../../featuries/entities/schemes/dto/Chat";
 
 type FormAction =
     | { type: "UPDATE_FIELD"; id: number}

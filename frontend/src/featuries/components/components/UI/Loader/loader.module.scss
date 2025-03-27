@@ -1,0 +1,36 @@
+$width: 3px;
+
+.loader{
+    width: 30px;
+    height: 30px;
+    border: $width solid transparent;
+    border-top: $width solid #006FFD; /* Первичный цвет */
+    border-right: $width solid #006FFD; /* Вторичный цвет */
+    border-left: $width solid #006FFD;
+    border-radius: 50%;
+    animation: spin 1s ease-in-out infinite, colorChange 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    0% {
+      transform: rotate(0deg); /* Начальное положение */
+    }
+    100% {
+      transform: rotate(360deg); /* Полный оборот */
+   }
+  }
+
+@keyframes colorChange {
+    0%, 100% {
+        border-top: $width solid #006FFD; /* Первичный цвет */
+        border-right: $width solid #006FFD; /* Вторичный цвет */
+        border-left: $width solid #006FFD;
+        border-radius: 50%;
+    }
+    50% {
+        border-top: $width solid #0055C3; /* Первичный цвет */
+        border-right: $width solid #0055C3; /* Вторичный цвет */
+        border-left: $width solid #0055C3;
+        border-radius: 50%;
+    }
+  }

@@ -4,11 +4,15 @@ class ServerEndpoints{
     enterAuth = `${apiBaseUrl}/auth/login`
     regAuth = `${apiBaseUrl}/auth/register`
     updateRefresh = `${apiBaseUrl}/auth/refresh`
+    confirmCode = `${apiBaseUrl}/auth/verify`
 }
 
 class FrontendEndpoints{
     login = "/login"
+    register = "/register"
     home = "/"
+    profile = "/profile"
+    confirmCode = "/:id"
 }
 
 enum LocalStorageKeys{
