@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useAppSelector } from "../../../../../../hooks/useStore"
+import { useAppDispatch, useAppSelector } from "../../../../../../hooks/useStore"
 import { UserLK } from "../../../../../entities/schemes/dto/User"
 import { UserSliceManager } from "../../../../../entities/store/featuries/userSlice"
 import Avatar from "../../../../components/Avatar/Avatar"
@@ -19,11 +19,12 @@ export default function Profile(){
     const [localuser, setLocalUser] = useState<UserLK>(user)
     const [files, setFile] = useState<FileList | null>(null)
     const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useAppDispatch()
     
     const handleSubmit = () => {
         setIsLoading(true)
         ApiQuery.saveUserLK(localuser, user.avatarUrl, files)
-        .then(() => UserSliceManager.fetching.getData())
+        .then(() => dispatch(UserSliceManager.fetching.getData()))
         .catch((error) => console.log(error, "error on save user"))
         .finally(() => setIsLoading(false))
     }
@@ -38,7 +39,7 @@ export default function Profile(){
                             : <BaseAvatar style={{width: "100%"}}/>}
                             <div className={css.addWrapper}>
                                 <AddPhotoButton 
-                                    handleDelete={() => setLocalUser({...localuser, avatarUrl: user.avatarUrl})}
+                                    handleDelete={() => setLocalUser({...localuser, avatarUrl: user.avatarUrl === localuser.avatarUrl ? undefined : user.avatarUrl})}
                                     handleUpload={(file) => {
                                         setFile(file)
                                         file && setLocalUser({...localuser, avatarUrl: URL.createObjectURL(file[0])})

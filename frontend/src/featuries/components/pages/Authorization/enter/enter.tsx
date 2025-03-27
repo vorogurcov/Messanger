@@ -13,6 +13,8 @@ import WayAuthorization from '../components/wayAuthUnderSubmit';
 import { useNavigate } from 'react-router';
 import core from '../../../../../core/core';
 import ErrorMessage from '../../../components/stylingString/errorMessage';
+import { useAppDispatch } from '../../../../../hooks/useStore';
+import { UserSliceManager } from '../../../../entities/store/featuries/userSlice';
 
 const schemas = Validators.getEnterValidateSchema()
 const errorsKeys = Object.keys(initialAuthorizationProp)
@@ -24,6 +26,7 @@ export const EnterForm = () => {
   const [errors, setErrors] = useState<AuthorizationProp>(initialAuthorizationProp)
   const [isDisabledButton, setIsDisabledButton] = useState(false)
   const [apiError, setApiError] = useState("")
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const submit = () => {
@@ -31,7 +34,10 @@ export const EnterForm = () => {
     validateUtil<AuthorizationProp>(schemas, errorsKeys, data).then(() => {
       setErrors(initialAuthorizationProp)
       ApiQuery.enter(data)
-      .then(() => navigate(core.frontendEndpoints.home))
+      .then(() => {
+        dispatch(UserSliceManager.fetching.getData())
+        navigate(core.frontendEndpoints.home)
+      })
       .catch((error) => {
         if (error.status === 401)
           setApiError("Такой пользователь не существует")
