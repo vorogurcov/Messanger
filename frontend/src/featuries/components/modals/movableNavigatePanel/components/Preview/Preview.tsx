@@ -14,7 +14,7 @@ interface LabelProps extends HTMLAttributes<HTMLDivElement>{
 export function LabelAvatar({name, ...props}: LabelProps){
     return(
         <div className={css.name} {...props}>
-            <b>{name.length !== 0 ? name : "Имя Фамилия"}</b>
+            {name.length !== 0 ? name : "username"}
         </div>
     )
 }
@@ -25,7 +25,7 @@ export default function Preview(){
         <div className={css.wrapper}>
             <div className={css.info}>
                 <div>
-                {user.avatarUrl ? 
+                {user.avatarUrl !== undefined ? // не приводи, т к null лажает
                 <Avatar src={user.avatarUrl}/> 
                 : <BaseAvatar/>}
                 </div>

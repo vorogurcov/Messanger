@@ -20,3 +20,15 @@ export enum PlaceholderEnter{ // совпадать с regProps должен
     login =  "Эл.почта / логин / номер телефона ",
     password = "Пароль"
 }
+
+export enum LabelUserLK{
+    userName = "Имя",
+    bio = "О себе",
+    birthDate = "Дата рождения"
+}
+
+export enum PlaceholderUserLK{
+    userName = "Имя",
+    bio = "Лоблю котиков",
+    birthDate = "18.07.1924"
+}

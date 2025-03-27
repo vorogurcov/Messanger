@@ -16,3 +16,27 @@
     font-size: 90%;
     padding: 10px;
 }
+
+.row{
+    width: 100%;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    opacity: 0.8;
+    &:hover{
+        cursor: pointer;
+        opacity: 1;
+        color: $primary-blue;
+    }
+}
+
+.rowImg{
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.rowImg img{
+    height: 100%;
+    width: 100%;
+}

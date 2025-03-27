@@ -1,15 +1,13 @@
 export interface UserLK{
-    login: string
+    avatarUrl?: string 
+    bio?: string 
     userName: string
-    birthDate?: string
-    avatarUrl?: string
-    bio?: string
+    birthDate?: string 
 }
 
 export const userLKInitial: UserLK = {
-    login: "",
+    avatarUrl: undefined,
+    bio: undefined,
     userName: "",
     birthDate: undefined,
-    avatarUrl: undefined,
-    bio: undefined 
 }

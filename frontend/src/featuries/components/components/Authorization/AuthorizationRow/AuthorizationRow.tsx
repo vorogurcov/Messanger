@@ -10,11 +10,10 @@ interface Props extends InputHTMLAttributes<HTMLInputElement>{
   label?: string
   keyField?: string
   callback: (e: React.ChangeEvent<HTMLInputElement>) => void
-  error: string | undefined
+  error?: string | undefined
 }
 
-function OneRow({keyField, callback, error, ...props}: Props)
-{
+function OneRow({keyField, callback, error, ...props}: Props){
   const refType = useRef(props.type)
   const [type, setType] = useState(props.type??"text")
   return(

@@ -58,18 +58,16 @@ export default class ApiQuery{
         return core.apiBaseUrl + url
     }
 
-    private static getTypeUpdateProfile(user: UserLK, files: FileList | null): AvatarAction{
+    private static getTypeUpdateProfile(user: UserLK, userAvatarOld: string | undefined): AvatarAction{
         let type: AvatarAction
-        if (!user.avatarUrl){
-            if (files){
-                type = 'update'
-            }
-            else{
-                type = 'delete'
-            }
+        if (user.avatarUrl === userAvatarOld){
+            type = 'keep'
+        }
+        else if (!user.avatarUrl && userAvatarOld){
+            type = 'delete'
         }
         else{
-            type = 'keep'
+            type = 'update'
         }
         return type
     }
@@ -96,23 +94,23 @@ export default class ApiQuery{
         return axios.post(core.serverEdnpoints.confirmCode, {userId: id, confirmationCode: code}, {withCredentials: true})
     }
 
-    static async getUserLK(): Promise<UserLK>{
+    static async getUserLK(): Promise<any>{
         return authInstance.get(this.generateUrlServer("/profile/me"))
     }
 
-    static async saveUserLK(user: UserLK, files: FileList | null){
-        let type: AvatarAction = ApiQuery.getTypeUpdateProfile(user, files)
+    static async saveUserLK(user: UserLK, userAvatarOld: string | undefined, files: FileList | null){
+        let type: AvatarAction = ApiQuery.getTypeUpdateProfile(user, userAvatarOld)
         
         const formData = new FormData()
         formData.append('avatarAction', type)
         if (files)
-            formData.append('files', files[0])
+            formData.append('file', files[0])
         Object.keys(user).forEach((key) => {
             const value = user[key as keyof typeof user];
             if (value !== undefined) {  // Проверка на undefined
               formData.append(key, value as string); // Предполагается, что все значения user являются строками
             }
         })
-        return authInstance.post(this.generateUrlServer("/profile"), formData)
+        return authInstance.patch(this.generateUrlServer("/profile"), formData)
     }
 }
