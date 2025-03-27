@@ -39,7 +39,7 @@ export class AuthService {
             };
 
             const { id, email, login } =
-                await this.credentialsService.register(registerUserDto);
+                await this.credentialsService.register(userCredentials);
             const verificationCode =
                 await this.emailVerificationService.generateAndSaveCode(
                     this.actionKey,
@@ -65,6 +65,8 @@ export class AuthService {
             const { password, login, ...other } = loginUserDto;
 
             const user = await this.credentialsService.findUserByLogin(login);
+            console.log(user)
+
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 throw new UnauthorizedException('Invalid credentials');
             }

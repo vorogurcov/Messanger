@@ -105,13 +105,18 @@ export class AuthController {
                 isEmailVerified: true,
             };
         } catch (error) {
-            if (error instanceof BadRequestException)
-                return {
+            if (error instanceof BadRequestException) {
+                throw new BadRequestException({
                     statusCode: HttpStatus.BAD_REQUEST,
                     message: error.message,
                     isEmailVerified: false,
-                };
-            throw new InternalServerErrorException('Something went wrong!');
+                });
+            }
+            throw new InternalServerErrorException({
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Something went wrong!',
+                isEmailVerified: false,
+            });
         }
     }
 }

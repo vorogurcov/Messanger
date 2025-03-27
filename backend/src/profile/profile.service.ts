@@ -32,9 +32,10 @@ export class ProfileService {
         updateUserProfile: UpdateProfileInfoDto,
         avatar: Express.Multer.File,
     ) {
-        const { avatarAction, file, ...userProfileInfo } =
+        const {avatarUrl,avatarAction, file, ...userProfileInfo } =
             updateUserProfile as any;
         await this.actOnAvatar(avatarAction, userId, avatar);
+        console.log(userProfileInfo)
         return await this.userProfileRepository.updateUserProfile(
             userId,
             userProfileInfo,

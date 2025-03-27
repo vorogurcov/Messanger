@@ -30,11 +30,13 @@ export class StorageService implements OnModuleInit {
                     invalidate: true,
                 },
             );
-
-            return {
+            const avatarData = {
                 url: result.secure_url,
                 publicId: result.public_id,
             };
+
+            console.log(avatarData)
+            return avatarData
         } catch (error) {
             throw new Error(`Error uploading file: ${error.message}`);
         }
