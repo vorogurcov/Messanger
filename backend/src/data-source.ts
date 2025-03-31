@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm';
-import { UserAuth } from './credentials/entities/user-auth.entity';
-import { UserProfile } from './profile/entities/user-profile.entity';
-import { UserProfileAndAuth1742557853253 } from './migration/schema/1742557853253-UserProfileAndAuth';
-import { UserProfileAndAuthSeed1742557865532 } from './migration/seed/1742557865532-UserProfileAndAuthSeed';
+import { UserAuth } from './user/credentials/entities/user-auth.entity';
+import { UserProfile } from './user/profile/entities/user-profile.entity';
+import { UserProfileAndAuth1742557853253 } from './common/migration/schema/1742557853253-UserProfileAndAuth';
+import { UserProfileAndAuthSeed1742557865532 } from './common/migration/seed/1742557865532-UserProfileAndAuthSeed';
 
 export const AppDataSource = new DataSource({
     host: process.env.DB_HOST,
