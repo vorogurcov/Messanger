@@ -22,4 +22,7 @@ export class Message {
     @Column()
     @ManyToOne(() => Chat, (chat) => chat.messages)
     chatId: string;
+
+    @Column({type:'timestamp', default:new Date().toISOString()})
+    createdAt:string;
 }
