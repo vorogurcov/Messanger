@@ -15,5 +15,6 @@ import { ProfileModule } from '../../user/profile/profile.module';
     ],
     providers: [ChatsService, ChatsRepository],
     controllers: [ChatsController],
+    exports:[ChatsService],
 })
 export class ChatsModule {}

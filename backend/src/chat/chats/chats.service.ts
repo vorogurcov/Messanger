@@ -21,6 +21,10 @@ export class ChatsService {
         const chats = await this.chatsRepository.findUserChats(userId);
         return chats;
     }
+
+    async getChatById(chatId:string){
+        return await this.chatsRepository.findChatById(chatId);
+    }
     async addUserChat(ownerId: string, createChatDto: CreateChatDto) {
         const chatOwner = (await this.profileService.getUserProfileById(
             ownerId,
