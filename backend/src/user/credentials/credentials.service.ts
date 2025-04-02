@@ -9,15 +9,12 @@ export class CredentialsService {
     constructor(private readonly repo: UserCredentialsRepository) {}
 
     async register(dto: RegisterUserDto) {
-        console.log(dto);
         const user = this.repo.create(dto);
         return this.repo.save(user);
     }
 
     async findUserByLogin(login: string) {
-        console.log(login);
         const user = await this.repo.findByLogin(login);
-        console.log(user);
         return user;
     }
 

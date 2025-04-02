@@ -2,7 +2,8 @@ import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
-    ManyToOne, JoinColumn,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm';
 import { UserProfile } from '../../../user/profile/entities/user-profile.entity';
 import { Chat } from '../../chats/entities/chat.entity';
@@ -25,6 +26,6 @@ export class Message {
     @JoinColumn({ name: 'chatId' })
     chatId: string;
 
-    @Column({type:'timestamp', default:new Date().toISOString()})
-    createdAt:string;
+    @Column({ type: 'timestamp', default: new Date().toISOString() })
+    createdAt: string;
 }

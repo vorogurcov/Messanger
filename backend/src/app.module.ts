@@ -3,12 +3,14 @@ import { AuthModule } from './user/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource } from './data-source';
 import { ProfileModule } from './user/profile/profile.module';
+import { ChatsModule } from './chat/chats/chats.module';
 
 @Module({
     imports: [
         TypeOrmModule.forRoot(AppDataSource.options),
         AuthModule,
         ProfileModule,
+        ChatsModule,
     ],
 })
 export class AppModule {}
