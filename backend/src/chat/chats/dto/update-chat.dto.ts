@@ -1,5 +1,11 @@
-import { IsOptional, IsString, IsUUID, ArrayNotEmpty, ArrayUnique } from 'class-validator';
-import {Transform} from "class-transformer";
+import {
+    IsOptional,
+    IsString,
+    IsUUID,
+    ArrayNotEmpty,
+    ArrayUnique,
+} from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class UpdateChatDto {
     @IsOptional()
@@ -18,6 +24,6 @@ export class UpdateChatDto {
     @ArrayNotEmpty()
     @ArrayUnique()
     @IsUUID('4', { each: true })
-    @Transform(({ value }) => Array.isArray(value) ? value : [value])
+    @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
     userIds?: string[];
 }

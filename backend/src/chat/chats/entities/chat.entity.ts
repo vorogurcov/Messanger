@@ -4,7 +4,10 @@ import {
     JoinTable,
     PrimaryGeneratedColumn,
     ManyToMany,
-    OneToMany, OneToOne, JoinColumn, ManyToOne,
+    OneToMany,
+    OneToOne,
+    JoinColumn,
+    ManyToOne,
 } from 'typeorm';
 import { Message } from '../../messages/entities/message.entity';
 import { UserProfile } from '../../../user/profile/entities/user-profile.entity';
@@ -23,9 +26,9 @@ export class Chat {
     @Column({ type: 'timestamp' })
     createdAt: string;
 
-    @ManyToOne(()=>UserProfile,{eager:true})
+    @ManyToOne(() => UserProfile, { eager: true })
     @JoinColumn()
-    chatOwner:UserProfile
+    chatOwner: UserProfile;
 
     @OneToMany(() => Message, (message) => message.senderId)
     messages: Message[];
