@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ChatsService } from './chats.service';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { UserAuth } from '../../user/credentials/entities/user-auth.entity';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
