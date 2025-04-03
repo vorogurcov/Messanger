@@ -19,7 +19,7 @@ import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserAuth } from '../credentials/entities/user-auth.entity';
 import { UpdateCredentialsDto } from './dto/update-credentials.dto';
-import { EmailSenderService } from '../email-sender/services/email-sender.service';
+import { EmailSenderService } from '../../common/email-sender/services/email-sender.service';
 @Controller('profile')
 @UseGuards(AuthGuard('jwt'))
 export class ProfileController {

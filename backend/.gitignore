@@ -1,3 +1,6 @@
+# centrifugo(temporarily)
+/centrifugo
+
 # compiled output
 /dist
 /node_modules

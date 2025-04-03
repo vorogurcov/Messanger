@@ -10,12 +10,12 @@ import {
 } from './dto/update-profile-info.dto';
 import { UpdateProfileStatusDto } from './dto/update-profile-status.dto';
 import { UserAuth } from '../credentials/entities/user-auth.entity';
-import { StorageService } from '../storage/storage.service';
+import { StorageService } from '../../common/storage/storage.service';
 import { CredentialsService } from '../credentials/credentials.service';
 import * as bcrypt from 'bcrypt';
 import { UpdateCredentialsDto } from './dto/update-credentials.dto';
-import { EmailSenderService } from '../email-sender/services/email-sender.service';
-import { EmailVerificationService } from '../email-sender/services/email-verification.service';
+import { EmailSenderService } from '../../common/email-sender/services/email-sender.service';
+import { EmailVerificationService } from '../../common/email-sender/services/email-verification.service';
 
 @Injectable()
 export class ProfileService {
@@ -32,10 +32,10 @@ export class ProfileService {
         updateUserProfile: UpdateProfileInfoDto,
         avatar: Express.Multer.File,
     ) {
-        const {avatarUrl,avatarAction, file, ...userProfileInfo } =
+        const { avatarUrl, avatarAction, file, ...userProfileInfo } =
             updateUserProfile as any;
         await this.actOnAvatar(avatarAction, userId, avatar);
-        console.log(userProfileInfo)
+        console.log(userProfileInfo);
         return await this.userProfileRepository.updateUserProfile(
             userId,
             userProfileInfo,
