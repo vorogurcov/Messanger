@@ -62,7 +62,7 @@ export default function Profile(){
                             keyField={key} 
                             placeholder={PlaceholderUserLK[key as keyof typeof PlaceholderUserLK]}
                             value={localuser[key as keyof typeof localuser]} 
-                            callback={(e) => setLocalUser((prev) => ({...prev, [key]: e.target.value}))}
+                            onChange={(e) => setLocalUser((prev) => ({...prev, [key]: e.target.value}))}
                         />
                     )}
                     <div style={{position: "absolute", bottom: 0, width: "100%", padding: "0px 160px 60px 0px"}}> {/*см стили MovablenavPan */}

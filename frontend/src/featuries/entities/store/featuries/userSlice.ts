@@ -19,7 +19,6 @@ const getUserLK = createAsyncThunk( // от ключей зависит как �
         keys.map(key => userAdapted = 
             {...userAdapted, [key]: user[key] === null || user[key] === 'null' || user[key].length === 0 ? undefined : user[key]}
         )
-        console.log(userAdapted, 'user')
         return userAdapted as UserLK
     }
 )

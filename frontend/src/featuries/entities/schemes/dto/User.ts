@@ -3,6 +3,7 @@ export interface UserLK{
     bio?: string 
     userName: string
     birthDate?: string 
+    email?: string
 }
 
 export const userLKInitial: UserLK = {
@@ -10,4 +11,5 @@ export const userLKInitial: UserLK = {
     bio: undefined,
     userName: "",
     birthDate: undefined,
+    email: ""
 }

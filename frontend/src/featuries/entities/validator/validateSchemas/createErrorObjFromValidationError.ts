@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 
+//
 export default function createErrorObjFromValidationError<T>(keys: string[], errors: Yup.ValidationError[]): T | null{
     let returnError = null
     for (const error of errors){

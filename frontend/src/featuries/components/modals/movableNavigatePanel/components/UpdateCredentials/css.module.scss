@@ -1,0 +1,39 @@
+.wrapper{
+    width: 100%;
+    height: 100%;
+}
+
+.head{
+    margin-bottom: 40px;
+}
+
+.wrapperEmail{
+    width: 100%;
+}
+
+.inputEmail{
+    width: 100%;
+    display: flex;
+}
+
+.wrapperCorrect{
+    height: 40px;
+    padding-top: 10px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapperCorrect img{
+    display: block;
+    width: 25px; /* Заданные размеры */
+    height: 25px;
+    object-fit: cover; /* Заполнение контейнера без искажения сторон */
+    padding: 0;
+    margin: 0;
+}
+
+.name{
+    font-size: 80%;
+}

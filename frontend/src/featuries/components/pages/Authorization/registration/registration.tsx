@@ -65,7 +65,7 @@ export default function Registration(){
                         keyField={key} 
                         placeholder={PlaceholderRegistration[key as keyof typeof PlaceholderRegistration]}
                         value={data[key as keyof typeof data]} 
-                        callback={(e) => setData((prev) => ({...prev, [key]: e.target.value}))} 
+                        onChange={(e) => setData((prev) => ({...prev, [key]: e.target.value}))} 
                         error={errors[key as keyof typeof errors]}
                     />
                 )}
