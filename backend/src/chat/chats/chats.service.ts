@@ -41,6 +41,7 @@ export class ChatsService {
             type: createChatDto.type,
             name: createChatDto.name,
             createdAt: createChatDto.createdAt,
+            lastMessage: null as unknown as Message,
         };
 
         const chatDto: Partial<Chat> = {
@@ -86,5 +87,11 @@ export class ChatsService {
 
         const result = await this.chatsRepository.deleteChat(chat);
         return result;
+    }
+
+    async updateLastMessage(chatId:string, message:Message){
+        const chatInfo = await this.chatsRepository.findChatById(chatId)
+        chatInfo.lastMessage = message
+        return await this.chatsRepository.updateChat(chatInfo)
     }
 }
