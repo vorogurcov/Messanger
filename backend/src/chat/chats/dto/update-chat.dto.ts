@@ -3,14 +3,15 @@ import {
     IsString,
     IsUUID,
     ArrayNotEmpty,
-    ArrayUnique,
+    ArrayUnique, IsEnum,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+import {TypeEnumDto} from "./type-enum.dto";
 
 export class UpdateChatDto {
     @IsOptional()
-    @IsString()
-    type?: string;
+    @IsEnum(TypeEnumDto)
+    type?: TypeEnumDto;
 
     @IsOptional()
     @IsString()
