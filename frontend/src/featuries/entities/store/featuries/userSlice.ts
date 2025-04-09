@@ -16,10 +16,14 @@ const getUserLK = createAsyncThunk( // от ключей зависит как �
         const user = (await ApiQuery.getUserLK()).data.userProfile
         const keys = Object.keys(userLKInitial)
         let userAdapted = {}
-        keys.map(key => userAdapted = 
-            {...userAdapted, [key]: user[key] === null || user[key] === 'null' || user[key].length === 0 ? undefined : user[key]}
-        )
-        console.log(userAdapted, 'user')
+        keys.forEach(key => {
+            if (key !== "email"){
+                userAdapted = {
+                    ...userAdapted, 
+                    [key]: user[key] === null || user[key] === 'null' || user[key].length === 0 ? undefined : user[key]
+                }
+            }
+        })
         return userAdapted as UserLK
     }
 )
@@ -52,7 +56,7 @@ export const userSliceReducer = userSlice.reducer
 
 export const UserSliceManager = {
     redusers: {
-        update: userSlice.caseReducers.update
+        update: userSlice.actions.update
     },
 
     selectors: {

@@ -59,7 +59,7 @@ export const EnterForm = () => {
           type={key.toLowerCase().indexOf("password") !== -1 ? "password" : "text"}
           keyField={key} 
           value={data[key as keyof typeof data]} 
-          callback={(e) => setData((prev) => ({...prev, [key]: e.target.value}))} 
+          onChange={(e) => setData((prev) => ({...prev, [key]: e.target.value}))} 
           error={errors[key as keyof typeof errors]}
         />
       )}

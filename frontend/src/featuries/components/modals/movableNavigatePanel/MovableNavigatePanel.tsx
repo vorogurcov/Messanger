@@ -10,19 +10,12 @@ import zamokActive from "../../../../assets/img/zamokActive.png"
 import zamokPassive from "../../../../assets/img/zamokPassive.png"
 import FieldPanel from "./components/Field/Field";
 import Profile from "./components/Profile/Profile";
+import UpdateCredentials from "./components/UpdateCredentials/UpdateCredentials";
 
 const initialFields = [
     {id: 0, label: "Мой профиль", imgesSrc: {active: profileActive, notActive: profilePassive}, active: false, node: <Profile/>},
-    {id: 1, label: "Конфиденциальность", imgesSrc: {active: zamokActive, notActive: zamokPassive}, active: false, node: null}
+    {id: 1, label: "Конфиденциальность", imgesSrc: {active: zamokActive, notActive: zamokPassive}, active: false, node: <UpdateCredentials/>}
 ]
-
-function SelectedField(){
-    return(
-        <div>
-            hello
-        </div>
-    )
-}
 
 export default function MovableNavigatePanelModal(){
     const [isOpen, setIsOpen] = useState(false)

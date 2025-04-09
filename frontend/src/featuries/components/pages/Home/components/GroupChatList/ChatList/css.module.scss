@@ -1,0 +1,7 @@
+@import "../../../../../../../mixins/mixinsCss/classes.module.scss";
+
+.wrapper{
+    @extend .hide_scroll;
+    width: 100%;
+    overflow: scroll;
+}

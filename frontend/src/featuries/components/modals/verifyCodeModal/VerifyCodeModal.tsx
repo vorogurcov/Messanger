@@ -58,7 +58,7 @@ function InputToNumber({
 
 const MemoizedInput = memo(InputToNumber)
 
-const ConfirmCode = ({userId, callbackSubmit}: {userId: string, callbackSubmit: () => void}) => {
+export const ConfirmCode = ({userId, callbackSubmit}: {userId: string, callbackSubmit: () => void}) => {
   const size = 6; // Количество ячеек ввода
   const [values, setValues] = useState<string[]>(Array(size).fill("")); // Данные для каждой ячейки
   const [apiError, setApiError] = useState("")
@@ -84,7 +84,7 @@ const ConfirmCode = ({userId, callbackSubmit}: {userId: string, callbackSubmit: 
       ApiQuery.confirmCode(userId, values.join(""))
       .then(() => callbackSubmit())
       .catch((error) => {
-        console.log(error, "err")
+        console.error(error)
         setApiError("Неверный код")
       })
       .finally(() => setIsLoading(false))
