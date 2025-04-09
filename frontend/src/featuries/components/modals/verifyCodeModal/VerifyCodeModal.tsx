@@ -6,6 +6,8 @@ import css from "./css.module.scss"
 import AuthorizationBatton from "../../components/UI/buttons/AuthorizationButtons/AuthorizationButton";
 import LoadingComponent from "../../components/LoadingComponent";
 
+const size = 6
+
 function InputToNumber({
   index,
   value,
@@ -18,8 +20,10 @@ function InputToNumber({
   refs: React.RefObject<HTMLInputElement | null>[];
 }) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue: string = e.target.value
     // Берём только первый символ, игнорируем остальное
-    const newValue = e.target.value.replace(/[^0-9]/g, "").slice(0, 1);
+    if (newValue.length !== size)
+      newValue = e.target.value.replace(/[^0-9]/g, "").slice(0, 1);
     setValue(index, newValue);
 
     // Если ввели символ, переключаемся на следующую ячейку
@@ -66,8 +70,13 @@ export const ConfirmCode = ({userId, callbackSubmit}: {userId: string, callbackS
   const [isLoading, setIsLoading] = useState(false)
 
   const setValue = (index: number, val: string) => {
-    const newValues = [...values];
-    newValues[index] = val;
+    let newValues: string[]
+    if (val.length === size){
+      newValues = Array.from(val)
+    } else {
+      newValues = [...values];
+      newValues[index] = val;
+    }
     setValues(newValues); // Обновляем состояние
   };
 

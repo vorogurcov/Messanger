@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useRef, useState } from "react";
+import { ReactNode, useCallback, useMemo, useRef, useState } from "react";
 import LoadingComponent from "../../../../components/LoadingComponent";
 import { InputAuthorizationRow } from "../../../../components/Authorization/AuthorizationRow/AuthorizationRow";
 import { EmailValidationSchema, PasswordValidateSchema } from "../../../../../entities/validator/validateSchemas/authorizationSchemas";
@@ -70,7 +70,6 @@ function PasswUpdateRow({value, setValue, schema, placeholder, canBeEmpty = true
                 type="password" 
                 placeholder={placeholder} 
                 onChange={(e) => {
-                    setIsLoading(true);
                     setValue({...value, value: e.target.value});
                 }}
                 style={{flex: 1}}
@@ -87,13 +86,14 @@ function PasswordUpdate({password, setPassword, repeat, setRepeat}: {
     repeat: ChangeValueProps, 
     setRepeat: React.Dispatch<React.SetStateAction<ChangeValueProps>>
 }){
-    const RepeatSchema = 
-        Yup.string().test(
+    const RepeatSchema = useMemo(() => {
+        return Yup.string().test(
           'repeat',
           'Пароли не совпадают',
           value => value === password.value
         )
         .required("Пустое поле")
+    }, [password.value])
     return(
         <div className={css.wrapperEmail}>
             <PasswUpdateRow value={password} schema={PasswordValidateSchema} setValue={setPassword} placeholder="Введите новый пароль"/>

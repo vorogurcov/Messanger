@@ -17,11 +17,9 @@ const getUserLK = createAsyncThunk( // от ключей зависит как �
         const keys = Object.keys(userLKInitial)
         let userAdapted = {}
         keys.forEach(key => {
-            if (key !== "email"){
-                userAdapted = {
-                    ...userAdapted, 
-                    [key]: user[key] === null || user[key] === 'null' || user[key].length === 0 ? undefined : user[key]
-                }
+            userAdapted = {
+                ...userAdapted, 
+                [key]: user[key] === null || user[key] === 'null' || user[key].length === 0 ? undefined : user[key]
             }
         })
         return userAdapted as UserLK
