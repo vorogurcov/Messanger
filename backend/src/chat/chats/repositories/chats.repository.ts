@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Chat } from '../entities/chat.entity';
+import {Message} from "../../messages/entities/message.entity";
 
 @Injectable()
 export class ChatsRepository {
@@ -23,9 +24,9 @@ export class ChatsRepository {
         const chats = await this.repository
             .createQueryBuilder('chat')
             .innerJoin('chat.users', 'filterUser', 'filterUser.id = :userId')
-            .leftJoinAndSelect('chat.messages','message')
             .leftJoinAndSelect('chat.users', 'user')
             .leftJoinAndSelect('chat.lastMessage','lastMessage')
+            .leftJoinAndSelect('chat.messages',"message" )
             .setParameter('userId', userId)
             .select([
                 'chat.id',

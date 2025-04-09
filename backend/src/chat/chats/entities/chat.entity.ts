@@ -34,7 +34,7 @@ export class Chat {
     @JoinColumn()
     lastMessage:Message
 
-    @OneToMany(() => Message, (message) => message.senderId)
+    @OneToMany(() => Message, (message) => message.chatId)
     messages: Message[];
 
     @ManyToMany(() => UserProfile, { cascade: ['remove'] })
