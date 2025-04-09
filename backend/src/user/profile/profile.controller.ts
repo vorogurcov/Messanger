@@ -20,12 +20,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UserAuth } from '../credentials/entities/user-auth.entity';
 import { UpdateCredentialsDto } from './dto/update-credentials.dto';
 import { EmailSenderService } from '../../common/email-sender/services/email-sender.service';
+import {CredentialsService} from "../credentials/credentials.service";
 @Controller('profile')
 @UseGuards(AuthGuard('jwt'))
 export class ProfileController {
     constructor(
         private profileService: ProfileService,
-        private emailSenderService: EmailSenderService,
+        private credentialsService: CredentialsService,
     ) {}
 
     @Patch()
@@ -80,6 +81,9 @@ export class ProfileController {
         try {
             const userProfile =
                 await this.profileService.getUserProfileById(id);
+            const email = await this.credentialsService.getUserEmail(id)
+            if(userProfile)
+                userProfile['email'] = email
             return {
                 statusCode: HttpStatus.OK,
                 message: 'User profie was found!',
