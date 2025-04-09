@@ -6,6 +6,8 @@ import correct from "../../../../../../../assets/img/correct.png"
 import uncorrect from "../../../../../../../assets/img/uncorrect.png"
 import { ChangeValueProps } from "../types";
 
+const delay = 700
+
 export default function useValidateUpdateCridentials(
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>, 
     schema: Yup.StringSchema,
@@ -15,7 +17,16 @@ export default function useValidateUpdateCridentials(
 ) : [string, string | undefined]{
     const [resultValidateImg, setResultValidateImg] = useState<string>()
     const [error, setError] = useState("")
-    const validationValue = useDebounce(value, 700)
+    const validationValue = useDebounce(value, delay)
+
+    useEffect(() => {
+        setIsLoading(true)
+        const timerId = setTimeout(() => setIsLoading(false), delay)
+        return () => {
+            setIsLoading(false)
+            clearTimeout(timerId)
+        }
+    }, [value, setIsLoading])
 
     useEffect(() => {
         console.log(value)
@@ -41,7 +52,7 @@ export default function useValidateUpdateCridentials(
             }
         })
         .finally(() => setIsLoading(false))
-    }, [validationValue, canBeEmpty, schema, setIsLoading, setValue, value])
+    }, [validationValue, canBeEmpty, schema, setIsLoading, setValue])
 
     return [error, resultValidateImg]
 }

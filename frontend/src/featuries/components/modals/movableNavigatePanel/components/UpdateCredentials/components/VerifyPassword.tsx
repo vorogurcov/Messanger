@@ -11,7 +11,10 @@ export default function VerifyPassword({callback}: {callback: (id: string) => vo
     const handleSubmit = () => {
         ApiQuery.verifyPassword(password)
         .then((id) => callback(id))
-        .catch((error) => console.log(error))
+        .catch((error) => {
+            if (error.status === 403)
+                setError("Неверный пароль")
+        })
     }
     return(
         <div style={{width: "100%", height: "100%"}}>
