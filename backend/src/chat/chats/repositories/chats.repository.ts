@@ -23,7 +23,9 @@ export class ChatsRepository {
         const chats = await this.repository
             .createQueryBuilder('chat')
             .innerJoin('chat.users', 'filterUser', 'filterUser.id = :userId')
+            .leftJoinAndSelect('chat.messages','message')
             .leftJoinAndSelect('chat.users', 'user')
+            .leftJoinAndSelect('chat.lastMessage','lastMessage')
             .setParameter('userId', userId)
             .select([
                 'chat.id',
@@ -31,6 +33,14 @@ export class ChatsRepository {
                 'chat.name',
                 'chat.createdAt',
                 'chat.chatOwner',
+                'message.id',
+                'message.context',
+                'message.senderId',
+                'message.createdAt',
+                'lastMessage.id',
+                'lastMessage.context',
+                'lastMessage.senderId',
+                'lastMessage.createdAt',
                 'user.id',
                 'user.userName',
                 'user.avatarUrl',

@@ -20,7 +20,6 @@ export class CredentialsService {
 
     async getUserEmail(userId:string){
         const userCredentials = await this.repo.findById(userId,['email'])
-        console.log(userId, 'cred', userCredentials?.email)
         return userCredentials?.email
     }
 
