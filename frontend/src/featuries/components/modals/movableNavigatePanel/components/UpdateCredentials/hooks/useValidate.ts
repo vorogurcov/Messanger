@@ -41,7 +41,7 @@ export default function useValidateUpdateCridentials(
             }
         })
         .finally(() => setIsLoading(false))
-    }, [validationValue, canBeEmpty])
+    }, [validationValue, canBeEmpty, schema, setIsLoading, setValue, value])
 
     return [error, resultValidateImg]
 }
