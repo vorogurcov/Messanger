@@ -89,5 +89,9 @@ export class ChatsService {
         return result;
     }
 
-    
+    async updateLastMessage(chatId:string, message:Message){
+        const chatInfo = await this.chatsRepository.findChatById(chatId)
+        chatInfo.lastMessage = message
+        return await this.chatsRepository.updateChat(chatInfo)
+    }
 }
