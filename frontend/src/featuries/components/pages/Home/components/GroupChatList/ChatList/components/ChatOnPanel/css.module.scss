@@ -1,0 +1,61 @@
+@import "../../../../../../../../../mixins/mixinsCss/colors.scss";
+
+.wrapperChat{
+    height: 60px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    &:hover{
+        background-color: $primary-blue;
+        color: white;
+        cursor: pointer;
+        .newMess{
+            background-color: white;
+            color: $primary-blue;
+        }
+        .lastMes{
+            color: white;
+        }
+    }
+}
+
+.lastMes{
+    color: #AFAFAF;
+    font-size: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%;
+}
+
+.wrapperNewMess{
+    height: 24px;
+    width: 24px;
+}
+
+.newMess{
+    border-radius: 50%;
+    background-color: $primary-blue;
+    color: white;
+    font-size: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.wrapperAvatar{
+    margin-right: 15px;
+}
+
+.wrapperText{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    height: 100%;
+    padding-top: 3px;
+    line-height: 1.5
+}

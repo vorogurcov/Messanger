@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useRef, useState } from "react";
 import LoadingComponent from "../../../../components/LoadingComponent";
 import { InputAuthorizationRow } from "../../../../components/Authorization/AuthorizationRow/AuthorizationRow";
 import { EmailValidationSchema, PasswordValidateSchema } from "../../../../../entities/validator/validateSchemas/authorizationSchemas";
@@ -10,6 +10,12 @@ import { ChangeValueProps } from "./types";
 import useValidateUpdateCridentials from "./hooks/useValidate";
 import * as Yup from 'yup'
 import AuthorizationBatton from "../../../../components/UI/buttons/AuthorizationButtons/AuthorizationButton";
+import VerifyPassword from "./components/VerifyPassword";
+import ApiQuery from "../../../../../api/query";
+import ErrorMessage from "../../../../components/stylingString/errorMessage";
+import { ConfirmCode } from "../../../verifyCodeModal/VerifyCodeModal";
+import { decodeJWT } from "../../../../../../utils/tokenUtil";
+import core from "../../../../../../core/core";
 
 function ValidationRow({children, imgSrc, isLoading}: {children: ReactNode, imgSrc: string | undefined, isLoading: boolean}){
     return(
@@ -101,26 +107,51 @@ export default function UpdateCredentials(){
     const [isLoading, setIsLoading] = useState(false)
     const [password, setPassword] = useState<ChangeValueProps>({value: "", isCorrect: false})
     const [repeatPassw, setRepeatPassw] = useState<ChangeValueProps>({value: "", isCorrect: false})
-    const [email, setEmail] = useState<ChangeValueProps>({value: "", isCorrect: false})
+
+    const user: UserLK = useAppSelector(UserSliceManager.selectors.selectUser)
+
+    const [email, setEmail] = useState<ChangeValueProps>({value: user.email ?? "", isCorrect: false})
+    const [page, setPage] = useState<"main" | "password" | "email">("main")
+    const [apiError, setApiError] = useState("")
+
+    const userId = useRef("")
 
     const dispatch = useAppDispatch()
-    const user: UserLK = useAppSelector(UserSliceManager.selectors.selectUser)
 
     const checkValid = () => {
         return !!((password.isCorrect && repeatPassw.isCorrect || !password.value) && (email.isCorrect || !email.value) && (email.value || password.value)) // если поле пустое, то оно просто не изменилось  
     }
 
-    const handleSubmit = () => {
-        if (checkValid()){
-            alert("api")
-        }
-    }
+    const handleSubmit = useCallback(async () => {
+        setIsLoading(true)
+        await ApiQuery.updateCredentails({email: email.value, password: password.value})
+        .then(() => {
+            dispatch(UserSliceManager.redusers.update({...user, email: email.value ?? user.email}))
+            setApiError("")
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+            setPage("main")
+            setIsLoading(false)
+        })
+    }, [email, password, dispatch, user])
+
+    const handleSubmitVerify = useCallback((id: string) => {
+        console.log("verify")
+        handleSubmit()
+        .then(() => {
+            setPage("email")
+            userId.current = id
+        })
+        .finally(() => console.log("finally"))
+    }, [userId, handleSubmit])
+
     return(
-        <div className={css.wrapper}>
-            <div className={css.head}>
-                <span style={{display: "flex", justifyContent: "center", fontSize: "140%"}}><b>Обновление данных аккаунта</b></span>
-            </div>
-            <LoadingComponent loading={isLoading}>
+        <LoadingComponent loading={isLoading}>
+            <div className={css.wrapper} style={{display: page === "main" ? "" : "none"}}>
+                <div className={css.head}>
+                    <span style={{display: "flex", justifyContent: "center", fontSize: "140%"}}><b>Обновление данных аккаунта</b></span>
+                </div>
                 <div className={css.name}>
                     <h3>Почта</h3>
                 </div>
@@ -130,9 +161,21 @@ export default function UpdateCredentials(){
                 </div>
                 <PasswordUpdate password={password} setPassword={setPassword} repeat={repeatPassw} setRepeat={setRepeatPassw}/>
                 <div style={{position: "absolute", bottom: 0, width: "100%", padding: "0px 160px 60px 0px"}}> {/*см стили MovablenavPan */}
-                    <AuthorizationBatton onClick={handleSubmit} disabled={!checkValid()}>Сохранить изменения</AuthorizationBatton>
+                    <AuthorizationBatton onClick={() => checkValid() && setPage("password")} disabled={!checkValid()}>
+                        Сохранить изменения
+                        <ErrorMessage>{apiError}</ErrorMessage>
+                    </AuthorizationBatton>
                 </div>
-            </LoadingComponent>
-        </div>
+            </div>
+            <div style={{display: page === "password" ? "" : "none"}}>
+                <VerifyPassword callback={user.email === email.value ? handleSubmit : handleSubmitVerify}/>
+            </div>
+            <div style={{display: page === "email" ? "" : "none", width: "100%", height: "100%"}}>
+                <ConfirmCode 
+                    userId={decodeJWT(localStorage.getItem(core.localStorageKeys.access_token) ?? "").id} 
+                    callbackSubmit={handleSubmit}
+                />
+            </div>
+        </LoadingComponent>
     )
 }

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../../../../../hooks/useStore"
 import { UserLK } from "../../../../../entities/schemes/dto/User"
 import { UserSliceManager } from "../../../../../entities/store/featuries/userSlice"
@@ -20,6 +20,12 @@ export default function Profile(){
     const [files, setFile] = useState<FileList | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useAppDispatch()
+    const keysUpdatable = useRef([
+        "avatarUrl",
+        "bio",
+        "userName",
+        "birthDate"
+    ])
     
     const handleSubmit = () => {
         setIsLoading(true)
@@ -53,7 +59,7 @@ export default function Profile(){
                     </div>
                 </div>
                 <div className={css.info}>
-                    {Object.keys(localuser).map(
+                    {keysUpdatable.current.map(
                         (key) => key !== "avatarUrl" &&
                         <InputAuthorizationRow
                             key={key} 

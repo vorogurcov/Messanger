@@ -2,7 +2,7 @@ import axios from "axios";
 import { AuthorizationProp, RegisrationProp } from "../entities/schemes/dto/Authorization";
 import core from "../../core/core";
 import { ChatType } from "../entities/schemes/enums/chatEnum";
-import { PanelButtons } from "../entities/schemes/dto/Chat";
+import { ChatList, PanelButtons } from "../entities/schemes/dto/Chat";
 import { UserLK } from "../entities/schemes/dto/User";
 
 const authInstance = axios.create({
@@ -86,7 +86,7 @@ export default class ApiQuery{
         .then(({data}) => data.accessToken)
     }
 
-    static async getChats(type: ChatType): Promise<PanelButtons[]>{
+    static async getChatGroups(type: ChatType): Promise<PanelButtons[]>{
         return [{id: 1, name: "Группа 1", active: false}, {id: 2, name: "Группа 2", active: false}]
     }
 
@@ -112,5 +112,52 @@ export default class ApiQuery{
             }
         })
         return authInstance.patch(this.generateUrlServer("/profile"), formData)
+    }
+
+    static async verifyPassword(password: string){
+        const passwordVerifiedMarker = await authInstance.post(this.generateUrlServer("/profile/verify/password"), {password: password})
+        localStorage.setItem("passwordVerifiedMarker", passwordVerifiedMarker.data.passwordVerifiedMarker)
+        return "asadas"
+    }
+
+    static async updateCredentails(data: {email: string | undefined, password: string| undefined}){
+        let fetchData = {} 
+        Object.keys(data).forEach(key => data[key as keyof typeof data] ? fetchData = {...fetchData, [key]: data[key as keyof typeof data]} : null)
+        const passwordVerifiedMarker = localStorage.getItem("passwordVerifiedMarker")
+        passwordVerifiedMarker && await authInstance.patch(this.generateUrlServer("/profile/credentials"), {...fetchData, passwordVerifiedMarker: passwordVerifiedMarker})
+        localStorage.removeItem("passwordVerifiedMarker")
+    }
+
+    static async getChatLists(group: string, typeChat: ChatType): Promise<ChatList[]>{
+        const chats: ChatList[] = [
+            {
+                id: 1,
+                userName: "Ivan",
+                lastMessage: "Дедлайн горит",
+                numberNewMessage: 2,
+                avatar: undefined,
+                group: "Все чаты",
+                typeChat: ChatType.chats
+            },
+            {
+                id: 2,
+                userName: "Maria",
+                lastMessage: "Я спать",
+                numberNewMessage: 1,
+                avatar: undefined,
+                group: "Группа 1",
+                typeChat: ChatType.chats
+            },
+            {
+                id: 3,
+                userName: "Кристина",
+                lastMessage: "АААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААА",
+                numberNewMessage: 0,
+                avatar: "https://avatars.mds.yandex.net/i?id=f4631fb3f8dab100dcea28446f16ef23_l-6498965-images-thumbs&n=13",
+                group: "Все чаты",
+                typeChat: ChatType.chats
+            },
+        ]
+        return chats.filter(chat => chat.group === group && chat.typeChat === typeChat)
     }
 }

@@ -3,6 +3,7 @@ import scss_union from "../../../../../../mixins/mixinsCss/classes.module.scss"
 import { ChatType } from "../../../../../entities/schemes/enums/chatEnum"
 import css from "./css.module.scss"
 import SearchInput from "../../../../components/UI/inputs/SearchInput/SearchInput"
+import ChatList from "./ChatList/ChatList"
 
 const TypeChat = memo(function ({type, selectedType, setSelectedType}: {type: string, selectedType: string, setSelectedType: React.Dispatch<React.SetStateAction<string>>}){
     return(
@@ -12,7 +13,11 @@ const TypeChat = memo(function ({type, selectedType, setSelectedType}: {type: st
     )
 })
 
-export default function ChatList({typeChat, setTypeChat}: {typeChat: ChatType, setTypeChat: React.Dispatch<React.SetStateAction<ChatType>>}){
+export default function ChatPanel({group, typeChat, setTypeChat}: {
+    group: string, 
+    typeChat: ChatType, 
+    setTypeChat: React.Dispatch<React.SetStateAction<ChatType>>
+}){
     return(
         <div className={css.wrap}>
             <div className={`${scss_union.hide_scroll} ${css.typeChat}`}>
@@ -28,9 +33,10 @@ export default function ChatList({typeChat, setTypeChat}: {typeChat: ChatType, s
             <div className={css.input_wrap}>
                 <SearchInput/>
             </div>
-            <div style={{width: "100%"}} className={`${scss_union.hide_scroll}`}>
+            {/* <div style={{width: "100%"}} className={`${scss_union.hide_scroll}`}>
                 чаты
-            </div>
+            </div> */}
+            <ChatList group={group} typeChat={typeChat}/>
         </div>
     )
 }

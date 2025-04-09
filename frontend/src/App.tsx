@@ -1,6 +1,6 @@
 import core from './core/core';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
-import { checkAuthToken } from './utils/authorizationUtils/checkAuthToken';
+import { checkAuthToken } from './utils/tokenUtil';
 import Home from './featuries/components/pages/Home/Home';
 import { EnterForm } from './featuries/components/pages/Authorization/enter/enter';
 import Registration from './featuries/components/pages/Authorization/registration/registration';
