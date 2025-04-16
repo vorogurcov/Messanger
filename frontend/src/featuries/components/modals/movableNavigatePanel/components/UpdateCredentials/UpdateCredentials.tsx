@@ -124,7 +124,7 @@ export default function UpdateCredentials(){
 
     const handleSubmit = useCallback(async () => {
         setIsLoading(true)
-        await ApiQuery.updateCredentails({email: email.value, password: password.value})
+        await ApiQuery.updateCredentails({email: email.value === user.email ? undefined : email.value, password: password.value})
         .then(() => {
             dispatch(UserSliceManager.redusers.update({...user, email: email.value ?? user.email}))
             setApiError("")

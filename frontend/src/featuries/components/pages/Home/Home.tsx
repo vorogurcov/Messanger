@@ -1,36 +1,38 @@
 import { useEffect, useState } from "react";
 import MainWrapper from "../../components/MainWrapper/MainWrapper";
-import { ChatType } from "../../../entities/schemes/enums/chatEnum";
-import { useNavigateButtonsReduser } from "../../../../hooks/useReducer/useNavigateButtosReduser";
-import ApiQuery from "../../../api/query";
+import { allChats, ChatType } from "../../../entities/schemes/enums/chatEnum";
 import ChatButton from "./components/buttons/chat";
 import FolderButton from "./components/buttons/folder";
-import ChatPanel from "./components/GroupChatList/chatlist";
+import ChatPanel from "./components/GroupChatList/ChatPanel";
 import Chat from "./components/Chat/chat";
+import useGroups from "./hooks/useGroups";
+import { GroupListContext } from "./hooks/useGroupListContext";
+import { ChatSliceManager } from "../../../entities/store/featuries/chatSlice";
+import { useAppDispatch } from "../../../../hooks/useStore";
 
-export default function Home(){
+export default function Home(){ // можно в локал сторадж еще сохранять выбраную группу и тип чата
     const [typeChat, setTypeChat] = useState<ChatType>(ChatType.chats)
-    const [groupsState, disputchButtonsState] = useNavigateButtonsReduser()
-
-    const handleClick = (id: number) => disputchButtonsState({type: "CHOOSE", id: id})
+    const {groupsState, handleClick, handleAddGroup, handleDelete} = useGroups(typeChat)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        ApiQuery.getChatGroups(typeChat).then((data) => {disputchButtonsState({type: "RESET_FORM"} ); disputchButtonsState({type: "ADD_FIELDS", value: data} )})
-
-    }, [typeChat])
+        dispatch(ChatSliceManager.fetching.getData({typeChat: typeChat, group: groupsState.find(gr => gr.active)?.name ?? allChats}))
+    }, [typeChat, groupsState, dispatch])
     return(
         <MainWrapper 
             style={{display: "flex", fontSize: "80%"}}
             buttons={
                 groupsState.map(
-                    but => but.id === -1 ?
-                    <ChatButton {...but} onClick={() => handleClick(but.id)}/>
-                    : <FolderButton {...but} onClick={() => handleClick(but.id)}/>
+                    but => but.name === allChats ?
+                    <ChatButton {...but} onClick={() => handleClick(but.name)}/>
+                    : <FolderButton {...but} onClick={() => handleClick(but.name)}/>
                 )
             }
         >
-            <ChatPanel group={groupsState.find(group => group.active)?.name ?? "Все чаты"} typeChat={typeChat} setTypeChat={setTypeChat}/>
-            <Chat/>
+            <GroupListContext.Provider value={{handleAdd: handleAddGroup, handleDelete: handleDelete, groups: groupsState}}>
+                <ChatPanel group={groupsState.find(group => group.active)?.name ?? "Все чаты"} typeChat={typeChat} setTypeChat={setTypeChat}/>
+                <Chat/>
+            </GroupListContext.Provider>
         </MainWrapper>
     )
 }

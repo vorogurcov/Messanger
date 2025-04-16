@@ -1,56 +1,10 @@
 import axios from "axios";
 import { AuthorizationProp, RegisrationProp } from "../entities/schemes/dto/Authorization";
 import core from "../../core/core";
-import { ChatType } from "../entities/schemes/enums/chatEnum";
+import { allChats, ChatType } from "../entities/schemes/enums/chatEnum";
 import { ChatList, PanelButtons } from "../entities/schemes/dto/Chat";
 import { UserLK } from "../entities/schemes/dto/User";
-
-const authInstance = axios.create({
-    baseURL: core.apiBaseUrl
-})
-
-authInstance.interceptors.request.use(config => {
-    const token = localStorage.getItem(core.localStorageKeys.access_token);
-    if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    if (config.method?.toLowerCase() === 'post') {
-        config.withCredentials = true; // Устанавливаем withCredentials для POST-запросов
-    }
-    return config;
-}, error => {
-    return Promise.reject(error);
-});
-
-authInstance.interceptors.response.use(
-    response => {
-        // Если ответ успешный, просто возвращаем его
-        return response;
-    },
-    async error => {
-        const originalRequest = error.config;
-        if (localStorage.getItem(core.localStorageKeys.access_token) && error.response && error.response.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
-            try {
-                // Выполняем запрос к серверу для обновления токена
-                console.log("expired token")
-                const newToken = await ApiQuery.updateRefreshToken();
-                localStorage.setItem(core.localStorageKeys.access_token, newToken);
-                authInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-                // Повторяем оригинальный запрос с новым токеном
-                originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-                return authInstance(originalRequest);
-            } catch (innerError) {
-                if (innerError && (innerError as any).response && (innerError as any).response.status === 401){
-                    localStorage.removeItem(core.localStorageKeys.access_token)
-                    window.location.href = core.frontendEndpoints.login;
-                } else
-                    return Promise.reject(error);
-            }
-        }
-        return Promise.reject(error);
-    }
-);
+import authInstance from "./authinstance";
 
 type AvatarAction = 'keep' | 'delete' | 'update'
 export default class ApiQuery{
@@ -81,13 +35,8 @@ export default class ApiQuery{
         return axios.post(core.serverEdnpoints.regAuth, data, {withCredentials: true})
     }
 
-    static async updateRefreshToken() : Promise<string>{
-        return axios.post(core.serverEdnpoints.updateRefresh, {}, {withCredentials: true})
-        .then(({data}) => data.accessToken)
-    }
-
     static async getChatGroups(type: ChatType): Promise<PanelButtons[]>{
-        return [{id: 1, name: "Группа 1", active: false}, {id: 2, name: "Группа 2", active: false}]
+        return [{name: "Группа 1", active: false}, {name: "Группа 2", active: false}]
     }
 
     static async confirmCode(id: string, code: string){
@@ -128,8 +77,8 @@ export default class ApiQuery{
         localStorage.removeItem("passwordVerifiedMarker")
     }
 
-    static async getChatLists(group: string, typeChat: ChatType): Promise<ChatList[]>{
-        const chats: ChatList[] = [
+    static async getChatLists(typeChat: ChatType, group: string): Promise<ChatList[]>{
+        let chats: ChatList[] = [
             {
                 id: 1,
                 userName: "Ivan",
@@ -154,10 +103,18 @@ export default class ApiQuery{
                 lastMessage: "АААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААА",
                 numberNewMessage: 0,
                 avatar: "https://avatars.mds.yandex.net/i?id=f4631fb3f8dab100dcea28446f16ef23_l-6498965-images-thumbs&n=13",
-                group: "Все чаты",
+                group: "Группа 1",
                 typeChat: ChatType.chats
             },
         ]
-        return chats.filter(chat => chat.group === group && chat.typeChat === typeChat)
+        chats = chats.filter(chat => chat.typeChat === typeChat)
+        if (group !== allChats){
+            return chats.filter(chat => chat.group === group)
+        }
+        else return chats
+    }
+
+    static async deleteChat(chatId: number){
+        // await authInstance.delete(ApiQuery.generateUrlServer(`/chats/${chatId}`))
     }
 }

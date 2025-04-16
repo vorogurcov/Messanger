@@ -15,7 +15,7 @@ const TypeChat = memo(function ({type, selectedType, setSelectedType}: {type: st
 
 export default function ChatPanel({group, typeChat, setTypeChat}: {
     group: string, 
-    typeChat: ChatType, 
+    typeChat: ChatType,
     setTypeChat: React.Dispatch<React.SetStateAction<ChatType>>
 }){
     return(
@@ -33,9 +33,6 @@ export default function ChatPanel({group, typeChat, setTypeChat}: {
             <div className={css.input_wrap}>
                 <SearchInput/>
             </div>
-            {/* <div style={{width: "100%"}} className={`${scss_union.hide_scroll}`}>
-                чаты
-            </div> */}
             <ChatList group={group} typeChat={typeChat}/>
         </div>
     )

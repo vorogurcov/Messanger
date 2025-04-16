@@ -1,7 +1,10 @@
+import { memo, useCallback, useState } from "react";
 import Avatar from "../../../../../../../components/Avatar/Avatar";
 import BaseAvatar from "../../../../../../../components/BaseAvatar/BaseAvatar";
 import { ChatListAdaptedProps } from "../../types";
 import css from "./css.module.scss"
+import ChatToolModal from "../../../../../../../modals/ChatTool/ChatToolModal";
+import { useGroupListContext } from "../../../../../hooks/useGroupListContext";
 
 function NumberNevMessages({numberMessages}: {numberMessages: number}){
     return(
@@ -38,16 +41,40 @@ interface Props extends ChatListAdaptedProps{
     callback: (id: number) => void
 }
 
-export default function ChatOnPanel({...chatData}: Props){
+const ChatOnPanel = memo(({...chatData}: Props) => {
+    const [showTools, setShowTools] = useState(false)
+    const groupsData = useGroupListContext()
+    const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
+
+    // Обработчик событий для клика
+    const handleContextMenu = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+        event.preventDefault()
+        const x = event.clientX;
+        const y = event.clientY;
+        setCoordinates({ x, y });
+        setShowTools(true)
+    }, []);
     return(
+        <>
         <div 
             className={css.wrapperChat} 
             style={{backgroundColor: chatData.active ? "#006FFD" : "", color: chatData.active ? "white" : ""}} 
             onClick={() => chatData.callback(chatData.id)}
+            onContextMenu={handleContextMenu}
         >
             <AvatarChat url={chatData.avatar}/>
             <TextInfo userName={chatData.userName} lastMessage={chatData.lastMessage} active={chatData.active}/>
             <NumberNevMessages numberMessages={chatData.numberNewMessage}/>
         </div>
+        <ChatToolModal 
+            chat={chatData} 
+            isOpen={showTools} 
+            setIsOpen={setShowTools} 
+            groupList={groupsData?.groups ?? []}
+            coordinates={coordinates}
+        />
+        </>
     )
-}
+})
+
+export default ChatOnPanel
