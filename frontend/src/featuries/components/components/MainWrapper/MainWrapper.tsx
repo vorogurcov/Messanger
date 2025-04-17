@@ -2,9 +2,10 @@ import { HTMLAttributes } from "react";
 import RegistrationSVGcomp from "../SVGcomp/registrationSVGcomp/registrationSVGcomp";
 import css from "./css.module.scss"
 import NavigatePanel from "../NavigatePanels/navigatePanel/NavigatePanel";
+import { PanelGroupButtons } from "../../../entities/schemes/dto/Chat";
 
 interface Props extends HTMLAttributes<HTMLDivElement>{
-    buttons?: React.ReactNode[]
+    buttons?: PanelGroupButtons[]
 }
 
 export default function MainWrapper({buttons, children, ...props}: Props){

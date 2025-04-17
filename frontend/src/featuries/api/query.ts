@@ -2,7 +2,7 @@ import axios from "axios";
 import { AuthorizationProp, RegisrationProp } from "../entities/schemes/dto/Authorization";
 import core from "../../core/core";
 import { allChats, ChatType } from "../entities/schemes/enums/chatEnum";
-import { ChatList, PanelButtons } from "../entities/schemes/dto/Chat";
+import { ChatList, PanelGroupButtons } from "../entities/schemes/dto/Chat";
 import { UserLK } from "../entities/schemes/dto/User";
 import authInstance from "./authinstance";
 
@@ -35,7 +35,7 @@ export default class ApiQuery{
         return axios.post(core.serverEdnpoints.regAuth, data, {withCredentials: true})
     }
 
-    static async getChatGroups(type: ChatType): Promise<PanelButtons[]>{
+    static async getChatGroups(type: ChatType): Promise<PanelGroupButtons[]>{
         return [{name: "Группа 1", active: false}, {name: "Группа 2", active: false}]
     }
 

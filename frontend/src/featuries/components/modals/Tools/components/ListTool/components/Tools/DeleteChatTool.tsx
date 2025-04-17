@@ -8,7 +8,13 @@ import { ChatSliceManager } from "../../../../../../../entities/store/featuries/
 import { checkAndDeleteGroup } from "./utils";
 import { useGroupListContext } from "../../../../../../pages/Home/hooks/useGroupListContext";
 
-export default function DeleteTool({...props}: HTMLAttributes<HTMLDivElement>){
+export function DeleteTool({onClick, ...props}: HTMLAttributes<HTMLDivElement>){
+    return(
+        <ListToolBase srcImg={imageDel} label="Удалить" {...props} onClick={onClick}/>
+    )
+}
+
+export default function DeleteChatTool({...props}: HTMLAttributes<HTMLDivElement>){
     const chatManager = useGetChatContext()
     const allChats = useAppSelector(ChatSliceManager.selectors.selectChats)
     const chats = useAppSelector(ChatSliceManager.selectors.selectChats)
@@ -26,6 +32,6 @@ export default function DeleteTool({...props}: HTMLAttributes<HTMLDivElement>){
     }, [chatManager, allChats, dispatch, chats, groups])
 
     return(
-        <ListToolBase srcImg={imageDel} label="Удалить" {...props} onClick={handleDelete}/>
+        <DeleteTool {...props} onClick={handleDelete}/>
     )
 }

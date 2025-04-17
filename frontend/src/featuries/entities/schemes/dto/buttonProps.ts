@@ -1,7 +1,7 @@
-import { InputHTMLAttributes } from "react"
+import { InputHTMLAttributes, ReactNode } from "react"
 
 type LabeledButton = {
-    name: string
+    name: ReactNode
     active: boolean
 }
 

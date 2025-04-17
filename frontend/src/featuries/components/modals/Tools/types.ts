@@ -6,12 +6,19 @@ export interface IGroupBar{
     nameGroup: string
 }
 
-export interface ToolProps{
-    chat?: ChatList
-    groupList: IGroupList[]
+export interface IToolProps{
     isOpen: boolean
     coordinates: {x: number, y: number}
     setIsOpen:  React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export interface ChatToolProps extends IToolProps{
+    chat?: ChatList
+    groupList: IGroupList[]
+}
+
+export interface FolderToolProps extends IToolProps{
+    thisFolder?: IGroupList
 }
 
 export enum ActionChatEnum {

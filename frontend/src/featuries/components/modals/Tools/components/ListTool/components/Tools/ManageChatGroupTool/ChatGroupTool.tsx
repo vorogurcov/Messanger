@@ -14,7 +14,7 @@ function Label(){
     )
 }
 
-export function GroupTool({...props}: HTMLAttributes<HTMLDivElement>){
+export function ChatGroupTool({...props}: HTMLAttributes<HTMLDivElement>){
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const ref = useRef<HTMLDivElement>(null)
 

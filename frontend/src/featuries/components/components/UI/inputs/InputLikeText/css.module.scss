@@ -1,0 +1,9 @@
+.css{
+    background-color: transparent;
+    font-size: 80%;
+    border: none;
+    color: #006FFD;
+    &:focus{
+        outline: none;
+    }
+}

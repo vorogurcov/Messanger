@@ -1,12 +1,14 @@
 import ReactModal from "react-modal";
 import css from "./css.module.scss"
 import { SetStateAction, useEffect, useState } from "react";
-import { ToolProps } from "./types";
+import { ChatToolProps } from "./types";
 import ListTools from "./components/ListTool/ListTools";
 import { ChatContext } from "./hooks/useGetChat";
 import { ChatList } from "../../../entities/schemes/dto/Chat";
+import { ChatGroupTool } from "./components/ListTool/components/Tools/ManageChatGroupTool/ChatGroupTool";
+import DeleteChatTool from "./components/ListTool/components/Tools/DeleteChatTool";
 
-function Modal({...props}: ReactModal.Props){
+export function ModalTool({...props}: ReactModal.Props){
     return(
         <ReactModal 
             {...props}
@@ -18,7 +20,7 @@ function Modal({...props}: ReactModal.Props){
     )
 }
 
-export default function ChatToolModal({chat, groupList, isOpen, coordinates, setIsOpen}: ToolProps){
+export default function ChatToolModal({chat, groupList, isOpen, coordinates, setIsOpen}: ChatToolProps){
     const [localChat, setLocalChat] = useState(chat)
 
     useEffect(() => { // удаление чата влечет за собой диспатч в сторе чата => localChat = null 
@@ -28,7 +30,7 @@ export default function ChatToolModal({chat, groupList, isOpen, coordinates, set
     }, [chat, setIsOpen])
 
     return(
-        <Modal 
+        <ModalTool 
             isOpen={isOpen}
             onRequestClose={() => setIsOpen(false)}
         >
@@ -40,10 +42,13 @@ export default function ChatToolModal({chat, groupList, isOpen, coordinates, set
                             setChat: setLocalChat as SetStateAction<ChatList>, 
                             groupList: groupList
                         }}>
-                        <ListTools/> 
+                        <ListTools>
+                            <ChatGroupTool/>
+                            <DeleteChatTool/>    
+                        </ListTools> 
                     </ChatContext.Provider>
                 </div>
             }
-        </Modal>
+        </ModalTool>
     )
 }

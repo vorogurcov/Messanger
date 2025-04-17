@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { PanelButtons as PanelGroupButtons } from "../../featuries/entities/schemes/dto/Chat";
+import { PanelGroupButtons } from "../../featuries/entities/schemes/dto/Chat";
 
 export enum GroupActionEnum{
     UPDATE_GROUP,

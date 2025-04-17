@@ -1,6 +1,6 @@
 import { ChatType } from "../enums/chatEnum"
 
-export interface PanelButtons{
+export interface PanelGroupButtons{
     name: string
     active: boolean
 }

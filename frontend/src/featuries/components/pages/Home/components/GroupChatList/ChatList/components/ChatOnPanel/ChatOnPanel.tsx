@@ -1,10 +1,11 @@
-import { memo, useCallback, useState } from "react";
+import { memo } from "react";
 import Avatar from "../../../../../../../components/Avatar/Avatar";
 import BaseAvatar from "../../../../../../../components/BaseAvatar/BaseAvatar";
 import { ChatListAdaptedProps } from "../../types";
 import css from "./css.module.scss"
-import ChatToolModal from "../../../../../../../modals/ChatTool/ChatToolModal";
+import ChatToolModal from "../../../../../../../modals/Tools/ChatToolModal";
 import { useGroupListContext } from "../../../../../hooks/useGroupListContext";
+import useContextMenu from "../../../../../hooks/useContextMenu";
 
 function NumberNevMessages({numberMessages}: {numberMessages: number}){
     return(
@@ -42,18 +43,8 @@ interface Props extends ChatListAdaptedProps{
 }
 
 const ChatOnPanel = memo(({...chatData}: Props) => {
-    const [showTools, setShowTools] = useState(false)
     const groupsData = useGroupListContext()
-    const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
-
-    // Обработчик событий для клика
-    const handleContextMenu = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        event.preventDefault()
-        const x = event.clientX;
-        const y = event.clientY;
-        setCoordinates({ x, y });
-        setShowTools(true)
-    }, []);
+    const {handleContextMenu, showTools, setShowTools, coordinates} = useContextMenu()
     return(
         <>
         <div 

@@ -19,20 +19,21 @@ export default function Home(){ // можно в локал сторадж ещ�
         dispatch(ChatSliceManager.fetching.getData({typeChat: typeChat, group: groupsState.find(gr => gr.active)?.name ?? allChats}))
     }, [typeChat, groupsState, dispatch])
     return(
-        <MainWrapper 
-            style={{display: "flex", fontSize: "80%"}}
-            buttons={
-                groupsState.map(
-                    but => but.name === allChats ?
-                    <ChatButton {...but} onClick={() => handleClick(but.name)}/>
-                    : <FolderButton {...but} onClick={() => handleClick(but.name)}/>
-                )
-            }
-        >
-            <GroupListContext.Provider value={{handleAdd: handleAddGroup, handleDelete: handleDelete, groups: groupsState}}>
-                <ChatPanel group={groupsState.find(group => group.active)?.name ?? "Все чаты"} typeChat={typeChat} setTypeChat={setTypeChat}/>
-                <Chat/>
-            </GroupListContext.Provider>
-        </MainWrapper>
+        <GroupListContext.Provider value={{
+            handleAdd: handleAddGroup, 
+            handleClick: handleClick, 
+            handleDelete: handleDelete, 
+            groups: groupsState,
+            isChangeName: false
+        }}>
+            <MainWrapper 
+                style={{display: "flex", fontSize: "80%"}}
+                buttons={groupsState}
+            >
+                    <ChatPanel group={groupsState.find(group => group.active)?.name ?? "Все чаты"} typeChat={typeChat} setTypeChat={setTypeChat}/>
+                    <Chat/>
+            </MainWrapper>
+        </GroupListContext.Provider>
+
     )
 }
