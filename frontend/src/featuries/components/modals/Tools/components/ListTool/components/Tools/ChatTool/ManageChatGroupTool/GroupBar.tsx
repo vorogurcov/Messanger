@@ -1,14 +1,14 @@
-import { useGroupListContext } from "../../../../../../../pages/Home/hooks/useGroupListContext";
-import ListToolBase from "../../../../ListToolBase/ListToolBase";
-import HiddenBar, { IHiddenBar } from "../../hiddenBarBase/HiddenBar";
-import addFolder from "../../../../../../../../../assets/img/folder.png"
-import deleteFolder from "../../../../../../../../../assets/img/filledFolder.png"
-import { useGetChatContext } from "../../../../../hooks/useGetChat";
+import { useGroupListContext } from "../../../../../../../../pages/Home/hooks/useGroupListContext";
+import ListToolBase from "../../../../../ListToolBase/ListToolBase";
+import HiddenBar, { IHiddenBar } from "../../../hiddenBarBase/HiddenBar";
+import addFolder from "../../../../../../../../../../assets/img/folder.png"
+import deleteFolder from "../../../../../../../../../../assets/img/filledFolder.png"
+import { useGetChatContext } from "../../../../../../hooks/useGetChat";
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../../../../../../hooks/useStore";
-import { ChatSliceManager } from "../../../../../../../../entities/store/featuries/chatSlice";
-import { allChats } from "../../../../../../../../entities/schemes/enums/chatEnum";
-import { checkAndDeleteGroup } from "../utils";
+import { useAppDispatch, useAppSelector } from "../../../../../../../../../../hooks/useStore";
+import { ChatSliceManager } from "../../../../../../../../../entities/store/featuries/chatSlice";
+import { allChats } from "../../../../../../../../../entities/schemes/enums/chatEnum";
+import { checkAndDeleteGroup } from "../../utils";
 
 
 export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){

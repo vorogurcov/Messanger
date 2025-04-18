@@ -1,5 +1,4 @@
-import { ReactNode } from "react";
-import VerticalPanelBase from "../VerticalPanelBase/VerticalPanel";
+import GroupPanel from "../GroupPanel/GroupPanel";
 
 import css from "./css.module.scss"
 import MovableNavigatePanelModal from "../../../modals/movableNavigatePanel/MovableNavigatePanel";
@@ -12,7 +11,7 @@ export default function NavigatePanel({buttons}: {buttons: PanelGroupButtons[]})
                 <MovableNavigatePanelModal/>
             </div>
             <div style={{width: "100%", flex: "1"}}>
-                <VerticalPanelBase buttons={buttons}/>
+                <GroupPanel buttons={buttons}/>
             </div>
         </div>
     )

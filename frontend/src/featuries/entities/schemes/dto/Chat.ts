@@ -3,6 +3,7 @@ import { ChatType } from "../enums/chatEnum"
 export interface PanelGroupButtons{
     name: string
     active: boolean
+    isChangeName: boolean
 }
 
 export interface ChatList{

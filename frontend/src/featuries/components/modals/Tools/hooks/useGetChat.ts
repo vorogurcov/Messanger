@@ -1,13 +1,8 @@
 import { createContext, useContext } from "react";
-import { ChatList } from "../../../../entities/schemes/dto/Chat";
-
-export interface IGroupList{
-    active: boolean
-    name: string
-}
+import { ChatList, PanelGroupButtons } from "../../../../entities/schemes/dto/Chat";
 
 export interface IChatContext{
-    chat: ChatList, setChat: React.SetStateAction<ChatList>, groupList: IGroupList[]
+    chat: ChatList, setChat: React.SetStateAction<ChatList>, groupList: PanelGroupButtons[]
 }
 export const ChatContext = createContext<IChatContext | null>(null)
 export const useGetChatContext = () => useContext(ChatContext)

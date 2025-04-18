@@ -1,36 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MainWrapper from "../../components/MainWrapper/MainWrapper";
-import { allChats, ChatType } from "../../../entities/schemes/enums/chatEnum";
-import ChatButton from "./components/buttons/chat";
-import FolderButton from "./components/buttons/folder";
+import { ChatType } from "../../../entities/schemes/enums/chatEnum";
 import ChatPanel from "./components/GroupChatList/ChatPanel";
 import Chat from "./components/Chat/chat";
 import useGroups from "./hooks/useGroups";
 import { GroupListContext } from "./hooks/useGroupListContext";
-import { ChatSliceManager } from "../../../entities/store/featuries/chatSlice";
-import { useAppDispatch } from "../../../../hooks/useStore";
 
 export default function Home(){ // можно в локал сторадж еще сохранять выбраную группу и тип чата
     const [typeChat, setTypeChat] = useState<ChatType>(ChatType.chats)
-    const {groupsState, handleClick, handleAddGroup, handleDelete} = useGroups(typeChat)
-    const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        dispatch(ChatSliceManager.fetching.getData({typeChat: typeChat, group: groupsState.find(gr => gr.active)?.name ?? allChats}))
-    }, [typeChat, groupsState, dispatch])
+    const groupsManager = useGroups(typeChat)
     return(
-        <GroupListContext.Provider value={{
-            handleAdd: handleAddGroup, 
-            handleClick: handleClick, 
-            handleDelete: handleDelete, 
-            groups: groupsState,
-            isChangeName: false
-        }}>
+        <GroupListContext.Provider value={groupsManager}>
             <MainWrapper 
                 style={{display: "flex", fontSize: "80%"}}
-                buttons={groupsState}
+                buttons={groupsManager.groups}
             >
-                    <ChatPanel group={groupsState.find(group => group.active)?.name ?? "Все чаты"} typeChat={typeChat} setTypeChat={setTypeChat}/>
+                    <ChatPanel 
+                        group={groupsManager.groups.find(group => group.active)?.name ?? "Все чаты"}
+                        typeChat={typeChat} 
+                        setTypeChat={setTypeChat}
+                    />
                     <Chat/>
             </MainWrapper>
         </GroupListContext.Provider>

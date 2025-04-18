@@ -1,12 +1,12 @@
 import { HTMLAttributes, useCallback } from "react";
-import ListToolBase from "../../../ListToolBase/ListToolBase";
-import { useGetChatContext } from "../../../../hooks/useGetChat";
-import ApiQuery from "../../../../../../../api/query";
-import imageDel from "../../../../../../../../assets/img/redDelete.png"
-import { useAppDispatch, useAppSelector } from "../../../../../../../../hooks/useStore";
-import { ChatSliceManager } from "../../../../../../../entities/store/featuries/chatSlice";
-import { checkAndDeleteGroup } from "./utils";
-import { useGroupListContext } from "../../../../../../pages/Home/hooks/useGroupListContext";
+import ListToolBase from "../../../../ListToolBase/ListToolBase";
+import { useGetChatContext } from "../../../../../hooks/useGetChat";
+import ApiQuery from "../../../../../../../../api/query";
+import imageDel from "../../../../../../../../../assets/img/redDelete.png"
+import { useAppDispatch, useAppSelector } from "../../../../../../../../../hooks/useStore";
+import { ChatSliceManager } from "../../../../../../../../entities/store/featuries/chatSlice";
+import { checkAndDeleteGroup } from "../utils";
+import { useGroupListContext } from "../../../../../../../pages/Home/hooks/useGroupListContext";
 
 export function DeleteTool({onClick, ...props}: HTMLAttributes<HTMLDivElement>){
     return(

@@ -1,7 +1,7 @@
 import { HTMLAttributes, useRef, useState } from "react";
-import ListToolBase from "../../../../ListToolBase/ListToolBase";
-import css from "../../../css.module.scss"
-import imageFolder from "../../../../../../../../../assets/img/folder.png"
+import ListToolBase from "../../../../../ListToolBase/ListToolBase";
+import css from "../../../../css.module.scss"
+import imageFolder from "../../../../../../../../../../assets/img/folder.png"
 import GroupBar from "./GroupBar";
 
 function Label(){

@@ -1,8 +1,10 @@
-import { InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 import css from "./css.module.scss"
 
-export default function InputLikeText({...props}: InputHTMLAttributes<HTMLInputElement>){
+const InputLikeText = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>((props, ref) => {
     return(
-        <input {...props} className={css.css}/>
+        <input ref={ref} {...props} className={css.css} aria-hidden="false"/>
     )
-}
+})
+
+export default InputLikeText 

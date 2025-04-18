@@ -36,7 +36,7 @@ export default class ApiQuery{
     }
 
     static async getChatGroups(type: ChatType): Promise<PanelGroupButtons[]>{
-        return [{name: "Группа 1", active: false}, {name: "Группа 2", active: false}]
+        return [{name: "Группа 1", active: false, isChangeName: false}, {name: "Группа 2", active: false, isChangeName: false}]
     }
 
     static async confirmCode(id: string, code: string){

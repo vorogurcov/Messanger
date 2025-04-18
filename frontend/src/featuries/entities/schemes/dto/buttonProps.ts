@@ -5,4 +5,4 @@ type LabeledButton = {
     active: boolean
 }
 
-export type LabeledButtonProps = LabeledButton & Omit<InputHTMLAttributes<HTMLInputElement>, 'id'>
+export type LabeledButtonProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'name'> & LabeledButton 

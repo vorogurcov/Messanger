@@ -7,7 +7,7 @@ const getChats = createAsyncThunk( // от ключей зависит как м
     'chatList/getChats',
     async ({typeChat, group = allChats}: {typeChat: ChatType, group: string}) => {
         const chats = (await ApiQuery.getChatLists(typeChat, group)).map(chat => {return {...chat, active: false}})
-        // console.log("chats", chats)
+        console.log("geeet chats thunk")
         return chats
     }
 )

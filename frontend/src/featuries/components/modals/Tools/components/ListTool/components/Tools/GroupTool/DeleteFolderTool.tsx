@@ -1,13 +1,13 @@
 import { HTMLAttributes, useCallback } from "react"
-import { DeleteTool } from "./DeleteChatTool"
-import { IGroupList } from "../../../../hooks/useGetChat"
-import { useAppDispatch, useAppSelector } from "../../../../../../../../hooks/useStore"
-import { ChatSliceManager } from "../../../../../../../entities/store/featuries/chatSlice"
-import { useGroupListContext } from "../../../../../../pages/Home/hooks/useGroupListContext"
-import { allChats } from "../../../../../../../entities/schemes/enums/chatEnum"
+import { DeleteTool } from "../ChatTool/DeleteChatTool"
+import { useAppDispatch, useAppSelector } from "../../../../../../../../../hooks/useStore"
+import { ChatSliceManager } from "../../../../../../../../entities/store/featuries/chatSlice"
+import { useGroupListContext } from "../../../../../../../pages/Home/hooks/useGroupListContext"
+import { allChats } from "../../../../../../../../entities/schemes/enums/chatEnum"
+import { PanelGroupButtons } from "../../../../../../../../entities/schemes/dto/Chat"
 
 interface IDeleteFolderTool extends HTMLAttributes<HTMLDivElement>{
-    thisFolder: IGroupList
+    thisFolder: PanelGroupButtons
 }
 export default function DeleteFolderTool({thisFolder, ...props}: IDeleteFolderTool){
     const groups = useGroupListContext()

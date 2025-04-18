@@ -5,8 +5,8 @@ import { ChatToolProps } from "./types";
 import ListTools from "./components/ListTool/ListTools";
 import { ChatContext } from "./hooks/useGetChat";
 import { ChatList } from "../../../entities/schemes/dto/Chat";
-import { ChatGroupTool } from "./components/ListTool/components/Tools/ManageChatGroupTool/ChatGroupTool";
-import DeleteChatTool from "./components/ListTool/components/Tools/DeleteChatTool";
+import { ChatGroupTool } from "./components/ListTool/components/Tools/ChatTool/ManageChatGroupTool/ChatGroupTool";
+import DeleteChatTool from "./components/ListTool/components/Tools/ChatTool/DeleteChatTool";
 
 export function ModalTool({...props}: ReactModal.Props){
     return(

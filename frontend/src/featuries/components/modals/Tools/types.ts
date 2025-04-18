@@ -1,5 +1,4 @@
-import { ChatList } from "../../../entities/schemes/dto/Chat"
-import { IGroupList } from "./hooks/useGetChat"
+import { ChatList, PanelGroupButtons } from "../../../entities/schemes/dto/Chat"
 
 export interface IGroupBar{
     ingroup: boolean
@@ -14,11 +13,11 @@ export interface IToolProps{
 
 export interface ChatToolProps extends IToolProps{
     chat?: ChatList
-    groupList: IGroupList[]
+    groupList: PanelGroupButtons[]
 }
 
 export interface FolderToolProps extends IToolProps{
-    thisFolder?: IGroupList
+    thisFolder?: PanelGroupButtons
 }
 
 export enum ActionChatEnum {
