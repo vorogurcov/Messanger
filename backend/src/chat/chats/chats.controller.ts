@@ -11,7 +11,7 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ChatsService } from './chats.service';
+import { ChatsService } from './services/chats.service';
 import { Request } from 'express';
 import { UserAuth } from '../../user/credentials/entities/user-auth.entity';
 import { CreateChatDto } from './dto/create-chat.dto';

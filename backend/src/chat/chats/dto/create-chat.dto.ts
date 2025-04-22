@@ -1,6 +1,12 @@
 import { Transform } from 'class-transformer';
-import {IsArray, IsDateString, IsEnum, IsString, IsUUID} from 'class-validator';
-import {TypeEnumDto} from "./type-enum.dto";
+import {
+    IsArray,
+    IsDateString,
+    IsEnum,
+    IsString,
+    IsUUID,
+} from 'class-validator';
+import { TypeEnumDto } from './type-enum.dto';
 export class CreateChatDto {
     @IsString()
     @IsEnum(TypeEnumDto)
