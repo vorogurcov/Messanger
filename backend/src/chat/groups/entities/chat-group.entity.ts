@@ -20,7 +20,6 @@ export class ChatGroup {
     @ManyToOne(() => UserProfile)
     groupOwner: UserProfile;
 
-    @ManyToMany(() => Chat)
-    @JoinTable()
+    @ManyToMany(() => Chat, (chat) => chat.group)
     chats: Chat[];
 }

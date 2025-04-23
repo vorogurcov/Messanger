@@ -43,7 +43,7 @@ export class Chat {
     @JoinTable()
     users: UserProfile[];
 
-    @ManyToMany(() => ChatGroup)
+    @ManyToMany(() => ChatGroup, (group) => group.chats)
     @JoinTable()
     group: ChatGroup;
 }

@@ -8,6 +8,8 @@ import { Chat } from './chat/chats/entities/chat.entity';
 import { ChatsAndMessages1744218222284 } from './common/migration/schema/1744218222284-ChatsAndMessages';
 import { ChatsAndMessagesSeed1744218244396 } from './common/migration/seed/1744218244396-ChatsAndMessagesSeed';
 import { ChatGroup } from './chat/groups/entities/chat-group.entity';
+import {ChatGroups1745410568577} from "./common/migration/schema/1745410568577-ChatGroups";
+import {ChatGroupsSeed1745410591369} from "./common/migration/seed/1745410591369-ChatGroupsSeed";
 
 export const AppDataSource = new DataSource({
     host: process.env.DB_HOST,
@@ -16,12 +18,14 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    synchronize: true,
+    synchronize: false,
     entities: [UserAuth, UserProfile, Chat, Message, ChatGroup],
-    // migrations: [
-    //     UserProfileAndAuth1742557853253,
-    //     UserProfileAndAuthSeed1742557865532,
-    //     ChatsAndMessages1744218222284,
-    //     ChatsAndMessagesSeed1744218244396,
-    // ],
+    migrations: [
+        UserProfileAndAuth1742557853253,
+        UserProfileAndAuthSeed1742557865532,
+        ChatsAndMessages1744218222284,
+        ChatsAndMessagesSeed1744218244396,
+        ChatGroups1745410568577,
+        ChatGroupsSeed1745410591369,
+     ],
 });
