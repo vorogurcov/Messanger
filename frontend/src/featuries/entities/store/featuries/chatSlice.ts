@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import ApiQuery from "../../../api/query"
-import { ChatListAdaptedProps } from "../../../components/pages/Home/components/GroupChatList/ChatList/types"
+import { ChatListAdaptedProps } from "../../schemes/client/chat"
 import { ChatList } from "../../schemes/dto/Chat"
 
-const adaptingApiToClient = (chats: ChatList[]) => {
-    return chats.map(chat => {return {...chat, active: false}})
+const adaptingApiToClient = (chats: ChatList[]): ChatListAdaptedProps[] => {
+    return chats.map(chat => {return {...chat, active: false, numberNewMessage: 0}})
 }
 
 const getAllChats = createAsyncThunk( // от ключей зависит как миниму ред профиля

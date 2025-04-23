@@ -1,7 +1,6 @@
 import axios from "axios";
 import { AuthorizationProp, RegisrationProp } from "../entities/schemes/dto/Authorization";
 import core from "../../core/core";
-import { ChatType } from "../entities/schemes/enums/chatEnum";
 import { ChatList, PanelGroupButtons } from "../entities/schemes/dto/Chat";
 import { UserLK } from "../entities/schemes/dto/User";
 import authInstance from "./authinstance";
@@ -36,7 +35,8 @@ export default class ApiQuery{
     }
 
     static async getChatGroups(): Promise<PanelGroupButtons[]>{
-        return [{id: "sad", name: "Группа 1", active: false, isChangeName: false}, {id: "sada", name: "Группа 2", active: false, isChangeName: false}]
+        const groups = (await authInstance.get(core.serverEdnpoints.groups)).data.groups as {name: string, id: string}[]
+        return groups.map(gr => {return {...gr, active: false, isChangeName: false}})
     }
 
     static async confirmCode(id: string, code: string){
@@ -78,76 +78,28 @@ export default class ApiQuery{
     }
 
     static async getChatLists(): Promise<ChatList[]>{
-        let chats: ChatList[] = [
-            {
-                id: 1,
-                userName: "Ivan",
-                lastMessage: "Дедлайн горит",
-                numberNewMessage: 2,
-                avatar: undefined,
-                group: "Все чаты",
-                typeChat: ChatType.chats
-            },
-            {
-                id: 2,
-                userName: "Maria",
-                lastMessage: "Я спать",
-                numberNewMessage: 1,
-                avatar: undefined,
-                group: "Группа 1",
-                typeChat: ChatType.chats
-            },
-            {
-                id: 3,
-                userName: "Кристина",
-                lastMessage: "АААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААА",
-                numberNewMessage: 0,
-                avatar: "https://avatars.mds.yandex.net/i?id=f4631fb3f8dab100dcea28446f16ef23_l-6498965-images-thumbs&n=13",
-                group: "Группа 1",
-                typeChat: ChatType.chats
-            },
-        ]
+        const chats = (await authInstance.get(core.serverEdnpoints.allChats)).data.chats
         return chats
     }
 
     static async getChatListsByGroup(groupId: string): Promise<ChatList[]>{
-        let chats: ChatList[] = [
-            {
-                id: 1,
-                userName: "Ivan",
-                lastMessage: "Дедлайн горит",
-                numberNewMessage: 2,
-                avatar: undefined,
-                group: "Все чаты",
-                typeChat: ChatType.chats
-            },
-            {
-                id: 2,
-                userName: "Maria",
-                lastMessage: "Я спать",
-                numberNewMessage: 1,
-                avatar: undefined,
-                group: "Группа 1",
-                typeChat: ChatType.chats
-            },
-            {
-                id: 3,
-                userName: "Кристина",
-                lastMessage: "АААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААА",
-                numberNewMessage: 0,
-                avatar: "https://avatars.mds.yandex.net/i?id=f4631fb3f8dab100dcea28446f16ef23_l-6498965-images-thumbs&n=13",
-                group: "Группа 1",
-                typeChat: ChatType.chats
-            },
-        ]
+        const chats = (await authInstance.get(`${core.serverEdnpoints.allChats}/${groupId}/chats`)).data.chats
         return chats
     }
 
-    static async deleteChat(chatId: number){
-        // await authInstance.delete(ApiQuery.generateUrlServer(`/chats/${chatId}`))
+    static async deleteChat(chatId: string){
+        await authInstance.delete(ApiQuery.generateUrlServer(`/chats/${chatId}`))
     }
 
     static async addGroup(name: string){
         return "daf"
+    }
+
+    static async deleteGroup(id: string){
+        await authInstance.delete(core.serverEdnpoints.groups, {params: {groupId: id}})
+    }
+
+    static async updateGroup(groupId: string, name?: string, newChatIds?: string[]){
+        await authInstance.patch(core.serverEdnpoints.groups, {name, newChatIds}, {params: {groupId: groupId}})
     }
 }

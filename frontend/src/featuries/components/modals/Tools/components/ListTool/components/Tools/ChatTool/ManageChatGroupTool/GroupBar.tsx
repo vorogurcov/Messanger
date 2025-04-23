@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../../../../../../ho
 import { ChatSliceManager } from "../../../../../../../../../entities/store/featuries/chatSlice";
 import { allChats } from "../../../../../../../../../entities/schemes/enums/chatEnum";
 import { checkAndDeleteGroup } from "../../utils";
+import ApiQuery from "../../../../../../../../../api/query";
 
 
 export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
@@ -17,8 +18,8 @@ export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
     const chats = useAppSelector(ChatSliceManager.selectors.selectChats) 
     const dispatch = useAppDispatch()
 
-    const handleClick = useCallback((groupName: string) => {
-        if (thisChat?.chat.group !== allChats && groups?.groups.find(gr => gr.active)?.name !== allChats){
+    const handleClick = useCallback((groupId: string) => {
+        if (thisChat?.chat.group !== allChats && groups?.groups.find(gr => gr.active)?.id !== allChats){
             checkAndDeleteGroup(thisChat, chats, groups)
             .then(() => {
                 dispatch(ChatSliceManager.redusers.update(
@@ -30,11 +31,11 @@ export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
         } else if (thisChat){
             dispatch(ChatSliceManager.redusers.update(
                 chats.map(
-                    chat => chat.id === thisChat.chat.id ? {...chat, group: groupName} : chat
+                    chat => chat.id === thisChat.chat.id ? {...chat, group: groupId} : chat
                 )
             ))
         }
-        // тут надо api
+        ApiQuery.updateGroup("")
     }, [thisChat, groups, chats, dispatch])
 
     return(
@@ -48,7 +49,7 @@ export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
                 <ListToolBase 
                     srcImg={thisChat?.chat.group === gr.name ? deleteFolder : addFolder}
                     label={gr.name}
-                    onClick={() => handleClick(thisChat?.chat.group === gr.name ? allChats : gr.name)}
+                    onClick={() => handleClick(thisChat?.chat.group === gr.id ? allChats : gr.name)}
                 />
             )}
         </HiddenBar>

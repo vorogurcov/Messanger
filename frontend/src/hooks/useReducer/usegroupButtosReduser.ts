@@ -17,7 +17,7 @@ type FormAction =
     | {type: GroupActionEnum.ADD_GROUPS; names: {id: string, name: string}[]}
     | {type: GroupActionEnum.CHOOSE; id: string}
     | {type: GroupActionEnum.DELETE_GROUP; id: string}
-    | { type: GroupActionEnum.RENAME_GROUP; id: string, oldName: string, newName: string}
+    | { type: GroupActionEnum.RENAME_GROUP; id: string, newName: string}
     | { type: GroupActionEnum.CHANGE_STATE; newState: PanelGroupButtons[]}
 
 const defaultValue: PanelGroupButtons[] = [{id: "allChats", active: true, name: "Все чаты", isChangeName: false}];
@@ -37,7 +37,7 @@ function formReducer(state: PanelGroupButtons[], action: FormAction): PanelGroup
         newState = newState.find(gr => gr.active) ? newState : [...defaultValue, ...newState.slice(1)]
         return newState
     case GroupActionEnum.RENAME_GROUP:
-        return state.map(gr => action.oldName === gr.name ? {...gr, name: action.newName} : gr);
+        return state.map(gr => action.id === gr.id ? {...gr, name: action.newName} : gr);
     case GroupActionEnum.CHANGE_STATE:
         return action.newState;
     default:

@@ -14,14 +14,20 @@ export const initialPanelGroupButtons: PanelGroupButtons = {
     isChangeName: false
 }
 
+export interface ILastMessage{
+    id: string,
+    context: string,
+    senderId: string,
+    createdAt: string
+}
+
 export interface ChatList{
-    id: number
-    userName: string
-    lastMessage?: string
-    numberNewMessage: number
+    id: string
+    name: string
+    lastMessage?: ILastMessage
     avatar?: string
     group: string
-    typeChat: ChatType
+    type: ChatType
 }
 
 export interface ICreateGroup{

@@ -1,6 +1,6 @@
 import { memo } from "react"
 import scss_union from "../../../../../../mixins/mixinsCss/classes.module.scss"
-import { ChatType } from "../../../../../entities/schemes/enums/chatEnum"
+import { ChatType, PageType } from "../../../../../entities/schemes/enums/chatEnum"
 import css from "./css.module.scss"
 import SearchInput from "../../../../components/UI/inputs/SearchInput/SearchInput"
 import ChatList from "./ChatList/ChatList"
@@ -13,19 +13,19 @@ const TypeChat = memo(function ({type, selectedType, setSelectedType}: {type: st
     )
 })
 
-export default function ChatPanel({group, typeChat, setTypeChat}: {
+export default function ChatPanel({group, typePage, setTypeChat}: {
     group: string, 
-    typeChat: ChatType,
-    setTypeChat: React.Dispatch<React.SetStateAction<ChatType>>
+    typePage: PageType,
+    setTypeChat: React.Dispatch<React.SetStateAction<PageType>>
 }){
     return(
         <div className={css.wrap}>
             <div className={`${scss_union.hide_scroll} ${css.typeChat}`}>
-                {Object.values(ChatType).map((type, index) => 
+                {Object.values(PageType).map((type, index) => 
                     <TypeChat 
                         key={index}
                         type={type} 
-                        selectedType={typeChat} 
+                        selectedType={typePage} 
                         setSelectedType={setTypeChat as React.Dispatch<React.SetStateAction<string>>}
                     />
                 )}
@@ -33,7 +33,7 @@ export default function ChatPanel({group, typeChat, setTypeChat}: {
             <div className={css.input_wrap}>
                 <SearchInput/>
             </div>
-            <ChatList group={group} typeChat={typeChat}/>
+            <ChatList/>
         </div>
     )
 }

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { allChats, ChatType } from "../../../../entities/schemes/enums/chatEnum";
+import { allChats, PageType } from "../../../../entities/schemes/enums/chatEnum";
 import ApiQuery from "../../../../api/query";
 import { GroupActionEnum, useGroupButtonsReduser } from "../../../../../hooks/useReducer/usegroupButtosReduser";
 import { PanelGroupButtons } from "../../../../entities/schemes/dto/Chat";
 import { ChatSliceManager } from "../../../../entities/store/featuries/chatSlice";
 import { useAppDispatch } from "../../../../../hooks/useStore";
 
-export default function useGroups(typeChat: ChatType){
+export default function useGroups(typeChat: PageType){
     const [groups, disputchButtonsState] = useGroupButtonsReduser()
     const [nameActiveGroup, setNameActiveGroup] = useState(allChats)
     const dispatch = useAppDispatch()
@@ -39,8 +39,10 @@ export default function useGroups(typeChat: ChatType){
     }, [disputchButtonsState, dispatch])
     
     const handleDelete = useCallback((id: string) => { // не надо добавлять чат айди. это обособленная чать, которая используется много где
-        disputchButtonsState({type: GroupActionEnum.DELETE_GROUP, id: id})
-        // ApiQuery.deleteGroup(name)
+        ApiQuery.deleteGroup(id)
+        .then(() => {
+            disputchButtonsState({type: GroupActionEnum.DELETE_GROUP, id: id})
+        })
     }, [disputchButtonsState])
 
     const handleAddGroup = useCallback(async (name: string) => {
@@ -49,8 +51,9 @@ export default function useGroups(typeChat: ChatType){
             disputchButtonsState({type: GroupActionEnum.ADD_GROUPS, names: [{name: name, id: idNewGroup}]})
     }, [disputchButtonsState, groups])
 
-    const handleRename = useCallback((id: string, oldName: string, newName: string) => {
-        disputchButtonsState({type: GroupActionEnum.RENAME_GROUP, id: id, oldName: oldName, newName: newName})
+    const handleRename = useCallback((id: string, newName: string) => {
+        ApiQuery.updateGroup(id, newName)
+        disputchButtonsState({type: GroupActionEnum.RENAME_GROUP, id, newName})
     }, [disputchButtonsState])
 
     const handleChangeState = useCallback((newState: PanelGroupButtons[]) => {

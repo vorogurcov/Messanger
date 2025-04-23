@@ -1,5 +1,6 @@
-import { ChatList } from "../../../../../../entities/schemes/dto/Chat";
+import { ChatList } from "../dto/Chat";
 
 export interface ChatListAdaptedProps extends ChatList{
     active: boolean
+    numberNewMessage: number
 }
