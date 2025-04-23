@@ -28,6 +28,34 @@ export class ChatGroupsRepository {
         });
     }
 
+    async getChatsFromGroup(userId:string, groupId:string){
+        const chatGroup = await this.repository.findOne({
+            select:{
+              chats:{
+                  id:true,
+                  type:true,
+                  name:true,
+                  createdAt:true,
+              }
+            },
+            relations:{
+              groupOwner:true,
+              chats:true,
+            },
+            where:{
+                groupOwner:{
+                    id:userId,
+                },
+                id:groupId,
+            }
+        })
+
+        if(!chatGroup)
+            throw new NotFoundException('Such group was not found!')
+
+        return chatGroup?.chats
+    }
+
     async updateUserGroupById(
         name: string,
         chats: Chat[],

@@ -90,4 +90,19 @@ export class GroupsController {
             throw error;
         }
     }
+
+    @Get(':groupId/chats')
+    async getChatsFromGroup(@Req() req: Request, @Param(':groupId') groupId:string){
+        const { id: userId } = req.user as UserAuth;
+        try {
+            const chats = await this.groupsService.getChatsFromGroup(userId, groupId)
+            return {
+                statusCode: HttpStatus.OK,
+                message: 'Get group chats successful!',
+                chats,
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
 }

@@ -82,4 +82,8 @@ export class GroupsService {
             userId,
         );
     }
+
+    async getChatsFromGroup(userId:string, groupId:string){
+        return await this.chatGroupsRepository.getChatsFromGroup(userId,groupId)
+    }
 }
