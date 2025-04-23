@@ -1,7 +1,6 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ChatsAndMessagesSeed1744218244396 implements MigrationInterface {
-
     public async up(queryRunner: QueryRunner): Promise<void> {
         // 1. Чаты
         await queryRunner.query(`
@@ -72,6 +71,4 @@ export class ChatsAndMessagesSeed1744218244396 implements MigrationInterface {
             );
         `);
     }
-
 }
-

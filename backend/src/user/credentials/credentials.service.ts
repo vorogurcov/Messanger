@@ -18,9 +18,9 @@ export class CredentialsService {
         return user;
     }
 
-    async getUserEmail(userId:string){
-        const userCredentials = await this.repo.findById(userId,['email'])
-        return userCredentials?.email
+    async getUserEmail(userId: string) {
+        const userCredentials = await this.repo.findById(userId, ['email']);
+        return userCredentials?.email;
     }
 
     async getIsEmailVerified(id: string): Promise<boolean> {

@@ -3,13 +3,13 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import { CreateChatDto } from './dto/create-chat.dto';
-import { UpdateChatDto } from './dto/update-chat.dto';
-import { ChatsRepository } from './repositories/chats.repository';
-import { Chat } from './entities/chat.entity';
-import { UserProfile } from '../../user/profile/entities/user-profile.entity';
-import { ProfileService } from '../../user/profile/profile.service';
-import { Message } from '../messages/entities/message.entity';
+import { CreateChatDto } from '../dto/create-chat.dto';
+import { UpdateChatDto } from '../dto/update-chat.dto';
+import { ChatsRepository } from '../repositories/chats.repository';
+import { Chat } from '../entities/chat.entity';
+import { UserProfile } from '../../../user/profile/entities/user-profile.entity';
+import { ProfileService } from '../../../user/profile/profile.service';
+import { Message } from '../../messages/entities/message.entity';
 
 @Injectable()
 export class ChatsService {
@@ -22,7 +22,7 @@ export class ChatsService {
         return chats;
     }
 
-    async getChatById(chatId:string){
+    async getChatById(chatId: string) {
         return await this.chatsRepository.findChatById(chatId);
     }
     async addUserChat(ownerId: string, createChatDto: CreateChatDto) {
@@ -89,9 +89,9 @@ export class ChatsService {
         return result;
     }
 
-    async updateLastMessage(chatId:string, message:Message){
-        const chatInfo = await this.chatsRepository.findChatById(chatId)
-        chatInfo.lastMessage = message
-        return await this.chatsRepository.updateChat(chatInfo)
+    async updateLastMessage(chatId: string, message: Message) {
+        const chatInfo = await this.chatsRepository.findChatById(chatId);
+        chatInfo.lastMessage = message;
+        return await this.chatsRepository.updateChat(chatInfo);
     }
 }

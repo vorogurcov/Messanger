@@ -1,7 +1,6 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ChatsAndMessages1744218222284 implements MigrationInterface {
-
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
             CREATE TABLE "chat" (
@@ -70,16 +69,26 @@ export class ChatsAndMessages1744218222284 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "chat_users_user_profile" DROP CONSTRAINT "FK_chat_users_user";`);
-        await queryRunner.query(`ALTER TABLE "chat_users_user_profile" DROP CONSTRAINT "FK_chat_users_chat";`);
-        await queryRunner.query(`ALTER TABLE "message" DROP CONSTRAINT "FK_chat";`);
-        await queryRunner.query(`ALTER TABLE "message" DROP CONSTRAINT "FK_sender";`);
-        await queryRunner.query(`ALTER TABLE "chat" DROP CONSTRAINT "FK_last_message";`);
-        await queryRunner.query(`ALTER TABLE "chat" DROP CONSTRAINT "FK_chat_owner";`);
+        await queryRunner.query(
+            `ALTER TABLE "chat_users_user_profile" DROP CONSTRAINT "FK_chat_users_user";`,
+        );
+        await queryRunner.query(
+            `ALTER TABLE "chat_users_user_profile" DROP CONSTRAINT "FK_chat_users_chat";`,
+        );
+        await queryRunner.query(
+            `ALTER TABLE "message" DROP CONSTRAINT "FK_chat";`,
+        );
+        await queryRunner.query(
+            `ALTER TABLE "message" DROP CONSTRAINT "FK_sender";`,
+        );
+        await queryRunner.query(
+            `ALTER TABLE "chat" DROP CONSTRAINT "FK_last_message";`,
+        );
+        await queryRunner.query(
+            `ALTER TABLE "chat" DROP CONSTRAINT "FK_chat_owner";`,
+        );
         await queryRunner.query(`DROP TABLE "chat_users_user_profile";`);
         await queryRunner.query(`DROP TABLE "message";`);
         await queryRunner.query(`DROP TABLE "chat";`);
     }
-
 }
-
