@@ -13,9 +13,13 @@ export class ChatsRepository {
     ) {}
 
     async findChatById(chatId: string) {
-        const chat = await this.repository.findOneBy({
+        const chat = await this.repository.findOne({
+            relations:{
+                messages:true,
+            },
+            where:{
             id: chatId,
-        });
+        }});
         if (!chat) throw new NotFoundException('Chat was not found!');
         return chat;
     }
