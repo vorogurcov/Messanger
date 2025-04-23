@@ -7,7 +7,7 @@ export class MessagesSeed1745422286364 implements MigrationInterface {
             INSERT INTO "chat" ("id", "type", "name", "createdAt", "chatOwnerId")
             VALUES 
                 ('d4e6f789-01ab-2cde-3f45-678901234567', 'private', 'Chat: Maria & Mihail', '2025-04-01 09:00:00', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab'),
-                ('d5e6f789-01ab-2cde-3f45-678901234567', 'private', 'Chat: Maria & Kristina', '2025-04-01 09:05:00', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab');
+                ('d7e6f789-01ab-2cde-3f45-678901234567', 'private', 'Chat: Maria & Kristina', '2025-04-01 09:05:00', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab');
         `);
 
 
@@ -16,8 +16,8 @@ export class MessagesSeed1745422286364 implements MigrationInterface {
             VALUES
                 ('d4e6f789-01ab-2cde-3f45-678901234567', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab'), -- Maria
                 ('d4e6f789-01ab-2cde-3f45-678901234567', 'bf77f5e4-8589-4a1f-96ec-53b1f0bb10f7'), -- Mihail
-                ('d5e6f789-01ab-2cde-3f45-678901234567', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab'), -- Maria
-                ('d5e6f789-01ab-2cde-3f45-678901234567', 'f647dfe1-85fc-4be1-bff2-ff42d7b89c6c'); -- Kristina
+                ('d7e6f789-01ab-2cde-3f45-678901234567', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab'), -- Maria
+                ('d7e6f789-01ab-2cde-3f45-678901234567', 'f647dfe1-85fc-4be1-bff2-ff42d7b89c6c'); -- Kristina
         `);
 
 
@@ -28,7 +28,7 @@ export class MessagesSeed1745422286364 implements MigrationInterface {
         await queryRunner.query(`
             INSERT INTO "message" ("id", "context", "senderId", "chatId", "createdAt") VALUES
             ('11111111-aaaa-bbbb-cccc-111111111111', 'Привет всем в чате API!', 'bf77f5e4-8589-4a1f-96ec-53b1f0bb10f7', 'd4e6f789-01ab-2cde-3f45-678901234567', '2025-04-03 09:00:10'),
-            ('22222222-aaaa-bbbb-cccc-222222222222', 'Я здесь!', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab', 'd5e6f789-01ab-2cde-3f45-678901234567', '2025-04-03 09:01:00'),
+            ('22222222-aaaa-bbbb-cccc-222222222222', 'Я здесь!', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab', 'd7e6f789-01ab-2cde-3f45-678901234567', '2025-04-03 09:01:00'),
             ('33333333-aaaa-bbbb-cccc-333333333333', 'Какой план на сегодня?', 'bf77f5e4-8589-4a1f-96ec-53b1f0bb10f7', 'd4e6f789-01ab-2cde-3f45-678901234567', '2025-04-03 09:02:00'),
             ('44444444-aaaa-bbbb-cccc-444444444444', 'Дизайн финализирован', 'f647dfe1-85fc-4be1-bff2-ff42d7b89c6c', 'e6f78901-23ab-4cde-5f67-890123456789', '2025-04-03 10:00:00'),
             ('55555555-aaaa-bbbb-cccc-555555555555', 'Проверю позже', 'bf77f5e4-8589-4a1f-96ec-53b1f0bb10f7', 'e6f78901-23ab-4cde-5f67-890123456789', '2025-04-03 10:10:00'),
@@ -77,7 +77,7 @@ export class MessagesSeed1745422286364 implements MigrationInterface {
                 '22222222-bbbb-cccc-dddd-222222222222'
             );
         `);
-        for (const chatId of ['d4e6f789-01ab-2cde-3f45-678901234567', 'd5e6f789-01ab-2cde-3f45-678901234567']) {
+        for (const chatId of ['d4e6f789-01ab-2cde-3f45-678901234567', 'd7e6f789-01ab-2cde-3f45-678901234567']) {
             await queryRunner.query(`DELETE FROM "chat_users_user" WHERE "chatId" = '${chatId}'`);
             await queryRunner.query(`DELETE FROM "chat" WHERE "id" = '${chatId}'`);
         }
