@@ -1,13 +1,25 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { allChats, ChatType } from "../../schemes/enums/chatEnum"
 import ApiQuery from "../../../api/query"
 import { ChatListAdaptedProps } from "../../../components/pages/Home/components/GroupChatList/ChatList/types"
+import { ChatList } from "../../schemes/dto/Chat"
 
-const getChats = createAsyncThunk( // от ключей зависит как миниму ред профиля
-    'chatList/getChats',
-    async ({typeChat, group = allChats}: {typeChat: ChatType, group: string}) => {
-        const chats = (await ApiQuery.getChatLists(typeChat, group)).map(chat => {return {...chat, active: false}})
+const adaptingApiToClient = (chats: ChatList[]) => {
+    return chats.map(chat => {return {...chat, active: false}})
+}
+
+const getAllChats = createAsyncThunk( // от ключей зависит как миниму ред профиля
+    'chatList/getAllChats',
+    async () => {
+        const chats = adaptingApiToClient((await ApiQuery.getChatLists()))
         console.log("geeet chats thunk")
+        return chats
+    }
+)
+
+const getChatsByGroup = createAsyncThunk(
+    'chatList/getChatByGroup',
+    async (groupId: string) => {
+        const chats = adaptingApiToClient((await ApiQuery.getChatListsByGroup(groupId)))
         return chats
     }
 )
@@ -30,7 +42,10 @@ const chatSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-        .addCase(getChats.fulfilled, (state, action) => {
+        .addCase(getAllChats.fulfilled, (state, action) => {
+            return action.payload
+        })
+        .addCase(getChatsByGroup.fulfilled, (state, action) => {
             return action.payload
         })
     }
@@ -48,6 +63,7 @@ export const ChatSliceManager = {
     },
 
     fetching: {
-        getData: getChats
+        getAllChats: getAllChats,
+        getChatsByGroup: getChatsByGroup
     }
 }

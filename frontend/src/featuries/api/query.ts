@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AuthorizationProp, RegisrationProp } from "../entities/schemes/dto/Authorization";
 import core from "../../core/core";
-import { allChats, ChatType } from "../entities/schemes/enums/chatEnum";
+import { ChatType } from "../entities/schemes/enums/chatEnum";
 import { ChatList, PanelGroupButtons } from "../entities/schemes/dto/Chat";
 import { UserLK } from "../entities/schemes/dto/User";
 import authInstance from "./authinstance";
@@ -35,8 +35,8 @@ export default class ApiQuery{
         return axios.post(core.serverEdnpoints.regAuth, data, {withCredentials: true})
     }
 
-    static async getChatGroups(type: ChatType): Promise<PanelGroupButtons[]>{
-        return [{name: "Группа 1", active: false, isChangeName: false}, {name: "Группа 2", active: false, isChangeName: false}]
+    static async getChatGroups(): Promise<PanelGroupButtons[]>{
+        return [{id: "sad", name: "Группа 1", active: false, isChangeName: false}, {id: "sada", name: "Группа 2", active: false, isChangeName: false}]
     }
 
     static async confirmCode(id: string, code: string){
@@ -77,7 +77,7 @@ export default class ApiQuery{
         localStorage.removeItem("passwordVerifiedMarker")
     }
 
-    static async getChatLists(typeChat: ChatType, group: string): Promise<ChatList[]>{
+    static async getChatLists(): Promise<ChatList[]>{
         let chats: ChatList[] = [
             {
                 id: 1,
@@ -107,14 +107,47 @@ export default class ApiQuery{
                 typeChat: ChatType.chats
             },
         ]
-        chats = chats.filter(chat => chat.typeChat === typeChat)
-        if (group !== allChats){
-            return chats.filter(chat => chat.group === group)
-        }
-        else return chats
+        return chats
+    }
+
+    static async getChatListsByGroup(groupId: string): Promise<ChatList[]>{
+        let chats: ChatList[] = [
+            {
+                id: 1,
+                userName: "Ivan",
+                lastMessage: "Дедлайн горит",
+                numberNewMessage: 2,
+                avatar: undefined,
+                group: "Все чаты",
+                typeChat: ChatType.chats
+            },
+            {
+                id: 2,
+                userName: "Maria",
+                lastMessage: "Я спать",
+                numberNewMessage: 1,
+                avatar: undefined,
+                group: "Группа 1",
+                typeChat: ChatType.chats
+            },
+            {
+                id: 3,
+                userName: "Кристина",
+                lastMessage: "АААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААА",
+                numberNewMessage: 0,
+                avatar: "https://avatars.mds.yandex.net/i?id=f4631fb3f8dab100dcea28446f16ef23_l-6498965-images-thumbs&n=13",
+                group: "Группа 1",
+                typeChat: ChatType.chats
+            },
+        ]
+        return chats
     }
 
     static async deleteChat(chatId: number){
         // await authInstance.delete(ApiQuery.generateUrlServer(`/chats/${chatId}`))
+    }
+
+    static async addGroup(name: string){
+        return "daf"
     }
 }

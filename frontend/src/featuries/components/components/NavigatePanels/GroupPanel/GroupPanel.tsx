@@ -2,7 +2,7 @@ import { memo, ReactNode, useEffect, useRef, useState } from "react"
 import css from "./css.module.scss"
 import FolderToolModal from "../../../modals/Tools/FolderToolModal"
 import useContextMenu from "../../../pages/Home/hooks/useContextMenu"
-import { PanelGroupButtons } from "../../../../entities/schemes/dto/Chat"
+import { initialPanelGroupButtons, PanelGroupButtons } from "../../../../entities/schemes/dto/Chat"
 import { allChats } from "../../../../entities/schemes/enums/chatEnum"
 import ChatButton from "../../../pages/Home/components/buttons/chat"
 import FolderButton from "../../../pages/Home/components/buttons/folder"
@@ -38,7 +38,7 @@ const OneButtonMemo = memo(OneButton)
 
 export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
     const groupManager = useGroupListContext()
-    const [changingFolder, setChangingFolder] = useState("")
+    const [changingFolder, setChangingFolder] = useState<PanelGroupButtons>(initialPanelGroupButtons)
     const inputRef = useRef<HTMLInputElement>(null)
     const {handleBlur, handleKeyDown} = useChangeNameGroup(changingFolder, inputRef)
     const [addGroupOpen, setAddGroupOpen] = useState(false)
@@ -46,13 +46,13 @@ export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
     useEffect(() => {
         const changingButton = buttons.find(but => but.isChangeName)
         if (changingButton){
-            setChangingFolder(changingButton.name)
-        } else setChangingFolder("")
+            setChangingFolder(changingButton)
+        } else setChangingFolder(initialPanelGroupButtons)
     }, [buttons])
 
     useEffect(() => {
         if (inputRef.current){
-            inputRef.current.value = changingFolder
+            inputRef.current.value = changingFolder?.name ?? ""
             setTimeout(() => inputRef.current?.focus(), 0) 
             // проблема: ref меняется в модальном окне, где align-hedden = true, от чего невозможно зафокусить. setTimeout - решение
         }
@@ -65,7 +65,7 @@ export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
                     <ChatButton {...button} onClick={() => groupManager?.handleClick(button.name)}/>
                 }</OneButtonMemo>
                 : <OneButtonMemo key={button.name} folder={button}>{
-                    button.name !== changingFolder ?
+                    button.id !== changingFolder.id ?
                     <FolderButton 
                         {...button} 
                         onClick={() => groupManager?.handleClick(button.name)}

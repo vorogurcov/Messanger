@@ -8,7 +8,7 @@ export default function RenameFolderTool({thisFolder}: {thisFolder: PanelGroupBu
     const groups = useGroupListContext()
 
     const handleClick = useCallback(() => {
-        groups?.handleChangeState(groups.groups.map(gr => gr.name === thisFolder.name ? {...gr, isChangeName: true} : gr))
+        groups?.handleChangeState(groups.groups.map(gr => gr.id === thisFolder.id ? {...gr, isChangeName: true} : gr))
     }, [groups, thisFolder])
     return(
         <ListToolBase srcImg={imageSrc} label="Переименовать" onClick={handleClick}/>

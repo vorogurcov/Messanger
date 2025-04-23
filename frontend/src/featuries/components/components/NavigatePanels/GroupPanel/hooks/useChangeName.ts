@@ -2,8 +2,9 @@ import { useCallback } from "react";
 import { useGroupListContext } from "../../../../pages/Home/hooks/useGroupListContext";
 import { useAppDispatch, useAppSelector } from "../../../../../../hooks/useStore";
 import { ChatSliceManager } from "../../../../../entities/store/featuries/chatSlice";
+import { PanelGroupButtons } from "../../../../../entities/schemes/dto/Chat";
 
-export default function useChangeNameGroup(thisName: string, inputRef: React.RefObject<HTMLInputElement | null>){
+export default function useChangeNameGroup(thisGroup: PanelGroupButtons, inputRef: React.RefObject<HTMLInputElement | null>){
     const groups = useGroupListContext()
     const chats = useAppSelector(ChatSliceManager.selectors.selectChats)
     const dispatch = useAppDispatch()
@@ -16,25 +17,25 @@ export default function useChangeNameGroup(thisName: string, inputRef: React.Ref
             inputRef.current.style.color = 'red'
             inputRef.current.style.borderColor = 'red'
         } else if (inputRef.current && inputRef.current.value.length !== 0){ // success
-            const newChats = chats.map(chat => chat.group === thisName ? {...chat, group: inputRef.current?.value ?? thisName} : chat)
+            const newChats = chats.map(chat => chat.group === thisGroup.name ? {...chat, group: inputRef.current?.value ?? thisGroup.name} : chat)
             dispatch(ChatSliceManager.redusers.update(newChats))
-            groups?.handleRename(thisName, inputRef.current.value)
-            groups?.handleChangeState(groups.groups.map(gr => gr.name === thisName ? 
-                {...gr, name: inputRef.current?.value ?? thisName, isChangeName: false} : gr))
+            groups?.handleRename(thisGroup.id, thisGroup.name, inputRef.current.value)
+            groups?.handleChangeState(groups.groups.map(gr => gr.id === thisGroup.id ? 
+                {...gr, name: inputRef.current?.value ?? thisGroup.name, isChangeName: false} : gr))
             inputRef.current = null
         }
-    }, [chats, dispatch, groups, thisName, inputRef]);
+    }, [chats, dispatch, groups, thisGroup, inputRef]);
   
     const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             // Обработка нажатия Enter
             handleBlur()
         } else if (event.key === 'Escape' && inputRef.current){
-            inputRef.current.value = thisName
+            inputRef.current.value = thisGroup.name
             inputRef.current = null
-            groups?.handleChangeState(groups.groups.map(gr => gr.name === thisName ? {...gr, isChangeName: false} : gr))
+            groups?.handleChangeState(groups.groups.map(gr => gr.name === thisGroup.name ? {...gr, isChangeName: false} : gr))
         }
-    }, [thisName, handleBlur, groups, inputRef]);
+    }, [thisGroup, handleBlur, groups, inputRef]);
 
     return {handleBlur, handleKeyDown}
   
