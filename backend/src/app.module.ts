@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource } from './data-source';
 import { ProfileModule } from './user/profile/profile.module';
 import { ChatsModule } from './chat/chats/chats.module';
+import { GroupsModule } from './chat/groups/groups.module';
+import {MessagesModule} from "./chat/messages/messages.module";
 
 @Module({
     imports: [
@@ -11,6 +13,8 @@ import { ChatsModule } from './chat/chats/chats.module';
         AuthModule,
         ProfileModule,
         ChatsModule,
+        GroupsModule,
+        MessagesModule
     ],
 })
 export class AppModule {}

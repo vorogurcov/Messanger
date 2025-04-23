@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtStrategyModule } from '../../common/jwt-strategy/jwt-strategy.module';
-import { ChatsService } from './chats.service';
+import { ChatsService } from './services/chats.service';
 import { ChatsController } from './chats.controller';
 import { Chat } from './entities/chat.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,6 +15,6 @@ import { ProfileModule } from '../../user/profile/profile.module';
     ],
     providers: [ChatsService, ChatsRepository],
     controllers: [ChatsController],
-    exports:[ChatsService],
+    exports: [ChatsService],
 })
 export class ChatsModule {}

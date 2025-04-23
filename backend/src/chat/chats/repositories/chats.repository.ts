@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Chat } from '../entities/chat.entity';
-import {Message} from "../../messages/entities/message.entity";
+import { Message } from '../../messages/entities/message.entity';
 
 @Injectable()
 export class ChatsRepository {
@@ -13,9 +13,13 @@ export class ChatsRepository {
     ) {}
 
     async findChatById(chatId: string) {
-        const chat = await this.repository.findOneBy({
+        const chat = await this.repository.findOne({
+            relations:{
+                messages:true,
+            },
+            where:{
             id: chatId,
-        });
+        }});
         if (!chat) throw new NotFoundException('Chat was not found!');
         return chat;
     }
@@ -25,8 +29,8 @@ export class ChatsRepository {
             .createQueryBuilder('chat')
             .innerJoin('chat.users', 'filterUser', 'filterUser.id = :userId')
             .leftJoinAndSelect('chat.users', 'user')
-            .leftJoinAndSelect('chat.lastMessage','lastMessage')
-            .leftJoinAndSelect('chat.messages',"message" )
+            .leftJoinAndSelect('chat.lastMessage', 'lastMessage')
+            .leftJoinAndSelect('chat.messages', 'message')
             .setParameter('userId', userId)
             .select([
                 'chat.id',

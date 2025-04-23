@@ -1,5 +1,5 @@
-export enum TypeEnumDto{
-    GROUP='group',
-    CHANNEL='channel',
-    PERSONAL='personal'
+export enum TypeEnumDto {
+    GROUP = 'group',
+    CHANNEL = 'channel',
+    PERSONAL = 'personal',
 }

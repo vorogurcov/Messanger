@@ -6,11 +6,13 @@ import {
     ManyToMany,
     OneToMany,
     JoinColumn,
-    ManyToOne, OneToOne,
+    ManyToOne,
+    OneToOne,
 } from 'typeorm';
 import { Message } from '../../messages/entities/message.entity';
 import { UserProfile } from '../../../user/profile/entities/user-profile.entity';
-import {TypeEnumDto} from "../dto/type-enum.dto";
+import { TypeEnumDto } from '../dto/type-enum.dto';
+import { ChatGroup } from '../../groups/entities/chat-group.entity';
 
 @Entity()
 export class Chat {
@@ -32,7 +34,7 @@ export class Chat {
 
     @OneToOne(() => Message)
     @JoinColumn()
-    lastMessage:Message
+    lastMessage: Message;
 
     @OneToMany(() => Message, (message) => message.chatId)
     messages: Message[];
@@ -40,4 +42,8 @@ export class Chat {
     @ManyToMany(() => UserProfile, { cascade: ['remove'] })
     @JoinTable()
     users: UserProfile[];
+
+    @ManyToMany(() => ChatGroup, (group) => group.chats)
+    @JoinTable()
+    group: ChatGroup;
 }
