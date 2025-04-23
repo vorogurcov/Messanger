@@ -9,6 +9,8 @@ import FolderButton from "../../../pages/Home/components/buttons/folder"
 import { useGroupListContext } from "../../../pages/Home/hooks/useGroupListContext"
 import useChangeNameGroup from "./hooks/useChangeName"
 import InputLikeText from "../../UI/inputs/InputLikeText/InputLikeText"
+import AddButonLikePlus from "../../UI/buttons/AddButonLikePlus"
+import MainModal from "../../../modals/MainModal/MainModal"
 
 function OneButton({folder, children}: {folder: PanelGroupButtons, children: ReactNode}){
     const {coordinates, showTools, setShowTools, handleContextMenu} = useContextMenu()
@@ -39,6 +41,7 @@ export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
     const [changingFolder, setChangingFolder] = useState("")
     const inputRef = useRef<HTMLInputElement>(null)
     const {handleBlur, handleKeyDown} = useChangeNameGroup(changingFolder, inputRef)
+    const [addGroupOpen, setAddGroupOpen] = useState(false)
 
     useEffect(() => {
         const changingButton = buttons.find(but => but.isChangeName)
@@ -55,6 +58,7 @@ export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
         }
     }, [changingFolder])
     return(
+        <>
         <div style={{width: "100%", height: "100%"}}>
             {buttons.map((button) => button.name === allChats ? 
                 <OneButtonMemo folder={button}>{
@@ -78,6 +82,14 @@ export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
                     /> 
                 }</OneButtonMemo>
             )}
+            <AddButonLikePlus name="+ чат" onClick={() => setAddGroupOpen(true)}/>
         </div>
+        <MainModal
+            isOpen={addGroupOpen}
+            onRequestClose={() => setAddGroupOpen(false)}
+        >
+            
+        </MainModal>
+        </>
     )
 }

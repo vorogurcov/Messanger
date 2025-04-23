@@ -1,20 +1,21 @@
 import { ReactNode, useState } from "react";
 import Menu from "../../pages/Home/components/buttons/menu/menu";
-import ModalBase from "../modalBase/modalBase";
-
 import css from "./css.module.scss"
 import Preview from "./components/Preview/Preview";
 import profileActive from "../../../../assets/img/profileActive.png"
 import profilePassive from "../../../../assets/img/profilePassive.png"
 import zamokActive from "../../../../assets/img/zamokActive.png"
 import zamokPassive from "../../../../assets/img/zamokPassive.png"
+import addButton from "../../../../assets/img/add.png"
 import FieldPanel from "./components/Field/Field";
 import Profile from "./components/Profile/Profile";
 import UpdateCredentials from "./components/UpdateCredentials/UpdateCredentials";
+import MainModal from "../MainModal/MainModal";
 
 const initialFields = [
     {id: 0, label: "Мой профиль", imgesSrc: {active: profileActive, notActive: profilePassive}, active: false, node: <Profile/>},
-    {id: 1, label: "Конфиденциальность", imgesSrc: {active: zamokActive, notActive: zamokPassive}, active: false, node: <UpdateCredentials/>}
+    {id: 1, label: "Конфиденциальность", imgesSrc: {active: zamokActive, notActive: zamokPassive}, active: false, node: <UpdateCredentials/>},
+    {id: 2, label: "Создать группу", imgesSrc: {active: addButton, notActive: addButton}, active: false, node: <UpdateCredentials/>}
 ]
 
 export default function MovableNavigatePanelModal(){
@@ -30,7 +31,7 @@ export default function MovableNavigatePanelModal(){
     return(
         <>
             <Menu onClick={() => setIsOpen(true)}/>
-            <ModalBase
+            <MainModal
                 isOpen={isOpen}
                 onRequestClose={() => { 
                     setIsOpen(false)
@@ -53,7 +54,7 @@ export default function MovableNavigatePanelModal(){
                         />
                     )}
                 </div></>}
-            </ModalBase>
+            </MainModal>
         </>
     )
 }
