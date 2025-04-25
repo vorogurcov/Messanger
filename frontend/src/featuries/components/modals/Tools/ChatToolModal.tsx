@@ -40,7 +40,8 @@ export default function ChatToolModal({chat, groupList, isOpen, coordinates, set
                         value={{
                             chat: localChat, 
                             setChat: setLocalChat as SetStateAction<ChatList>, 
-                            groupList: groupList
+                            groupList: groupList,
+                            handleClose: () => {console.log("close bar modal"); setIsOpen(false)}
                         }}>
                         <ListTools>
                             <ChatGroupTool/>

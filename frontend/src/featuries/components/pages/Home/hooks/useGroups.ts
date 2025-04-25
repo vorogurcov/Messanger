@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { allChats, PageType } from "../../../../entities/schemes/enums/chatEnum";
 import ApiQuery from "../../../../api/query";
 import { GroupActionEnum, useGroupButtonsReduser } from "../../../../../hooks/useReducer/usegroupButtosReduser";
@@ -8,22 +8,12 @@ import { useAppDispatch } from "../../../../../hooks/useStore";
 
 export default function useGroups(typeChat: PageType){
     const [groups, disputchButtonsState] = useGroupButtonsReduser()
-    const [nameActiveGroup, setNameActiveGroup] = useState(allChats)
     const dispatch = useAppDispatch()
+    console.log("groups", groups)
 
     useEffect(() => {
-        const active = groups.find(gr => gr.active)?.name
-        if (active && active !== nameActiveGroup)
-            setNameActiveGroup(active)
-    }, [groups, setNameActiveGroup]) // nameActiveGroup меняется только тут
-
-    useEffect(() => {
-        if (nameActiveGroup === allChats)
-            dispatch(ChatSliceManager.fetching.getAllChats())
-        else{
-
-        }
-    }, [nameActiveGroup, dispatch])
+        dispatch(ChatSliceManager.fetching.getAllChats())
+    }, [dispatch])
 
     useEffect(() => {
         ApiQuery.getChatGroups()
@@ -34,9 +24,16 @@ export default function useGroups(typeChat: PageType){
     }, [disputchButtonsState])
     
     const handleClick = useCallback((id: string) => {
-        disputchButtonsState({type: GroupActionEnum.CHOOSE, id: id})
-        dispatch(ChatSliceManager.fetching.getChatsByGroup(id))
-    }, [disputchButtonsState, dispatch])
+        if (groups.find(gr => gr.active)?.id??"" !== id){
+            if (id === allChats){
+                dispatch(ChatSliceManager.fetching.getAllChats())
+            }
+            else{
+                dispatch(ChatSliceManager.fetching.getChatsByGroup(id))
+            }
+            disputchButtonsState({type: GroupActionEnum.CLICK_ON_GROUP, id: id})
+        }
+    }, [disputchButtonsState, dispatch, groups])
     
     const handleDelete = useCallback((id: string) => { // не надо добавлять чат айди. это обособленная чать, которая используется много где
         ApiQuery.deleteGroup(id)
@@ -45,8 +42,8 @@ export default function useGroups(typeChat: PageType){
         })
     }, [disputchButtonsState])
 
-    const handleAddGroup = useCallback(async (name: string) => {
-        const idNewGroup = await ApiQuery.addGroup(name)
+    const handleAddGroup = useCallback(async (name: string, chatIds?: string[]) => {
+        const idNewGroup = await ApiQuery.addGroup(name, chatIds)
         if (!groups.find(gr => gr.name === name))
             disputchButtonsState({type: GroupActionEnum.ADD_GROUPS, names: [{name: name, id: idNewGroup}]})
     }, [disputchButtonsState, groups])
@@ -59,15 +56,6 @@ export default function useGroups(typeChat: PageType){
     const handleChangeState = useCallback((newState: PanelGroupButtons[]) => {
         disputchButtonsState({type: GroupActionEnum.CHANGE_STATE, newState: newState})
     }, [disputchButtonsState])
-
-    // useEffect(() => {
-    //     ApiQuery.getChatGroups(typeChat)
-    //     .then((data) => {
-    //         disputchButtonsState({type: GroupActionEnum.RESET_FORM} ); 
-    //         disputchButtonsState({type: GroupActionEnum.ADD_GROUPS, names: data.map(dt => dt.name)} )
-    //     })
-
-    // }, [typeChat, disputchButtonsState])
 
     return {groups, handleClick, handleDelete, handleAddGroup, handleRename, handleChangeState}
 }

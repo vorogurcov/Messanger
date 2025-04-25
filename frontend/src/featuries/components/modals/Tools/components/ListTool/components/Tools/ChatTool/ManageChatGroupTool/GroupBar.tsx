@@ -10,6 +10,7 @@ import { ChatSliceManager } from "../../../../../../../../../entities/store/feat
 import { allChats } from "../../../../../../../../../entities/schemes/enums/chatEnum";
 import { checkAndDeleteGroup } from "../../utils";
 import ApiQuery from "../../../../../../../../../api/query";
+import CreateGroupTool from "./CreateGroupTool";
 
 
 export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
@@ -52,6 +53,7 @@ export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
                     onClick={() => handleClick(thisChat?.chat.group === gr.id ? allChats : gr.name)}
                 />
             )}
+            {thisChat && <CreateGroupTool handleClose={thisChat.handleClose} chatId={thisChat.chat.id}/>}
         </HiddenBar>
     )
 }

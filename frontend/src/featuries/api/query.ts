@@ -54,12 +54,15 @@ export default class ApiQuery{
         formData.append('avatarAction', type)
         if (files)
             formData.append('file', files[0])
-        Object.keys(user).forEach((key) => {
-            const value = user[key as keyof typeof user];
-            if (value !== undefined) {  // Проверка на undefined
-              formData.append(key, value as string); // Предполагается, что все значения user являются строками
-            }
-        })
+        // Object.keys(user).forEach((key) => {
+        //     const value = user[key as keyof typeof user];
+        //     if (value !== undefined) {  // Проверка на undefined
+        //       formData.append(key, value as string); // Предполагается, что все значения user являются строками
+        //     }
+        // })
+        user.bio && formData.append("bio", user.bio);
+        user.userName && formData.append("userName", user.userName);
+        user.birthDate && formData.append("birthDate", user.birthDate);
         return authInstance.patch(this.generateUrlServer("/profile"), formData)
     }
 
@@ -83,7 +86,7 @@ export default class ApiQuery{
     }
 
     static async getChatListsByGroup(groupId: string): Promise<ChatList[]>{
-        const chats = (await authInstance.get(`${core.serverEdnpoints.allChats}/${groupId}/chats`)).data.chats
+        const chats = (await authInstance.get(`${core.serverEdnpoints.groups}/${groupId}/chats`)).data.chats
         return chats
     }
 
@@ -91,15 +94,20 @@ export default class ApiQuery{
         await authInstance.delete(ApiQuery.generateUrlServer(`/chats/${chatId}`))
     }
 
-    static async addGroup(name: string){
-        return "daf"
+    static async addGroup(name: string, chatIds?: string[]){
+        const groupId = (
+            await authInstance.post(core.serverEdnpoints.groups, {name: name, createdAt: "2025-01-01", chatIds: chatIds??[]})
+        ).data.group.id 
+        return groupId
     }
 
     static async deleteGroup(id: string){
-        await authInstance.delete(core.serverEdnpoints.groups, {params: {groupId: id}})
+        console.log("id delete", id)
+
+        await authInstance.delete(`${core.serverEdnpoints.groups}/${id}`)
     }
 
     static async updateGroup(groupId: string, name?: string, newChatIds?: string[]){
-        await authInstance.patch(core.serverEdnpoints.groups, {name, newChatIds}, {params: {groupId: groupId}})
+        await authInstance.patch(`${core.serverEdnpoints.groups}/${groupId}`, {name, newChatIds})
     }
 }

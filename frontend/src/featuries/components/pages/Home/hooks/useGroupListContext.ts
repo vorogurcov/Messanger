@@ -3,7 +3,7 @@ import { PanelGroupButtons } from "../../../../entities/schemes/dto/Chat";
 
 export interface IGroupListContext{
     groups: PanelGroupButtons[]
-    handleAddGroup: (name: string) => Promise<void>
+    handleAddGroup: (name: string, chatIds?: string[]) => Promise<void>
     handleDelete: (id: string) => void
     handleClick: (id: string) => void
     handleRename: (id: string, oldName: string, newName: string) => void

@@ -1,11 +1,11 @@
 import { useReducer } from "react";
 import { PanelGroupButtons } from "../../featuries/entities/schemes/dto/Chat";
+import { allChats } from "../../featuries/entities/schemes/enums/chatEnum";
 
 export enum GroupActionEnum{
     CLICK_ON_GROUP,
     RESET_FORM,
     ADD_GROUPS,
-    CHOOSE,
     DELETE_GROUP,
     RENAME_GROUP,
     CHANGE_STATE
@@ -15,12 +15,11 @@ type FormAction =
     | { type: GroupActionEnum.CLICK_ON_GROUP; id: string}
     | { type: GroupActionEnum.RESET_FORM }
     | {type: GroupActionEnum.ADD_GROUPS; names: {id: string, name: string}[]}
-    | {type: GroupActionEnum.CHOOSE; id: string}
     | {type: GroupActionEnum.DELETE_GROUP; id: string}
     | { type: GroupActionEnum.RENAME_GROUP; id: string, newName: string}
     | { type: GroupActionEnum.CHANGE_STATE; newState: PanelGroupButtons[]}
 
-const defaultValue: PanelGroupButtons[] = [{id: "allChats", active: true, name: "Все чаты", isChangeName: false}];
+const defaultValue: PanelGroupButtons[] = [{id: allChats, active: true, name: "Все чаты", isChangeName: false}];
 
 function formReducer(state: PanelGroupButtons[], action: FormAction): PanelGroupButtons[] {
   switch (action.type) {
@@ -30,8 +29,6 @@ function formReducer(state: PanelGroupButtons[], action: FormAction): PanelGroup
         return defaultValue;
     case GroupActionEnum.ADD_GROUPS:
         return [...state, ...action.names.map(nm => {return {...nm, active: false, isChangeName: false}})]
-    case GroupActionEnum.CHOOSE:
-        return state.map(gr => gr.id === action.id ? {...gr, active: true} : gr.active ? {...gr, active: false} : gr)
     case GroupActionEnum.DELETE_GROUP:
         let newState = state.filter(group => group.id !== action.id)
         newState = newState.find(gr => gr.active) ? newState : [...defaultValue, ...newState.slice(1)]

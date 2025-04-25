@@ -1,6 +1,17 @@
-.modalContent{
+@import "../../../../mixins/mixinsCss/classes.module.scss"; // modalOverlay
+
+.modalContentLocal, .modalContentAuto{
+    @extend .modalContent;
     width: 500px;
     height: 90vh;
+}
+
+.modalContentAuto{
+    height: auto;
+    width: 300px;
+}
+
+.modalContentLocal{
     padding: 60px 80px 60px 80px;
     border-radius: 41px;
 }

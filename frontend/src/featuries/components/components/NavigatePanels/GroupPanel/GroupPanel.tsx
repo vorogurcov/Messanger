@@ -10,9 +10,10 @@ import { useGroupListContext } from "../../../pages/Home/hooks/useGroupListConte
 import useChangeNameGroup from "./hooks/useChangeName"
 import InputLikeText from "../../UI/inputs/InputLikeText/InputLikeText"
 import AddButonLikePlus from "../../UI/buttons/AddButonLikePlus"
-import MainModal from "../../../modals/MainModal/MainModal"
+import CreateFolderButton from "../../UI/buttons/CreateGroup"
+import useCreateEntity, { TypeOfClick } from "./hooks/useCreateEntity"
 
-function OneButton({folder, children}: {folder: PanelGroupButtons, children: ReactNode}){
+function OneGroupButton({folder, children}: {folder: PanelGroupButtons, children: ReactNode}){
     const {coordinates, showTools, setShowTools, handleContextMenu} = useContextMenu()
     return(
         <>
@@ -34,14 +35,23 @@ function OneButton({folder, children}: {folder: PanelGroupButtons, children: Rea
     )
 }
 
-const OneButtonMemo = memo(OneButton)
+const OneGroupButtonMemo = memo(OneGroupButton)
+const OneDefauldButton = memo(function ({children}:{children: ReactNode}){
+    return(
+        <div 
+            className={css.oneBut}
+        >
+            {children}
+        </div>
+    )
+})
 
 export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
     const groupManager = useGroupListContext()
     const [changingFolder, setChangingFolder] = useState<PanelGroupButtons>(initialPanelGroupButtons)
     const inputRef = useRef<HTMLInputElement>(null)
     const {handleBlur, handleKeyDown} = useChangeNameGroup(changingFolder, inputRef)
-    const [addGroupOpen, setAddGroupOpen] = useState(false)
+    const {component, setTypeClick} = useCreateEntity() 
 
     useEffect(() => {
         const changingButton = buttons.find(but => but.isChangeName)
@@ -61,14 +71,14 @@ export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
         <>
         <div style={{width: "100%", height: "100%"}}>
             {buttons.map((button) => button.name === allChats ? 
-                <OneButtonMemo folder={button}>{
-                    <ChatButton {...button} onClick={() => groupManager?.handleClick(button.name)}/>
-                }</OneButtonMemo>
-                : <OneButtonMemo key={button.name} folder={button}>{
+                <OneGroupButtonMemo folder={button}>{
+                    <ChatButton {...button} onClick={() => groupManager?.handleClick(button.id)}/>
+                }</OneGroupButtonMemo>
+                : <OneGroupButtonMemo key={button.name} folder={button}>{
                     button.id !== changingFolder.id ?
                     <FolderButton 
                         {...button} 
-                        onClick={() => groupManager?.handleClick(button.name)}
+                        onClick={() => groupManager?.handleClick(button.id)}
                     /> :
                     <FolderButton
                         active={button.active}
@@ -80,16 +90,16 @@ export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
                             />
                         }
                     /> 
-                }</OneButtonMemo>
+                }</OneGroupButtonMemo>
             )}
-            <AddButonLikePlus name="+ чат" onClick={() => setAddGroupOpen(true)}/>
+            <OneDefauldButton>
+                <CreateFolderButton name="Создать" onClick={() => setTypeClick(TypeOfClick.folder)}/>
+            </OneDefauldButton>
+            <OneDefauldButton>
+                <AddButonLikePlus name="+ чат" onClick={() => setTypeClick(TypeOfClick.chat)}/>
+            </OneDefauldButton>
         </div>
-        <MainModal
-            isOpen={addGroupOpen}
-            onRequestClose={() => setAddGroupOpen(false)}
-        >
-            
-        </MainModal>
+        {component}
         </>
     )
 }
