@@ -1,10 +1,10 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, ReactNode } from "react";
 import ImageButtonBase from "../ImageButtonBase/ImageButtonBase";
 
 import css from "./css.module.scss"
 
 interface Props extends InputHTMLAttributes<HTMLInputElement>{
-    label: string
+    label: ReactNode
 }
 
 export default function LabledImgButton({label, src, ...props}: Props){

@@ -5,6 +5,8 @@ class ServerEndpoints{
     regAuth = `${apiBaseUrl}/auth/register`
     updateRefresh = `${apiBaseUrl}/auth/refresh`
     confirmCode = `${apiBaseUrl}/auth/verify`
+    allChats = `${apiBaseUrl}/chats`
+    groups = `${apiBaseUrl}/groups`
 }
 
 class FrontendEndpoints{

@@ -1,17 +1,43 @@
 import { ChatType } from "../enums/chatEnum"
 
-export interface PanelButtons{
-    id: number
+export interface PanelGroupButtons{
+    id: string
     name: string
     active: boolean
+    isChangeName: boolean
+}
+
+export const initialPanelGroupButtons: PanelGroupButtons = {
+    id: "",
+    name: "",
+    active: false,
+    isChangeName: false
+}
+
+export interface ILastMessage{
+    id: string,
+    context: string,
+    senderId: string,
+    createdAt: string
 }
 
 export interface ChatList{
-    id: number
-    userName: string
-    lastMessage?: string
-    numberNewMessage: number
+    id: string
+    name: string
+    lastMessage?: ILastMessage
     avatar?: string
     group: string
-    typeChat: ChatType
+    type: ChatType
+}
+
+export interface ICreateGroup{
+    name: string
+    createdAt: string
+    chatIds: number[]
+}
+
+export const initialCreateGroup: ICreateGroup = {
+    name: "",
+    createdAt: '2025-04-02',
+    chatIds: []
 }

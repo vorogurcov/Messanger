@@ -1,7 +1,5 @@
 import { ReactNode, useState } from "react";
 import Menu from "../../pages/Home/components/buttons/menu/menu";
-import ModalBase from "../modalBase/modalBase";
-
 import css from "./css.module.scss"
 import Preview from "./components/Preview/Preview";
 import profileActive from "../../../../assets/img/profileActive.png"
@@ -11,10 +9,11 @@ import zamokPassive from "../../../../assets/img/zamokPassive.png"
 import FieldPanel from "./components/Field/Field";
 import Profile from "./components/Profile/Profile";
 import UpdateCredentials from "./components/UpdateCredentials/UpdateCredentials";
+import ModalBase from "../modalBase/modalBase";
 
 const initialFields = [
     {id: 0, label: "Мой профиль", imgesSrc: {active: profileActive, notActive: profilePassive}, active: false, node: <Profile/>},
-    {id: 1, label: "Конфиденциальность", imgesSrc: {active: zamokActive, notActive: zamokPassive}, active: false, node: <UpdateCredentials/>}
+    {id: 1, label: "Конфиденциальность", imgesSrc: {active: zamokActive, notActive: zamokPassive}, active: false, node: <UpdateCredentials/>},
 ]
 
 export default function MovableNavigatePanelModal(){

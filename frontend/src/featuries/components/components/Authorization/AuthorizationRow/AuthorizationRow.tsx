@@ -12,13 +12,13 @@ interface Props extends InputHTMLAttributes<HTMLInputElement>{
   error?: string | undefined
 }
 
-function OneRow({keyField, onChange, error, ...props}: Props){
+function OneRow({keyField, onChange, error, label, ...props}: Props){
   const refType = useRef(props.type)
   const [type, setType] = useState(props.type??"text")
   return(
     <div style={props.style} className={css.wrapper}>
       <div style={{fontSize: "70%"}}>
-        <b>{props.label}</b>
+        <b>{label}</b>
       </div>
       <div className={css.container}>
         <AuthorizationInput

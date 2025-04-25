@@ -1,8 +1,8 @@
-import { InputHTMLAttributes } from "react"
+import { InputHTMLAttributes, ReactNode } from "react"
 
 type LabeledButton = {
-    name: string
+    name: ReactNode
     active: boolean
 }
 
-export type LabeledButtonProps = LabeledButton & Omit<InputHTMLAttributes<HTMLInputElement>, 'id'>
+export type LabeledButtonProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'name'> & LabeledButton 
