@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {ILike, Repository} from 'typeorm';
 import { UserProfile } from '../entities/user-profile.entity';
 import { UpdateProfileInfoDto } from '../dto/update-profile-info.dto';
 import { UpdateProfileStatusDto } from '../dto/update-profile-status.dto';
@@ -60,5 +60,14 @@ export class UserProfileRepository {
             console.log('Can not update avatar URL!', error.message);
             throw error;
         }
+    }
+
+    async findUsers(q:string){
+        return await this.repository
+            .createQueryBuilder('user')
+            .innerJoin('user.userAuth', 'userAuth')
+            .where('LOWER(user.userName) LIKE LOWER(:q)', { q: `%${q}%` })
+            .orWhere('LOWER(userAuth.login) LIKE LOWER(:q)', { q: `%${q}%` })
+            .getMany();
     }
 }
