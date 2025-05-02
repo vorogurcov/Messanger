@@ -28,33 +28,22 @@ export class ChatGroupsRepository {
         });
     }
 
-    async getChatsFromGroup(userId:string, groupId:string){
-        const chatGroup = await this.repository.findOne({
-            select:{
-              chats:{
-                  id:true,
-                  type:true,
-                  name:true,
-                  createdAt:true,
-              }
-            },
-            relations:{
-              groupOwner:true,
-              chats:true,
-            },
-            where:{
-                groupOwner:{
-                    id:userId,
-                },
-                id:groupId,
-            }
-        })
+    async getChatsFromGroup(userId: string, groupId: string): Promise<Chat[]> {
+        const chatGroup = await this.repository
+            .createQueryBuilder('group')
+            .leftJoinAndSelect('group.chats','chats')
+            .leftJoinAndSelect('group.groupOwner','owner')
+            .where('group.id = :groupId',{groupId} )
+            .andWhere('owner.id = :userId',{userId})
+            .getOne()
 
-        if(!chatGroup)
-            throw new NotFoundException('Such group was not found!')
+        if (!chatGroup) {
+            throw new NotFoundException('Such group was not found!');
+        }
 
-        return chatGroup?.chats
+        return chatGroup.chats;
     }
+
 
     async updateUserGroupById(
         name: string,
@@ -75,10 +64,6 @@ export class ChatGroupsRepository {
         return await this.repository.findOne({
             relations: {
                 groupOwner: true,
-            },
-            select: {
-                id: true,
-                name: true,
             },
             where: {
                 id: groupId,

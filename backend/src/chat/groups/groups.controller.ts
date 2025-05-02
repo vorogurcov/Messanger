@@ -54,7 +54,7 @@ export class GroupsController {
     }
 
     @Delete(':groupId')
-    async deleteGroup(@Param('chatId') groupId: string, @Req() req: Request) {
+    async deleteGroup(@Param('groupId') groupId: string, @Req() req: Request) {
         const { id: userId } = req.user as UserAuth;
         try {
             const group = await this.groupsService.deleteGroup(userId, groupId);
@@ -70,7 +70,7 @@ export class GroupsController {
 
     @Patch(':groupId')
     async updateGroup(
-        @Param('chatId') groupId: string,
+        @Param('groupId') groupId: string,
         @Req() req: Request,
         @Body() updateGroupDto: UpdateGroupDto,
     ) {
@@ -92,9 +92,10 @@ export class GroupsController {
     }
 
     @Get(':groupId/chats')
-    async getChatsFromGroup(@Req() req: Request, @Param(':groupId') groupId:string){
+    async getChatsFromGroup(@Req() req: Request, @Param('groupId') groupId:string){
         const { id: userId } = req.user as UserAuth;
         try {
+            console.log(groupId)
             const chats = await this.groupsService.getChatsFromGroup(userId, groupId)
             return {
                 statusCode: HttpStatus.OK,
