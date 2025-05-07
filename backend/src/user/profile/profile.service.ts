@@ -169,7 +169,7 @@ export class ProfileService {
         };
     }
 
-    async findUsers(q:string){
-        return await this.userProfileRepository.findUsers(q)
+    async findUsers(q: string) {
+        return await this.userProfileRepository.findUsers(q);
     }
 }

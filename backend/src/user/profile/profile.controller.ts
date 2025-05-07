@@ -5,7 +5,8 @@ import {
     HttpStatus,
     InternalServerErrorException,
     Patch,
-    Post, Query,
+    Post,
+    Query,
     Req,
     UploadedFile,
     UseGuards,
@@ -137,15 +138,15 @@ export class ProfileController {
     }
 
     @Get('search')
-    async findUsers(@Query('q') q: string){
-        try{
-            const users = await this.profileService.findUsers(q)
+    async findUsers(@Query('q') q: string) {
+        try {
+            const users = await this.profileService.findUsers(q);
             return {
-                statusCode:HttpStatus.OK,
-                message:'Find users successful',
+                statusCode: HttpStatus.OK,
+                message: 'Find users successful',
                 users,
-            }
-        }catch(error){
+            };
+        } catch (error) {
             throw error;
         }
     }

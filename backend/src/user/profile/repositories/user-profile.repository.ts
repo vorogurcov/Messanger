@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {ILike, Repository} from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { UserProfile } from '../entities/user-profile.entity';
 import { UpdateProfileInfoDto } from '../dto/update-profile-info.dto';
 import { UpdateProfileStatusDto } from '../dto/update-profile-status.dto';
@@ -62,7 +62,7 @@ export class UserProfileRepository {
         }
     }
 
-    async findUsers(q:string){
+    async findUsers(q: string) {
         return await this.repository
             .createQueryBuilder('user')
             .innerJoin('user.userAuth', 'userAuth')

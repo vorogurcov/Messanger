@@ -1,15 +1,13 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class MessagesSeed1745422286364 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
-
         await queryRunner.query(`
             INSERT INTO "chat" ("id", "type", "name", "createdAt", "chatOwnerId")
             VALUES 
                 ('d4e6f789-01ab-2cde-3f45-678901234567', 'private', 'Chat: Maria & Mihail', '2025-04-01 09:00:00', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab'),
                 ('d7e6f789-01ab-2cde-3f45-678901234567', 'private', 'Chat: Maria & Kristina', '2025-04-01 09:05:00', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab');
         `);
-
 
         await queryRunner.query(`
             INSERT INTO "chat_users_user_profile" ("chatId", "userProfileId")
@@ -19,10 +17,6 @@ export class MessagesSeed1745422286364 implements MigrationInterface {
                 ('d7e6f789-01ab-2cde-3f45-678901234567', 'e2c9d52e-c4ad-4b7d-a0f7-c4d5b3240eab'), -- Maria
                 ('d7e6f789-01ab-2cde-3f45-678901234567', 'f647dfe1-85fc-4be1-bff2-ff42d7b89c6c'); -- Kristina
         `);
-
-
-
-
 
         // Вставка сообщений
         await queryRunner.query(`
@@ -77,9 +71,16 @@ export class MessagesSeed1745422286364 implements MigrationInterface {
                 '22222222-bbbb-cccc-dddd-222222222222'
             );
         `);
-        for (const chatId of ['d4e6f789-01ab-2cde-3f45-678901234567', 'd7e6f789-01ab-2cde-3f45-678901234567']) {
-            await queryRunner.query(`DELETE FROM "chat_users_user" WHERE "chatId" = '${chatId}'`);
-            await queryRunner.query(`DELETE FROM "chat" WHERE "id" = '${chatId}'`);
+        for (const chatId of [
+            'd4e6f789-01ab-2cde-3f45-678901234567',
+            'd7e6f789-01ab-2cde-3f45-678901234567',
+        ]) {
+            await queryRunner.query(
+                `DELETE FROM "chat_users_user" WHERE "chatId" = '${chatId}'`,
+            );
+            await queryRunner.query(
+                `DELETE FROM "chat" WHERE "id" = '${chatId}'`,
+            );
         }
     }
 }

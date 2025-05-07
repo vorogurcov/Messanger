@@ -31,11 +31,11 @@ export class ChatGroupsRepository {
     async getChatsFromGroup(userId: string, groupId: string): Promise<Chat[]> {
         const chatGroup = await this.repository
             .createQueryBuilder('group')
-            .leftJoinAndSelect('group.chats','chats')
-            .leftJoinAndSelect('group.groupOwner','owner')
-            .where('group.id = :groupId',{groupId} )
-            .andWhere('owner.id = :userId',{userId})
-            .getOne()
+            .leftJoinAndSelect('group.chats', 'chats')
+            .leftJoinAndSelect('group.groupOwner', 'owner')
+            .where('group.id = :groupId', { groupId })
+            .andWhere('owner.id = :userId', { userId })
+            .getOne();
 
         if (!chatGroup) {
             throw new NotFoundException('Such group was not found!');
@@ -43,7 +43,6 @@ export class ChatGroupsRepository {
 
         return chatGroup.chats;
     }
-
 
     async updateUserGroupById(
         name: string,
@@ -53,17 +52,31 @@ export class ChatGroupsRepository {
     ) {
         const group = await this.findOneGroupById(groupId, userId);
         if (!group) throw new NotFoundException('Such group does not exist!');
-
-        group.name = name;
-        group.chats = chats;
+        if (name) group.name = name;
+        if (chats.length !== 0) group.chats = group.chats.concat(chats);
 
         return await this.repository.save(group);
     }
 
+    async deleteChatFromGroup(
+        userId: string,
+        groupId: string,
+        deleteChat: Chat,
+    ) {
+        const group = await this.findOneGroupById(groupId, userId);
+        if (!group) throw new NotFoundException('Such group does not exist!');
+        console.log(group)
+        group.chats = group.chats.filter((chat) => {
+            return chat.id !== deleteChat.id;
+        });
+
+        return await this.repository.save(group);
+    }
     async findOneGroupById(groupId: string, userId: string) {
         return await this.repository.findOne({
             relations: {
                 groupOwner: true,
+                chats: true,
             },
             where: {
                 id: groupId,

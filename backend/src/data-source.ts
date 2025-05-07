@@ -8,9 +8,9 @@ import { Chat } from './chat/chats/entities/chat.entity';
 import { ChatsAndMessages1744218222284 } from './common/migration/schema/1744218222284-ChatsAndMessages';
 import { ChatsAndMessagesSeed1744218244396 } from './common/migration/seed/1744218244396-ChatsAndMessagesSeed';
 import { ChatGroup } from './chat/groups/entities/chat-group.entity';
-import {ChatGroups1745410568577} from "./common/migration/schema/1745410568577-ChatGroups";
-import {ChatGroupsSeed1745410591369} from "./common/migration/seed/1745410591369-ChatGroupsSeed";
-import {MessagesSeed1745422286364} from "./common/migration/seed/1745422286364-MessagesSeed";
+import { ChatGroups1745410568577 } from './common/migration/schema/1745410568577-ChatGroups';
+import { ChatGroupsSeed1745410591369 } from './common/migration/seed/1745410591369-ChatGroupsSeed';
+import { MessagesSeed1745422286364 } from './common/migration/seed/1745422286364-MessagesSeed';
 
 export const AppDataSource = new DataSource({
     host: process.env.DB_HOST,
@@ -28,6 +28,6 @@ export const AppDataSource = new DataSource({
         ChatsAndMessagesSeed1744218244396,
         ChatGroups1745410568577,
         ChatGroupsSeed1745410591369,
-        MessagesSeed1745422286364
+        MessagesSeed1745422286364,
     ],
 });
