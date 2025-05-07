@@ -1,6 +1,6 @@
 import { memo } from "react"
 import scss_union from "../../../../../../mixins/mixinsCss/classes.module.scss"
-import { ChatType, PageType } from "../../../../../entities/schemes/enums/chatEnum"
+import { PageType } from "../../../../../entities/schemes/enums/chatEnum"
 import css from "./css.module.scss"
 import SearchInput from "../../../../components/UI/inputs/SearchInput/SearchInput"
 import ChatList from "./ChatList/ChatList"

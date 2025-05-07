@@ -4,6 +4,9 @@ import { checkAuthToken } from './utils/tokenUtil';
 import Home from './featuries/components/pages/Home/Home';
 import { EnterForm } from './featuries/components/pages/Authorization/enter/enter';
 import Registration from './featuries/components/pages/Authorization/registration/registration';
+import { useAppDispatch } from './hooks/useStore';
+import { useEffect } from 'react';
+import { UserSliceManager } from './featuries/entities/store/featuries/userSlice';
 
 const ProtectedRoute: React.FC = () => {
   if (!checkAuthToken()) {
@@ -14,7 +17,10 @@ const ProtectedRoute: React.FC = () => {
 };
 
 function App() {
-
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(UserSliceManager.fetching.getData())
+  }, [dispatch])
   return (
     <BrowserRouter 
       future={{

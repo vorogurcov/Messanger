@@ -113,7 +113,6 @@ export default function UpdateCredentials(){
     const [email, setEmail] = useState<ChangeValueProps>({value: user.email ?? "", isCorrect: false})
     const [page, setPage] = useState<"main" | "password" | "email">("main")
     const [apiError, setApiError] = useState("")
-
     const userId = useRef("")
 
     const dispatch = useAppDispatch()
