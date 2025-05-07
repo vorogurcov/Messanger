@@ -22,6 +22,7 @@ const getUserLK = createAsyncThunk( // от ключей зависит как �
     'userLK/getData',
     async () => {
         const user = (await ApiQuery.getUserLK()).data.userProfile
+        console.log("user", user)
         const keys = Object.keys(userLKInitial)
         let userAdapted = {}
         keys.forEach(key => {

@@ -109,11 +109,11 @@ export default function UpdateCredentials(){
     const [repeatPassw, setRepeatPassw] = useState<ChangeValueProps>({value: "", isCorrect: false})
 
     const user: UserLK = useAppSelector(UserSliceManager.selectors.selectUser)
+    console.log("userLk", user)
 
     const [email, setEmail] = useState<ChangeValueProps>({value: user.email ?? "", isCorrect: false})
     const [page, setPage] = useState<"main" | "password" | "email">("main")
     const [apiError, setApiError] = useState("")
-    const userId = useRef("")
 
     const dispatch = useAppDispatch()
 
@@ -140,10 +140,9 @@ export default function UpdateCredentials(){
         handleSubmit()
         .then(() => {
             setPage("email")
-            userId.current = id
         })
         .finally(() => console.log("finally"))
-    }, [userId, handleSubmit])
+    }, [handleSubmit])
 
     return(
         <LoadingComponent loading={isLoading}>
@@ -171,7 +170,7 @@ export default function UpdateCredentials(){
             </div>
             <div style={{display: page === "email" ? "" : "none", width: "100%", height: "100%"}}>
                 <ConfirmCode 
-                    userId={decodeJWT(localStorage.getItem(core.localStorageKeys.access_token) ?? "").id} 
+                    userId={user.id} 
                     callbackSubmit={handleSubmit}
                 />
             </div>
