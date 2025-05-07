@@ -64,15 +64,38 @@ export class ChatsService {
 
         const chat = await this.chatsRepository.findChatById(chatId);
 
+        if (!chat) throw new NotFoundException('Chat does not exist');
+
         if (userId !== chat.chatOwner.id)
             throw new ForbiddenException('You can not modify this chat!');
 
-        const chatDto: Partial<Chat> = {
-            id: chatId,
-            ...updateChatDto,
-        };
+        const existingUserIds = chat.users.map((u) => u.id);
+        const newUserIds = updateChatDto.userIds ?? [];
 
-        const updatedChat = await this.chatsRepository.updateChat(chatDto);
+        const uniqueUserIds = Array.from(
+            new Set([...existingUserIds, ...newUserIds]),
+        );
+
+        const users: UserProfile[] = [];
+
+        for (const id of uniqueUserIds) {
+            const user = await this.profileService.getUserProfileById(id);
+            if (!user) {
+                throw new NotFoundException(
+                    `User with id ${id} does not exist`,
+                );
+            }
+            users.push(user);
+        }
+
+        if (users.length !== uniqueUserIds.length) {
+            throw new NotFoundException('One or more users do not exist');
+        }
+
+        chat.name = updateChatDto.name ?? chat.name;
+        chat.users = users;
+
+        const updatedChat = await this.chatsRepository.updateChat(chat);
         return updatedChat;
     }
 
@@ -93,5 +116,20 @@ export class ChatsService {
         const chatInfo = await this.chatsRepository.findChatById(chatId);
         chatInfo.lastMessage = message;
         return await this.chatsRepository.updateChat(chatInfo);
+    }
+
+    async deleteUserFromChat(
+        chatId: string,
+        userId: string,
+        deleteUserId: string,
+    ) {
+        const chat = await this.chatsRepository.findChatById(chatId);
+
+        if (chat.chatOwner.id !== userId)
+            throw new ForbiddenException(
+                'You do not have permissions to delete users from this chat!',
+            );
+        chat.users = chat.users.filter((user) => user.id !== deleteUserId);
+        return await this.chatsRepository.updateChat(chat);
     }
 }

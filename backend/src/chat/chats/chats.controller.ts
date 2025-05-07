@@ -70,6 +70,28 @@ export class ChatsController {
             throw error;
         }
     }
+    @Patch(':chatId/delete-user/:deleteUserId')
+    async deleteUserFromChat(
+        @Param('chatId') chatId: string,
+        @Req() req: Request,
+        @Param('deleteUserId') deleteUserId: string,
+    ) {
+        const { id: userId } = req.user as UserAuth;
+        try {
+            const chat = await this.chatsService.deleteUserFromChat(
+                chatId,
+                userId,
+                deleteUserId,
+            );
+            return {
+                statusCode: HttpStatus.OK,
+                message: 'Delete user from chat successful!',
+                chat,
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
 
     @Delete(':chatId')
     async deleteUserChat(@Param('chatId') chatId: string, @Req() req: Request) {

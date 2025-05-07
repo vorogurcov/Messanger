@@ -65,7 +65,7 @@ export class ChatGroupsRepository {
     ) {
         const group = await this.findOneGroupById(groupId, userId);
         if (!group) throw new NotFoundException('Such group does not exist!');
-        console.log(group)
+        console.log(group);
         group.chats = group.chats.filter((chat) => {
             return chat.id !== deleteChat.id;
         });

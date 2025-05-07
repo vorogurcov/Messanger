@@ -16,6 +16,7 @@ export class ChatsRepository {
         const chat = await this.repository.findOne({
             relations: {
                 messages: true,
+                users: true,
             },
             where: {
                 id: chatId,
