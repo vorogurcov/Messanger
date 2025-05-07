@@ -168,4 +168,8 @@ export class ProfileService {
             login,
         };
     }
+
+    async findUsers(q: string) {
+        return await this.userProfileRepository.findUsers(q);
+    }
 }

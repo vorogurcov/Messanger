@@ -6,6 +6,7 @@ import {
     InternalServerErrorException,
     Patch,
     Post,
+    Query,
     Req,
     UploadedFile,
     UseGuards,
@@ -130,6 +131,20 @@ export class ProfileController {
                 statusCode: HttpStatus.OK,
                 message: 'Verify password successful!',
                 passwordVerifiedMarker,
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @Get('search')
+    async findUsers(@Query('q') q: string) {
+        try {
+            const users = await this.profileService.findUsers(q);
+            return {
+                statusCode: HttpStatus.OK,
+                message: 'Find users successful',
+                users,
             };
         } catch (error) {
             throw error;

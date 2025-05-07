@@ -19,24 +19,28 @@ export class GroupsService {
 
     async createGroup(userId: string, createGroupDto: CreateGroupDto) {
         const { name, chatIds } = createGroupDto;
+
         const groupOwner = await this.profileService.getUserProfileById(userId);
         if (!groupOwner) throw new NotFoundException('User does not exist!');
 
-        const results = await Promise.allSettled(
-            chatIds.map((id) => this.chatsService.getChatById(id)),
-        );
+        let chats: Chat[] = [];
 
-        const rejected = results.filter((r) => r.status === 'rejected');
-        if (rejected.length > 0) {
-            throw new NotFoundException('One or more chats were not found.');
+        if (chatIds.length > 0) {
+            const results = await Promise.allSettled(
+                chatIds.map((id) => this.chatsService.getChatById(id)),
+            );
+
+            const rejected = results.filter((r) => r.status === 'rejected');
+            if (rejected.length > 0) {
+                throw new NotFoundException(
+                    'One or more chats were not found.',
+                );
+            }
+
+            chats = (results as PromiseFulfilledResult<Chat>[]).map(
+                (r) => r.value,
+            );
         }
-
-        const chats: Chat[] = (results as PromiseFulfilledResult<Chat>[])
-            .filter(
-                (r): r is PromiseFulfilledResult<Chat> =>
-                    r.status === 'fulfilled',
-            )
-            .map((r) => r.value);
 
         return await this.chatGroupsRepository.createUserGroup(
             name,
@@ -59,21 +63,24 @@ export class GroupsService {
     ) {
         const { name, newChatIds } = updateGroupDto;
 
-        const results = await Promise.allSettled(
-            newChatIds.map((id) => this.chatsService.getChatById(id)),
-        );
+        let chats: Chat[] = [];
 
-        const rejected = results.filter((r) => r.status === 'rejected');
-        if (rejected.length > 0) {
-            throw new NotFoundException('One or more chats were not found.');
+        if (newChatIds.length > 0) {
+            const results = await Promise.allSettled(
+                newChatIds.map((id) => this.chatsService.getChatById(id)),
+            );
+
+            const rejected = results.filter((r) => r.status === 'rejected');
+            if (rejected.length > 0) {
+                throw new NotFoundException(
+                    'One or more chats were not found.',
+                );
+            }
+
+            chats = (results as PromiseFulfilledResult<Chat>[]).map(
+                (r) => r.value,
+            );
         }
-
-        const chats: Chat[] = (results as PromiseFulfilledResult<Chat>[])
-            .filter(
-                (r): r is PromiseFulfilledResult<Chat> =>
-                    r.status === 'fulfilled',
-            )
-            .map((r) => r.value);
 
         return await this.chatGroupsRepository.updateUserGroupById(
             name,
@@ -83,7 +90,24 @@ export class GroupsService {
         );
     }
 
-    async getChatsFromGroup(userId:string, groupId:string){
-        return await this.chatGroupsRepository.getChatsFromGroup(userId,groupId)
+    async getChatsFromGroup(userId: string, groupId: string) {
+        return await this.chatGroupsRepository.getChatsFromGroup(
+            userId,
+            groupId,
+        );
+    }
+
+    async deleteChatFromGroup(
+        userId: string,
+        groupId: string,
+        deleteChatId: string,
+    ) {
+        const deleteChat = await this.chatsService.getChatById(deleteChatId);
+
+        return await this.chatGroupsRepository.deleteChatFromGroup(
+            userId,
+            groupId,
+            deleteChat,
+        );
     }
 }

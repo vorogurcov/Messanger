@@ -52,7 +52,7 @@ export class MessagesController {
             const chatMessage = await this.messagesService.createChatMessage(
                 userId,
                 chatId,
-                createMessageDto
+                createMessageDto,
             );
             return {
                 statusCode: HttpStatus.OK,
@@ -62,7 +62,6 @@ export class MessagesController {
         } catch (error) {
             throw error;
         }
-
     }
 
     @Patch(':messageId')
@@ -78,7 +77,7 @@ export class MessagesController {
                 userId,
                 chatId,
                 messageId,
-                updateMessageDto
+                updateMessageDto,
             );
             return {
                 statusCode: HttpStatus.OK,
@@ -88,7 +87,6 @@ export class MessagesController {
         } catch (error) {
             throw error;
         }
-
     }
 
     @Delete(':messageId')
@@ -102,7 +100,7 @@ export class MessagesController {
             const chatMessage = await this.messagesService.deleteChatMessage(
                 userId,
                 chatId,
-                messageId
+                messageId,
             );
             return {
                 statusCode: HttpStatus.OK,
@@ -112,6 +110,5 @@ export class MessagesController {
         } catch (error) {
             throw error;
         }
-
     }
 }

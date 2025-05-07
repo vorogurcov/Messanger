@@ -5,7 +5,7 @@ import { AppDataSource } from './data-source';
 import { ProfileModule } from './user/profile/profile.module';
 import { ChatsModule } from './chat/chats/chats.module';
 import { GroupsModule } from './chat/groups/groups.module';
-import {MessagesModule} from "./chat/messages/messages.module";
+import { MessagesModule } from './chat/messages/messages.module';
 
 @Module({
     imports: [
@@ -14,7 +14,7 @@ import {MessagesModule} from "./chat/messages/messages.module";
         ProfileModule,
         ChatsModule,
         GroupsModule,
-        MessagesModule
+        MessagesModule,
     ],
 })
 export class AppModule {}

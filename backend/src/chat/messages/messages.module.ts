@@ -5,7 +5,7 @@ import { Message } from './entities/message.entity';
 import { JwtStrategyModule } from '../../common/jwt-strategy/jwt-strategy.module';
 import { MessagesService } from './messages.service';
 import { ChatsModule } from '../chats/chats.module';
-import {MessagesRepository} from "./repositories/messages.repository";
+import { MessagesRepository } from './repositories/messages.repository';
 
 @Module({
     imports: [

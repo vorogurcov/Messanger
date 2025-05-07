@@ -7,6 +7,7 @@ import {
     Param,
     Patch,
     Post,
+    Query,
     Req,
     UseGuards,
 } from '@nestjs/common';
@@ -54,7 +55,7 @@ export class GroupsController {
     }
 
     @Delete(':groupId')
-    async deleteGroup(@Param('chatId') groupId: string, @Req() req: Request) {
+    async deleteGroup(@Param('groupId') groupId: string, @Req() req: Request) {
         const { id: userId } = req.user as UserAuth;
         try {
             const group = await this.groupsService.deleteGroup(userId, groupId);
@@ -70,7 +71,7 @@ export class GroupsController {
 
     @Patch(':groupId')
     async updateGroup(
-        @Param('chatId') groupId: string,
+        @Param('groupId') groupId: string,
         @Req() req: Request,
         @Body() updateGroupDto: UpdateGroupDto,
     ) {
@@ -92,14 +93,44 @@ export class GroupsController {
     }
 
     @Get(':groupId/chats')
-    async getChatsFromGroup(@Req() req: Request, @Param(':groupId') groupId:string){
+    async getChatsFromGroup(
+        @Req() req: Request,
+        @Param('groupId') groupId: string,
+    ) {
         const { id: userId } = req.user as UserAuth;
         try {
-            const chats = await this.groupsService.getChatsFromGroup(userId, groupId)
+            console.log(groupId);
+            const chats = await this.groupsService.getChatsFromGroup(
+                userId,
+                groupId,
+            );
             return {
                 statusCode: HttpStatus.OK,
                 message: 'Get group chats successful!',
                 chats,
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @Patch(':groupId/delete-chat/:chatId')
+    async deleteChatFromGroup(
+        @Param('groupId') groupId: string,
+        @Param('chatId') deleteChatId: string,
+        @Req() req: Request,
+    ) {
+        const { id: userId } = req.user as UserAuth;
+        try {
+            const group = await this.groupsService.deleteChatFromGroup(
+                userId,
+                groupId,
+                deleteChatId,
+            );
+            return {
+                statusCode: HttpStatus.OK,
+                message: 'Delete chat from group successful!',
+                group,
             };
         } catch (error) {
             throw error;
