@@ -108,8 +108,8 @@ export class MessagesService {
             await this.chatsService.updateLastMessage(chatId, newLastMessage);
         }
 
-        await this.messagesRepository.deleteChatMessage(message);
+        const mes = await this.messagesRepository.deleteChatMessage(message);
 
-        return { messageId };
+        return mes;
     }
 }
