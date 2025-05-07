@@ -59,16 +59,13 @@ export class MessagesRepository {
         return newMessage;
     }
 
-    async deleteChatMessage(userId: string, chatId: string, messageId: string) {
-        const message = await this.repository.findOneBy({ id: messageId });
-
-        if (!message) throw new NotFoundException('Message not found!');
-
-        if (message.senderId !== userId)
-            throw new ForbiddenException('You can not delete this message');
-
+    async deleteChatMessage(message: Message) {
         await this.repository.delete(message);
 
         return message;
+    }
+
+    async findMessageById(messageId: string) {
+        return await this.repository.findOneBy({ id: messageId });
     }
 }

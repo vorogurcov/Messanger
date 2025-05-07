@@ -17,6 +17,7 @@ export class ChatsRepository {
             relations: {
                 messages: true,
                 users: true,
+                lastMessage: true,
             },
             where: {
                 id: chatId,
