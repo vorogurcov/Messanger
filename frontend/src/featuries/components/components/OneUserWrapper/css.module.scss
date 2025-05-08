@@ -1,0 +1,20 @@
+@import "../../../../mixins/mixinsCss/classes.module.scss";
+
+.lastMes{
+    color: #AFAFAF;
+    font-size: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%;
+}
+
+.wrapperText{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    height: 100%;
+    padding-top: 3px;
+    line-height: 1.5
+}

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useMemo, useRef, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import LoadingComponent from "../../../../components/LoadingComponent";
 import { InputAuthorizationRow } from "../../../../components/Authorization/AuthorizationRow/AuthorizationRow";
 import { EmailValidationSchema, PasswordValidateSchema } from "../../../../../entities/validator/validateSchemas/authorizationSchemas";
@@ -14,8 +14,6 @@ import VerifyPassword from "./components/VerifyPassword";
 import ApiQuery from "../../../../../api/query";
 import ErrorMessage from "../../../../components/stylingString/errorMessage";
 import { ConfirmCode } from "../../../verifyCodeModal/VerifyCodeModal";
-import { decodeJWT } from "../../../../../../utils/tokenUtil";
-import core from "../../../../../../core/core";
 
 function ValidationRow({children, imgSrc, isLoading}: {children: ReactNode, imgSrc: string | undefined, isLoading: boolean}){
     return(
@@ -109,7 +107,6 @@ export default function UpdateCredentials(){
     const [repeatPassw, setRepeatPassw] = useState<ChangeValueProps>({value: "", isCorrect: false})
 
     const user: UserLK = useAppSelector(UserSliceManager.selectors.selectUser)
-    console.log("userLk", user)
 
     const [email, setEmail] = useState<ChangeValueProps>({value: user.email ?? "", isCorrect: false})
     const [page, setPage] = useState<"main" | "password" | "email">("main")
@@ -166,7 +163,7 @@ export default function UpdateCredentials(){
                 </div>
             </div>
             <div style={{display: page === "password" ? "" : "none"}}>
-                <VerifyPassword callback={user.email === email.value ? handleSubmit : handleSubmitVerify}/>
+                <VerifyPassword callback={user.email === email.value || email.value.length === 0 ? handleSubmit : handleSubmitVerify}/>
             </div>
             <div style={{display: page === "email" ? "" : "none", width: "100%", height: "100%"}}>
                 <ConfirmCode 

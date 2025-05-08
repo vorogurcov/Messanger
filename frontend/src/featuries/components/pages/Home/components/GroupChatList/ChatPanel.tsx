@@ -1,9 +1,16 @@
-import { memo } from "react"
+import { memo, useEffect, useMemo, useState } from "react"
 import scss_union from "../../../../../../mixins/mixinsCss/classes.module.scss"
-import { PageType } from "../../../../../entities/schemes/enums/chatEnum"
+import { ChatType, PageType } from "../../../../../entities/schemes/enums/chatEnum"
 import css from "./css.module.scss"
 import SearchInput from "../../../../components/UI/inputs/SearchInput/SearchInput"
 import ChatList from "./ChatList/ChatList"
+import useSearch from "../../../../../../hooks/useSearchUser"
+import { UserLK } from "../../../../../entities/schemes/dto/User"
+import ApiQuery from "../../../../../api/query"
+import LoadingComponent from "../../../../components/LoadingComponent"
+import { useAppDispatch } from "../../../../../../hooks/useStore"
+import { ChatSliceManager } from "../../../../../entities/store/featuries/chatSlice"
+import { ChatListAdaptedProps } from "../../../../../entities/schemes/client/chat"
 
 const TypeChat = memo(function ({type, selectedType, setSelectedType}: {type: string, selectedType: string, setSelectedType: React.Dispatch<React.SetStateAction<string>>}){
     return(
@@ -18,6 +25,17 @@ export default function ChatPanel({group, typePage, setTypeChat}: {
     typePage: PageType,
     setTypeChat: React.Dispatch<React.SetStateAction<PageType>>
 }){
+    const [search, setSearch] = useState("")
+    const {data: users, isLoading} = useSearch<UserLK>(search, ApiQuery.findUsers)
+    const dispatch = useAppDispatch()
+    const adapted: ChatListAdaptedProps[] = useMemo(() => users.map(us => {return {
+        name: us.userName, numberNewMessage: 0, active: false, id: us.id, type: ChatType.private, group: "", avatar: us.avatarUrl
+    }}), [users])
+
+    useEffect(() => {
+        dispatch(ChatSliceManager.redusers.updateSearch(adapted))
+    }, [adapted, dispatch])
+
     return(
         <div className={css.wrap}>
             <div className={`${scss_union.hide_scroll} ${css.typeChat}`}>
@@ -31,9 +49,11 @@ export default function ChatPanel({group, typePage, setTypeChat}: {
                 )}
             </div>
             <div className={css.input_wrap}>
-                <SearchInput/>
+                <SearchInput value={search} onChange={(e) => setSearch(e.target.value)}/>
             </div>
-            <ChatList/>
+            <LoadingComponent loading={isLoading}>
+                <ChatList/>
+            </LoadingComponent>
         </div>
     )
 }

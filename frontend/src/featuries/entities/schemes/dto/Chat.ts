@@ -14,7 +14,7 @@ export const initialPanelGroupButtons: PanelGroupButtons = {
     isChangeName: false
 }
 
-export interface ILastMessage{
+export interface MessagesDTO{
     id: string,
     context: string,
     senderId: string,
@@ -24,7 +24,7 @@ export interface ILastMessage{
 export interface ChatList{
     id: string
     name: string
-    lastMessage?: ILastMessage
+    lastMessage?: MessagesDTO
     avatar?: string
     group: string
     type: ChatType

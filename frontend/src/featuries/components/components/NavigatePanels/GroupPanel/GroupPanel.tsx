@@ -11,7 +11,7 @@ import useChangeNameGroup from "./hooks/useChangeName"
 import InputLikeText from "../../UI/inputs/InputLikeText/InputLikeText"
 import AddButonLikePlus from "../../UI/buttons/AddButonLikePlus"
 import CreateFolderButton from "../../UI/buttons/CreateGroup"
-import useCreateEntity, { TypeOfClick } from "./hooks/useCreateEntity"
+import useCreateEntityOnBar, { TypeOfClick } from "./hooks/useCreateEntityOnBar"
 
 function OneGroupButton({folder, children}: {folder: PanelGroupButtons, children: ReactNode}){
     const {coordinates, showTools, setShowTools, handleContextMenu} = useContextMenu()
@@ -51,7 +51,7 @@ export default function GroupPanel({buttons}: {buttons: PanelGroupButtons[]}){
     const [changingFolder, setChangingFolder] = useState<PanelGroupButtons>(initialPanelGroupButtons)
     const inputRef = useRef<HTMLInputElement>(null)
     const {handleBlur, handleKeyDown} = useChangeNameGroup(changingFolder, inputRef)
-    const {component, setTypeClick} = useCreateEntity() 
+    const {component, setTypeClick} = useCreateEntityOnBar() 
 
     useEffect(() => {
         const changingButton = buttons.find(but => but.isChangeName)

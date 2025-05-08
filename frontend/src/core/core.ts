@@ -7,6 +7,7 @@ class ServerEndpoints{
     confirmCode = `${apiBaseUrl}/auth/verify`
     allChats = `${apiBaseUrl}/chats`
     groups = `${apiBaseUrl}/groups`
+    searchUsers = `${apiBaseUrl}/profile/search`
 }
 
 class FrontendEndpoints{

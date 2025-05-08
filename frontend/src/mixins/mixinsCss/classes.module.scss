@@ -1,3 +1,5 @@
+@import "./colors.scss";
+
 .hide_scroll {
     overflow: auto; /* или scroll */
     scrollbar-width: none; /* Firefox */
@@ -23,6 +25,7 @@
   }
   
   .modalContent {
+    @extend .hide_scroll;
     width: 400px;
     height: 300px;
     border-radius: 12px; /* Закруглённые углы */
@@ -30,4 +33,31 @@
     padding: 20px; /* Отступ внутри окна */
     border: 1px solid white; /* Убираем стандартную рамку */
     position: relative;
+    max-height: 90vh;
+    overflow: hidden;
   }
+
+  .wrapperEntityOnPanel, .wrapperActiveEntityOnPanel, .nothoveringEntityOnPanel{
+    height: 60px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.wrapperEntityOnPanel:hover, .wrapperActiveEntityOnPanel{
+    background-color: $primary-blue;
+    color: white;
+    cursor: pointer;
+    .newMess{
+        background-color: white;
+        color: $primary-blue;
+    }
+    .lastMes{
+        color: white;
+    }
+}
+
+.wrapperActiveEntityOnPanel:hover{
+    cursor: pointer;
+}

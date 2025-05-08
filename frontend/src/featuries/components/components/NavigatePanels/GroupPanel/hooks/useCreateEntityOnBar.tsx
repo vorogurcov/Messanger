@@ -1,7 +1,8 @@
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MainModal from "../../../../modals/MainModal/MainModal";
 import AutoHeightMainModal from "../../../../modals/MainModal/AutoHeightMainModal";
 import CreateGroup from "../components/CreateGroup/CreateGroup";
+import CreateGroupOnBar from "../../../../modals/CreateGroupOnBar/CreateGroupOnBar";
 
 export enum TypeOfClick{
     chat = "chat",
@@ -9,10 +10,7 @@ export enum TypeOfClick{
 }  
 
 function CreateChat({onClose}: {onClose: () => void}){
-    const [isOpen, setisOpen] = useState(false)
-    useEffect(() => {
-        setisOpen(true)
-    }, [])
+    const [isOpen, setisOpen] = useState(true)
     return(
         <MainModal
             isOpen={isOpen}
@@ -29,27 +27,16 @@ function CreateChat({onClose}: {onClose: () => void}){
 }
 
 function CreateGroupLocal({onClose}: {onClose: () => void} ){
-    const [isOpen, setisOpen] = useState(false)
-    useEffect(() => {
-        setisOpen(true)
-    }, [])
+    const [isOpen, setisOpen] = useState(true)
     return(
-        <AutoHeightMainModal
-            isOpen={isOpen}
-            onRequestClose={() => {
-                setisOpen(false)
-                onClose()
-            }}
-        >
-            <CreateGroup handleClose={() => {
-                setisOpen(false)
-                onClose()
-            }}/>
-        </AutoHeightMainModal>
+        <CreateGroupOnBar isOpen={isOpen} onClose={() => {
+            setisOpen(false)
+            onClose()
+        }}/>
     )
 }
 
-export default function useCreateEntity(){
+export default function useCreateEntityOnBar(){
     const [typeClick, setTypeClick] = useState<TypeOfClick | null>(null)
     const component = useMemo(() => {
         const components = {

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { GenericAbortSignal } from "axios";
 import { AuthorizationProp, RegisrationProp } from "../entities/schemes/dto/Authorization";
 import core from "../../core/core";
 import { ChatList, PanelGroupButtons } from "../entities/schemes/dto/Chat";
@@ -102,12 +102,15 @@ export default class ApiQuery{
     }
 
     static async deleteGroup(id: string){
-        console.log("id delete", id)
-
         await authInstance.delete(`${core.serverEdnpoints.groups}/${id}`)
     }
 
-    static async updateGroup(groupId: string, name?: string, newChatIds?: string[]){
+    static async updateGroup(groupId: string, name?: string, newChatIds: string[] = []){
         await authInstance.patch(`${core.serverEdnpoints.groups}/${groupId}`, {name, newChatIds})
+    }
+
+    static async findUsers(str: string, signal?: GenericAbortSignal | undefined): Promise<UserLK[]>{
+        const users = (await authInstance.get(core.serverEdnpoints.searchUsers, {params: {q: str}, signal: signal})).data.users
+        return users
     }
 }
