@@ -1,8 +1,9 @@
 import GroupPanel from "../GroupPanel/GroupPanel";
 
 import css from "./css.module.scss"
-import MovableNavigatePanelModal from "../../../modals/movableNavigatePanel/MovableNavigatePanel";
 import { PanelGroupButtons } from "../../../../entities/schemes/dto/Chat";
+import { lazy } from "react";
+const MovableNavigatePanelModal = lazy(() => import("../../../modals/movableNavigatePanel/MovableNavigatePanel"));
 
 export default function NavigatePanel({buttons}: {buttons: PanelGroupButtons[]}){
     return(

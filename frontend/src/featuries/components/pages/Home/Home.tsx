@@ -1,6 +1,6 @@
 import { useState } from "react";
 import MainWrapper from "../../components/MainWrapper/MainWrapper";
-import { ChatType, PageType } from "../../../entities/schemes/enums/chatEnum";
+import { PageType } from "../../../entities/schemes/enums/chatEnum";
 import ChatPanel from "./components/GroupChatList/ChatPanel";
 import Chat from "./components/Chat/chat";
 import useGroups from "./hooks/useGroups";

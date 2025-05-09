@@ -1,0 +1,17 @@
+@import "../../../../../../mixins/mixinsCss/classes.module.scss";
+
+.buttonWrapper{
+    position: absolute;
+    margin-bottom: 20px;
+    bottom: 0;
+    width: 100%;
+    padding-right: 40px;
+}
+
+.button{
+    float: right;
+}
+
+.wrapper{
+    margin-bottom: 40px;    
+}

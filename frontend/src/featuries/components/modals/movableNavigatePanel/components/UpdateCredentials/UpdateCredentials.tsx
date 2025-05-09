@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useMemo, useRef, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import LoadingComponent from "../../../../components/LoadingComponent";
 import { InputAuthorizationRow } from "../../../../components/Authorization/AuthorizationRow/AuthorizationRow";
 import { EmailValidationSchema, PasswordValidateSchema } from "../../../../../entities/validator/validateSchemas/authorizationSchemas";
@@ -14,8 +14,6 @@ import VerifyPassword from "./components/VerifyPassword";
 import ApiQuery from "../../../../../api/query";
 import ErrorMessage from "../../../../components/stylingString/errorMessage";
 import { ConfirmCode } from "../../../verifyCodeModal/VerifyCodeModal";
-import { decodeJWT } from "../../../../../../utils/tokenUtil";
-import core from "../../../../../../core/core";
 
 function ValidationRow({children, imgSrc, isLoading}: {children: ReactNode, imgSrc: string | undefined, isLoading: boolean}){
     return(
@@ -114,8 +112,6 @@ export default function UpdateCredentials(){
     const [page, setPage] = useState<"main" | "password" | "email">("main")
     const [apiError, setApiError] = useState("")
 
-    const userId = useRef("")
-
     const dispatch = useAppDispatch()
 
     const checkValid = () => {
@@ -141,10 +137,9 @@ export default function UpdateCredentials(){
         handleSubmit()
         .then(() => {
             setPage("email")
-            userId.current = id
         })
         .finally(() => console.log("finally"))
-    }, [userId, handleSubmit])
+    }, [handleSubmit])
 
     return(
         <LoadingComponent loading={isLoading}>
@@ -168,11 +163,11 @@ export default function UpdateCredentials(){
                 </div>
             </div>
             <div style={{display: page === "password" ? "" : "none"}}>
-                <VerifyPassword callback={user.email === email.value ? handleSubmit : handleSubmitVerify}/>
+                <VerifyPassword callback={user.email === email.value || email.value.length === 0 ? handleSubmit : handleSubmitVerify}/>
             </div>
             <div style={{display: page === "email" ? "" : "none", width: "100%", height: "100%"}}>
                 <ConfirmCode 
-                    userId={decodeJWT(localStorage.getItem(core.localStorageKeys.access_token) ?? "").id} 
+                    userId={user.id} 
                     callbackSubmit={handleSubmit}
                 />
             </div>

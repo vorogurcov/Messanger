@@ -2,6 +2,7 @@
 
 .modalContentLocal, .modalContentAuto{
     @extend .modalContent;
+    position: relative;
     width: 500px;
     height: 90vh;
 }

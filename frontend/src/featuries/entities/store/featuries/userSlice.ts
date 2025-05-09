@@ -2,6 +2,14 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserLK, userLKInitial } from "../../schemes/dto/User";
 import ApiQuery from "../../../api/query";
 
+interface IUserSlice{
+    data: UserLK
+}
+
+const initial: IUserSlice = {
+    data: userLKInitial
+}
+
 const saveUserLK = createAsyncThunk( // если в ответе не приходит новый аватор то дело сомнительное
     'userLK/save',
     async ({user, userAvatarOld, files}: {user: UserLK, userAvatarOld: string | undefined, files: FileList | null}) => {
@@ -14,6 +22,7 @@ const getUserLK = createAsyncThunk( // от ключей зависит как �
     'userLK/getData',
     async () => {
         const user = (await ApiQuery.getUserLK()).data.userProfile
+        console.log("user", user)
         const keys = Object.keys(userLKInitial)
         let userAdapted = {}
         keys.forEach(key => {
@@ -28,24 +37,24 @@ const getUserLK = createAsyncThunk( // от ключей зависит как �
 
 const userSlice = createSlice({
     name: "userLK",
-    initialState: userLKInitial,
+    initialState: initial,
     reducers: {
         update(state, action: PayloadAction<UserLK>){
-            return action.payload
+            state.data = action.payload
         }
     },
     selectors: {
         selectUser: (state) => {
-            return state
+            return state.data
         }
     },
     extraReducers: builder => {
         builder
         .addCase(saveUserLK.fulfilled, (state, action) => {
-            return action.payload
+            state.data = action.payload
         })
         .addCase(getUserLK.fulfilled, (state, action) => {
-            return action.payload
+            state.data = action.payload
         })
     }
 })

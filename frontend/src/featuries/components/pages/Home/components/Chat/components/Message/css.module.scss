@@ -1,0 +1,42 @@
+@import '../../../../../../../../mixins/mixinsCss/colors.scss';
+
+.wrapper{
+    max-width: 350px;
+    min-height: 40px;
+    min-width: 40px;
+    border-radius: 15px;
+    background-color: $primary-blue;
+    color: white;
+    padding: 7px 10px 7px 10px;
+}
+
+.info, .name{
+    float: right;
+    font-size: 80%;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.name{
+    float: none;
+}
+
+.mesWrapper, .mesWrapperOwner{
+    width: 100%;
+    margin-bottom: 5px;
+    display: flex;
+}
+
+.mesWrapperOwner{
+    display: inline-block;
+}
+
+.owner{
+    border-bottom-right-radius: 0px;
+    float: right;
+}
+
+.foreign{
+    border-bottom-left-radius: 0px;
+    float: left;
+    background-color: $focsed-blue;
+}
