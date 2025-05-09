@@ -29,7 +29,14 @@ export default function ChatPanel({group, typePage, setTypeChat}: {
     const {data: users, isLoading} = useSearch<UserLK>(search, ApiQuery.findUsers)
     const dispatch = useAppDispatch()
     const adapted: ChatListAdaptedProps[] = useMemo(() => users.map(us => {return {
-        name: us.userName, numberNewMessage: 0, active: false, id: us.id, type: ChatType.private, group: "", avatar: us.avatarUrl
+        name: us.userName, 
+        numberNewMessage: 0, 
+        active: false, 
+        id: us.id, 
+        type: ChatType.private, 
+        group: "", 
+        avatar: us.avatarUrl, 
+        users: []
     }}), [users])
 
     useEffect(() => {

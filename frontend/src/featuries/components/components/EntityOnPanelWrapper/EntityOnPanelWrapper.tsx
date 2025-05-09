@@ -7,10 +7,10 @@ interface Props extends HTMLAttributes<HTMLDivElement>{
     avatar?: string
 }
 
-export default function EntityOnPanelWrapper({avatar, children, ...props}: Props){
+export default function EntityOnPanelWrapper({avatar, children, className, ...props}: Props){
     return(
         <div 
-            className={`${props.className} ${css.nothoveringEntityOnPanel}`}
+            className={`${css.nothoveringEntityOnPanel} ${className}`}
             {...props}
         >
             <div className={css.wrapperAvatar}>

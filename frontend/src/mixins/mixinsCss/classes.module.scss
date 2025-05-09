@@ -61,3 +61,13 @@
 .wrapperActiveEntityOnPanel:hover{
     cursor: pointer;
 }
+
+.wrapperText{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    height: 100%;
+    padding-top: 3px;
+    line-height: 1.5
+}

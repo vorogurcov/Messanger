@@ -1,4 +1,5 @@
 import { ChatType } from "../enums/chatEnum"
+import { UserLK } from "./User"
 
 export interface PanelGroupButtons{
     id: string
@@ -28,6 +29,7 @@ export interface ChatList{
     avatar?: string
     group: string
     type: ChatType
+    users: UserLK[]
 }
 
 export interface ICreateGroup{
