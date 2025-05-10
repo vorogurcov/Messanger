@@ -46,6 +46,8 @@ export class MessagesSeed1745422286364 implements MigrationInterface {
             UPDATE "chat" SET "lastMessageId" = '22222222-bbbb-cccc-dddd-222222222222' WHERE "id" = 'a1e229c2-dad0-4ab3-9b6a-5f33ffb2f111';
             UPDATE "chat" SET "lastMessageId" = 'eeeeeeee-aaaa-bbbb-cccc-eeeeeeeeeeee' WHERE "id" = 'f7890123-45ab-6cde-7f89-0123456789ab';
             UPDATE "chat" SET "lastMessageId" = 'ffffffff-aaaa-bbbb-cccc-fffffffffffe' WHERE "id" = 'c33b16f4-8410-4693-9a9e-abc213ff8880';
+            UPDATE "chat" SET "lastMessageId" = '22222222-aaaa-bbbb-cccc-222222222222' WHERE "id" = 'd7e6f789-01ab-2cde-3f45-678901234567';
+
         `);
     }
 
