@@ -28,6 +28,12 @@ export class ChatGroupsRepository {
         });
     }
 
+    async deleteUserGroupById(groupId:string){
+        await this.repository.delete({
+            id:groupId,
+        })
+    }
+
     async getChatsFromGroup(userId: string, groupId: string): Promise<Chat[]> {
         const chatGroup = await this.repository
             .createQueryBuilder('group')
@@ -52,9 +58,10 @@ export class ChatGroupsRepository {
     ) {
         const group = await this.findOneGroupById(groupId, userId);
         if (!group) throw new NotFoundException('Such group does not exist!');
+        console.log(name)
         if (name) group.name = name;
         if (chats.length !== 0) group.chats = group.chats.concat(chats);
-
+        console.log('Update user group',group)
         return await this.repository.save(group);
     }
 
@@ -65,7 +72,6 @@ export class ChatGroupsRepository {
     ) {
         const group = await this.findOneGroupById(groupId, userId);
         if (!group) throw new NotFoundException('Such group does not exist!');
-        console.log(group);
         group.chats = group.chats.filter((chat) => {
             return chat.id !== deleteChat.id;
         });
@@ -87,10 +93,10 @@ export class ChatGroupsRepository {
         });
     }
 
-    async deleteUserGroupById(userId: string, groupId: string) {
+    async deleteUserGroup(userId: string, groupId: string) {
         const group = await this.findOneGroupById(groupId, userId);
         if (!group) throw new NotFoundException('Such group does not exist!');
-        await this.repository.delete(group);
+        await this.deleteUserGroupById(groupId);
         return group;
     }
 
