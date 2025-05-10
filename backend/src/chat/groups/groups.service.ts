@@ -25,7 +25,7 @@ export class GroupsService {
 
         let chats: Chat[] = [];
 
-        if (chatIds.length > 0) {
+        if (chatIds && chatIds.length > 0) {
             const results = await Promise.allSettled(
                 chatIds.map((id) => this.chatsService.getChatById(id)),
             );
@@ -50,7 +50,7 @@ export class GroupsService {
     }
 
     async deleteGroup(userId: string, groupId: string) {
-        return await this.chatGroupsRepository.deleteUserGroupById(
+        return await this.chatGroupsRepository.deleteUserGroup(
             userId,
             groupId,
         );
@@ -65,7 +65,7 @@ export class GroupsService {
 
         let chats: Chat[] = [];
 
-        if (newChatIds.length > 0) {
+        if (newChatIds && newChatIds.length > 0) {
             const results = await Promise.allSettled(
                 newChatIds.map((id) => this.chatsService.getChatById(id)),
             );
