@@ -47,6 +47,8 @@ export class MessagesService {
                 userId,
                 chatId,
             );
+
+            await this.chatsService.updateLastMessage(chatId, message)
             return message;
         } catch (error) {
             throw error;
