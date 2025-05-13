@@ -22,14 +22,22 @@ export interface MessagesDTO{
     createdAt: string
 }
 
-export interface ChatList{
-    id: string
+interface ChatBaseDTO{
     name: string
+    type: ChatType
+}
+
+export interface ChatList extends ChatBaseDTO{
+    id: string
     lastMessage?: MessagesDTO
     avatar?: string
     group: string
-    type: ChatType
     users: UserLK[]
+}
+
+export interface CreateChatDTO extends ChatBaseDTO{
+    createdAt: Date
+    userIds: string[]
 }
 
 export interface ICreateGroup{

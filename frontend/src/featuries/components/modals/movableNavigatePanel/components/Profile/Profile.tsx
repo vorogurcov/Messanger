@@ -41,8 +41,8 @@ export default function Profile(){
                     <div className={`${css.wrapperAvatar} ${css.wrappers}`}>
                         <div style={{width: "150px", position: "relative"}}>
                             {localuser.avatarUrl !== undefined ? 
-                            <Avatar src={localuser.avatarUrl} style={{width: "100%"}}/> 
-                            : <BaseAvatar style={{width: "100%"}}/>}
+                            <Avatar src={localuser.avatarUrl} style={{height: "100%"}}/> 
+                            : <BaseAvatar style={{height: "100%"}}/>}
                             <div className={css.addWrapper}>
                                 <AddPhotoButton 
                                     handleDelete={() => setLocalUser({...localuser, avatarUrl: user.avatarUrl === localuser.avatarUrl ? undefined : user.avatarUrl})}

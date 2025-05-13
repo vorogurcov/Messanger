@@ -1,15 +1,17 @@
-import { InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 import css from "./css.module.scss"
 
-export default function ChatInput({...props}: InputHTMLAttributes<HTMLInputElement>){
+const ChatInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>( ({className, ...props}, ref) => {
     return(
-        <div style={{width: "100%"}}>
+        <div style={{width: "100%"}} className={className}>
             {/* <div style={{position: "relative"}}>
                 <div style={{position: "absolute", padding: "0px 16px 0px 16px", display: "flex", alignItems: "center", height: "40px"}}>
                     <img src={lupa} alt="search" style={{height: "16px", width:"16px"}}/>
                 </div>
             </div> */}
-            <input type="text" placeholder="Текст сообщения" {...props} className={css.input}/>
+            <input ref={ref} type="text" placeholder="Текст сообщения" className={`${css.input}`} {...props} />
         </div>
     )
-}
+})
+
+export default ChatInput
