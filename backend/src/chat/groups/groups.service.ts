@@ -91,10 +91,14 @@ export class GroupsService {
     }
 
     async getChatsFromGroup(userId: string, groupId: string) {
-        return await this.chatGroupsRepository.getChatsFromGroup(
+        const chats = Promise.all((await this.chatGroupsRepository.getChatsFromGroup(
             userId,
             groupId,
-        );
+        ))
+            .map(chat => chat.id)
+            .map(chatId => this.chatsService.getChatById(chatId)));
+
+        return chats
     }
 
     async deleteChatFromGroup(
