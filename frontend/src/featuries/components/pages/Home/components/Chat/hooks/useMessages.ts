@@ -36,7 +36,6 @@ export default function useMessages(chatId: string){
     const sendMessage = useCallback(async (chat: ChatListAdaptedProps, message: string) => {
         let newChat = {...chat}
         if (!chatState.data.find(curchat => curchat.id === chat.id)){ // из серча отправлено сообщение в чате, которого еще нет
-            console.log("create")
             newChat = await processCreateChat(newChat)
         }
         const mess = await ApiQuery.sendMessage(message, newChat.id)
