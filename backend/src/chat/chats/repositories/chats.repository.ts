@@ -18,6 +18,7 @@ export class ChatsRepository {
                 messages: true,
                 users: true,
                 lastMessage: true,
+                group: true
             },
             where: {
                 id: chatId,
