@@ -35,20 +35,18 @@ export default function useGroups(typeChat: PageType){
         }
     }, [disputchButtonsState, dispatch, groups])
     
-    const handleDelete = useCallback((id: string) => { // не надо добавлять чат айди. это обособленная чать, которая используется много где
-        ApiQuery.deleteGroup(id)
-        .then(() => {
-            disputchButtonsState({type: GroupActionEnum.DELETE_GROUP, id: id})
-        })
+    const handleDelete = useCallback(async (id: string) => { // не надо добавлять чат айди. это обособленная чать, которая используется много где
+        await ApiQuery.deleteGroup(id)
+        disputchButtonsState({type: GroupActionEnum.DELETE_GROUP, id: id})
     }, [disputchButtonsState])
 
     const handleAddGroup = useCallback(async (name: string, chatIds?: string[]) => {
         const idNewGroup = await ApiQuery.addGroup(name, chatIds)
-        if (!groups.find(gr => gr.name === name))
-            disputchButtonsState({type: GroupActionEnum.ADD_GROUPS, names: [{name: name, id: idNewGroup}]})
-    }, [disputchButtonsState, groups])
+        disputchButtonsState({type: GroupActionEnum.ADD_GROUPS, names: [{name: name, id: idNewGroup}]})
+    }, [disputchButtonsState])
 
     const handleRename = useCallback((id: string, newName: string) => {
+        console.log("newName in use", newName)
         ApiQuery.updateGroup(id, newName)
         disputchButtonsState({type: GroupActionEnum.RENAME_GROUP, id, newName})
     }, [disputchButtonsState])

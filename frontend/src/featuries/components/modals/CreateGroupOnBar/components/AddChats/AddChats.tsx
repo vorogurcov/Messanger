@@ -9,7 +9,7 @@ const OneChat = memo(function({chat, handleClick}: {chat: IAddChatProps, handleC
         <div>
             <EntityOnPanelWrapper 
                 avatar={chat.avatar} 
-                className={chat.selected ? css.wrapperActiveEntityOnPanel : css.wrapperEntityOnPanel}
+                className={chat.selected ? css.wrapperActiveEntityOnPanel : css.wrapEntity}
                 onClick={() => handleClick(chat.id)}
             >
                 <div>

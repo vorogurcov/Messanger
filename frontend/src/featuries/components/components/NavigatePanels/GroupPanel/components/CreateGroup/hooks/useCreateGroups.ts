@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ICreateGroup, initialCreateGroup } from "../../../../../../../entities/schemes/dto/Chat";
-import ApiQuery from "../../../../../../../api/query";
 import { useGroupListContext } from "../../../../../../pages/Home/hooks/useGroupListContext";
 
 export default function useCreateGroups(handleClose: () => void){

@@ -1,7 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import MainModal from "../../../../modals/MainModal/MainModal";
-import AutoHeightMainModal from "../../../../modals/MainModal/AutoHeightMainModal";
-import CreateGroup from "../components/CreateGroup/CreateGroup";
 import CreateGroupOnBar from "../../../../modals/CreateGroupOnBar/CreateGroupOnBar";
 
 export enum TypeOfClick{

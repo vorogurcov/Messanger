@@ -1,6 +1,7 @@
 export enum ChatType{
     private = "private",
-    group = "group"
+    group = "group",
+    personal = "personal"
 }
 
 export enum PageType{

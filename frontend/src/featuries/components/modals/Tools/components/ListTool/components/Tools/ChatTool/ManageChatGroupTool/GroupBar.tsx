@@ -19,24 +19,25 @@ export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
     const chats = useAppSelector(ChatSliceManager.selectors.selectChats) 
     const dispatch = useAppDispatch()
 
-    const handleClick = useCallback((groupId: string) => {
+    const handleClick = useCallback((groupId: string) => { // обработать как-то удаление
+        // если не allChats то надо удалить из списка (мне кажется, первая проверка на активную группу тоже)
         if (thisChat?.chat.group !== allChats && groups?.groups.find(gr => gr.active)?.id !== allChats){
             checkAndDeleteGroup(thisChat, chats, groups)
             .then(() => {
-                dispatch(ChatSliceManager.redusers.update(
+                dispatch(ChatSliceManager.redusers.update( // удаляем из списка чатов группы
                     chats.filter(
                         chat => chat.group === thisChat?.chat.group && chat.id !== thisChat.chat.id
                     )
                 ))
             })
-        } else if (thisChat){
+        } else if (thisChat){ // не удаляем в allChats
             dispatch(ChatSliceManager.redusers.update(
                 chats.map(
                     chat => chat.id === thisChat.chat.id ? {...chat, group: groupId} : chat
                 )
             ))
         }
-        ApiQuery.updateGroup("")
+        ApiQuery.updateGroup(groupId, undefined, thisChat?.chat.id ? [thisChat.chat.id] : []) // тут проверку на allChats и заюзать ручку делита
     }, [thisChat, groups, chats, dispatch])
 
     return(
@@ -50,7 +51,7 @@ export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
                 <ListToolBase 
                     srcImg={thisChat?.chat.group === gr.name ? deleteFolder : addFolder}
                     label={gr.name}
-                    onClick={() => handleClick(thisChat?.chat.group === gr.id ? allChats : gr.name)}
+                    onClick={() => handleClick(thisChat?.chat.group === gr.id ? allChats : gr.id)}
                 />
             )}
             {thisChat && <CreateGroupTool handleClose={thisChat.handleClose} chatId={thisChat.chat.id}/>}

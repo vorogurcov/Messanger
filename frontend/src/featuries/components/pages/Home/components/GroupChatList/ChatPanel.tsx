@@ -8,9 +8,10 @@ import useSearch from "../../../../../../hooks/useSearchUser"
 import { UserLK } from "../../../../../entities/schemes/dto/User"
 import ApiQuery from "../../../../../api/query"
 import LoadingComponent from "../../../../components/LoadingComponent"
-import { useAppDispatch } from "../../../../../../hooks/useStore"
+import { useAppDispatch, useAppSelector } from "../../../../../../hooks/useStore"
 import { ChatSliceManager } from "../../../../../entities/store/featuries/chatSlice"
 import { ChatListAdaptedProps } from "../../../../../entities/schemes/client/chat"
+import { UserSliceManager } from "../../../../../entities/store/featuries/userSlice"
 
 const TypeChat = memo(function ({type, selectedType, setSelectedType}: {type: string, selectedType: string, setSelectedType: React.Dispatch<React.SetStateAction<string>>}){
     return(
@@ -28,6 +29,7 @@ export default function ChatPanel({group, typePage, setTypeChat}: {
     const [search, setSearch] = useState("")
     const {data: users, isLoading} = useSearch<UserLK>(search, ApiQuery.findUsers)
     const dispatch = useAppDispatch()
+    const user = useAppSelector(UserSliceManager.selectors.selectUser)
     const adapted: ChatListAdaptedProps[] = useMemo(() => users.map(us => {return {
         name: us.userName, 
         numberNewMessage: 0, 
@@ -36,8 +38,8 @@ export default function ChatPanel({group, typePage, setTypeChat}: {
         type: ChatType.private, 
         group: "", 
         avatar: us.avatarUrl, 
-        users: []
-    }}), [users])
+        users: [us, user]
+    }}), [user, users])
 
     useEffect(() => {
         dispatch(ChatSliceManager.redusers.updateSearch(adapted))

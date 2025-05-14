@@ -34,7 +34,7 @@ export function OwnerAccauntMessage({message}: {message: MessagesDTO}){
 export function ForeignAccauntMessage({message, user, needInfo = false}: {message: MessagesDTO, user: UserLK | undefined, needInfo: boolean}){
     return(
         <div className={css.mesWrapper}>
-            {needInfo && (user?.avatarUrl ? <Avatar src={user.avatarUrl}/> : <BaseAvatar/>)}
+            {needInfo && (user?.avatarUrl ? <Avatar src={user.avatarUrl} className={css.avatar}/> : <BaseAvatar className={css.avatar}/>)}
             <MessageBase message={message} className={css.foreign} name={needInfo ? user?.userName : undefined}/>
         </div>
     )

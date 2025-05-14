@@ -11,7 +11,6 @@ export default function useChangeNameGroup(thisGroup: PanelGroupButtons, inputRe
 
     const handleBlur = useCallback(() => {
         // Обработка ухода с фокуса
-        console.log("blur")
         if (inputRef.current && (groups?.groups.find(gr => gr.name === inputRef.current?.value))){
             inputRef.current.focus();
             inputRef.current.style.color = 'red'
@@ -19,7 +18,7 @@ export default function useChangeNameGroup(thisGroup: PanelGroupButtons, inputRe
         } else if (inputRef.current && inputRef.current.value.length !== 0){ // success
             const newChats = chats.map(chat => chat.group === thisGroup.name ? {...chat, group: inputRef.current?.value ?? thisGroup.name} : chat)
             dispatch(ChatSliceManager.redusers.update(newChats))
-            groups?.handleRename(thisGroup.id, thisGroup.name, inputRef.current.value)
+            groups?.handleRename(thisGroup.id, inputRef.current.value)
             groups?.handleChangeState(groups.groups.map(gr => gr.id === thisGroup.id ? 
                 {...gr, name: inputRef.current?.value ?? thisGroup.name, isChangeName: false} : gr))
             inputRef.current = null

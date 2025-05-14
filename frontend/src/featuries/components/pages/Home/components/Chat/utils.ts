@@ -35,5 +35,5 @@ export function isNextDay(firstDateStr: string, secondDateStr: string): boolean 
     const timeDiff = secondDay.getTime() - firstDay.getTime();
     
     // Проверяем, что разница ровно 1 день (86400000 мс)
-    return timeDiff === 86400000;
+    return timeDiff >= 86400000;
 }

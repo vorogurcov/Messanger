@@ -7,6 +7,8 @@ import { ChatContext } from "./hooks/useGetChat";
 import { ChatList } from "../../../entities/schemes/dto/Chat";
 import { ChatGroupTool } from "./components/ListTool/components/Tools/ChatTool/ManageChatGroupTool/ChatGroupTool";
 import DeleteChatTool from "./components/ListTool/components/Tools/ChatTool/DeleteChatTool";
+import { useAppSelector } from "../../../../hooks/useStore";
+import { UserSliceManager } from "../../../entities/store/featuries/userSlice";
 
 export function ModalTool({...props}: ReactModal.Props){
     return(
@@ -22,6 +24,7 @@ export function ModalTool({...props}: ReactModal.Props){
 
 export default function ChatToolModal({chat, groupList, isOpen, coordinates, setIsOpen}: ChatToolProps){
     const [localChat, setLocalChat] = useState(chat)
+    const user = useAppSelector(UserSliceManager.selectors.selectUser)
 
     useEffect(() => { // удаление чата влечет за собой диспатч в сторе чата => localChat = null 
         if (!chat)
