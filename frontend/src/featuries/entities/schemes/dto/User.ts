@@ -1,8 +1,11 @@
-export interface UserLK{
+export interface IShortInfoUser{
     id: string
+    userName: string
+}
+
+export interface UserLK extends IShortInfoUser{
     avatarUrl?: string 
     bio?: string 
-    userName: string
     birthDate?: string 
     email?: string
 }

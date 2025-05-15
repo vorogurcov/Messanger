@@ -7,7 +7,7 @@ import ChatToolModal from "../../../../../../../modals/Tools/ChatToolModal";
 import { useGroupListContext } from "../../../../../hooks/useGroupListContext";
 import useContextMenu from "../../../../../hooks/useContextMenu";
 
-function NumberNevMessages({numberMessages}: {numberMessages: number}){
+function NumberNewMessages({numberMessages}: {numberMessages: number}){
     return(
         <div className={css.wrapperNewMess}>
             {numberMessages > 0 && <div className={css.newMess}>
@@ -55,7 +55,7 @@ const ChatOnPanel = memo(({...chatData}: Props) => {
         >
             <AvatarChat url={chatData.avatar}/>
             <TextInfo userName={chatData.name} lastMessage={chatData.lastMessage?.context} active={chatData.active}/>
-            <NumberNevMessages numberMessages={chatData.numberNewMessage}/>
+            <NumberNewMessages numberMessages={chatData.numberNewMessage}/>
         </div>
         <ChatToolModal 
             chat={chatData} 

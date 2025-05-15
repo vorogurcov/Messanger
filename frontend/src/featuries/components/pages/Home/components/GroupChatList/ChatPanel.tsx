@@ -37,7 +37,10 @@ export default function ChatPanel({group, typePage, setTypeChat}: {
         id: us.id, 
         type: ChatType.private, 
         group: [], 
-        chatOwner: user.id,
+        chatOwner: {
+            id: user.id,
+            userName: user.userName
+        },
         avatar: us.avatarUrl, 
         users: [us, user]
     }}), [user, users])
