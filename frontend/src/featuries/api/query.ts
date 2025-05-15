@@ -105,6 +105,10 @@ export default class ApiQuery{
         await authInstance.delete(`${core.serverEdnpoints.groups}/${id}`)
     }
 
+    static async deleteChatFromGroup(chatId: string, groupId: string){
+        await authInstance.patch(`${core.serverEdnpoints.groups}/${groupId}/delete-chat/${chatId}`)
+    }
+
     static async updateGroup(groupId: string, name?: string, newChatIds: string[] = []){
         console.log("newName in api", name)
         await authInstance.patch(`${core.serverEdnpoints.groups}/${groupId}`, {name, newChatIds})
