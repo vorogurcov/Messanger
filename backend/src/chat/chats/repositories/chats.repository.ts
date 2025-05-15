@@ -36,6 +36,7 @@ export class ChatsRepository {
             .leftJoinAndSelect('chat.lastMessage', 'lastMessage')
             .leftJoinAndSelect('chat.messages', 'message')
             .leftJoinAndSelect('chat.group','groups')
+            .leftJoinAndSelect('chat.chatOwner', 'owner')
             .setParameter('userId', userId)
             .select([
                 'chat.id',
@@ -55,7 +56,9 @@ export class ChatsRepository {
                 'user.userName',
                 'user.avatarUrl',
                 'groups.id',
-                'groups.name'
+                'groups.name',
+                'owner.id',
+                'owner.userName'
             ])
             .getMany();
         return chats;
