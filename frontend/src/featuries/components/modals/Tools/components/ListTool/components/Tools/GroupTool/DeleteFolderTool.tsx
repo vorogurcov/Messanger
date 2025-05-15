@@ -15,7 +15,9 @@ export default function DeleteFolderTool({thisFolder, ...props}: IDeleteFolderTo
     const chats = useAppSelector(ChatSliceManager.selectors.selectChats)
     const handleDelete = useCallback(() => {
         if (thisFolder.name !== allChats){
-            dispatch(ChatSliceManager.redusers.update(chats.map(chat => chat.group === thisFolder.name ? {...chat, group: allChats}: chat)))
+            dispatch(ChatSliceManager.redusers.update(
+                chats.map(chat => {return {...chat, group: chat.group.filter(gr => gr.id !== thisFolder.id)}}))
+            )
             groups?.handleDelete(thisFolder.id)
             console.log("deeel", thisFolder)
         }

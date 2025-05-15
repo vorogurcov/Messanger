@@ -48,7 +48,7 @@ export default function ChatToolModal({chat, groupList, isOpen, coordinates, set
                         }}>
                         <ListTools>
                             <ChatGroupTool/>
-                            <DeleteChatTool/>    
+                            {user.id === localChat.chatOwner.id && <DeleteChatTool/>}    
                         </ListTools> 
                     </ChatContext.Provider>
                 </div>

@@ -27,7 +27,7 @@ export default function DeleteChatTool({...props}: HTMLAttributes<HTMLDivElement
             .then(() => {
                 dispatch(ChatSliceManager.redusers.update(allChats.filter(chat => chat.id !== chatManager.chat.id)))
             })
-            checkAndDeleteGroup(chatManager, chats, groups)
+            chatManager.chat.group.forEach(gr => checkAndDeleteGroup(gr.id, chats, groups))
         }
     }, [chatManager, allChats, dispatch, chats, groups])
 

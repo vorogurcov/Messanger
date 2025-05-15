@@ -11,6 +11,7 @@ import { allChats } from "../../../../../../../../../entities/schemes/enums/chat
 import { checkAndDeleteGroup } from "../../utils";
 import ApiQuery from "../../../../../../../../../api/query";
 import CreateGroupTool from "./CreateGroupTool";
+import { IGroups } from "../../../../../../../../../entities/schemes/dto/Chat";
 
 
 export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
@@ -19,26 +20,35 @@ export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
     const chats = useAppSelector(ChatSliceManager.selectors.selectChats) 
     const dispatch = useAppDispatch()
 
-    const handleClick = useCallback((groupId: string) => { // обработать как-то удаление
-        // если не allChats то надо удалить из списка (мне кажется, первая проверка на активную группу тоже)
-        if (thisChat?.chat.group !== allChats && groups?.groups.find(gr => gr.active)?.id !== allChats){
-            checkAndDeleteGroup(thisChat, chats, groups)
-            .then(() => {
-                dispatch(ChatSliceManager.redusers.update( // удаляем из списка чатов группы
-                    chats.filter(
-                        chat => chat.group === thisChat?.chat.group && chat.id !== thisChat.chat.id
-                    )
-                ))
-            })
+    const handleDelete = useCallback(async (group: IGroups) => { // обработать как-то удаление
+        // если не allChats то надо удалить из списка
+        if (groups?.groups.find(gr => gr.active)?.id !== allChats){
+            dispatch(ChatSliceManager.redusers.update( // удаляем из списка чатов группы
+                chats.filter(
+                    chat => chat.id !== thisChat?.chat.id
+                )
+            ))
         } else if (thisChat){ // не удаляем в allChats
             dispatch(ChatSliceManager.redusers.update(
                 chats.map(
-                    chat => chat.id === thisChat.chat.id ? {...chat, group: groupId} : chat
+                    chat => chat.id === thisChat.chat.id ? {...chat, group: chat.group.filter(gr => gr.id !== group.id)} : chat
                 )
             ))
         }
-        ApiQuery.updateGroup(groupId, undefined, thisChat?.chat.id ? [thisChat.chat.id] : []) // тут проверку на allChats и заюзать ручку делита
+        thisChat && await ApiQuery.deleteChatFromGroup(thisChat.chat.id, group.id)
+        await checkAndDeleteGroup(group.id, chats, groups) // если в группе 0 чатов осталось, то удаляем
     }, [thisChat, groups, chats, dispatch])
+
+    const handleAdd = useCallback(async (group: IGroups) => { // обработать как-то удаление
+        if (thisChat){
+            dispatch(ChatSliceManager.redusers.update(
+                chats.map(
+                    chat => chat.id === thisChat.chat.id ? {...chat, group: [...chat.group, group]} : chat
+                )
+            ))
+        }
+        ApiQuery.updateGroup(group.id, undefined, thisChat?.chat.id ? [thisChat.chat.id] : [])
+    }, [thisChat, chats, dispatch])
 
     return(
         <HiddenBar
@@ -49,9 +59,9 @@ export default function GroupBar({refLeftEl, isOpen, ...props}: IHiddenBar){
         >
             {groups?.groups.map(gr => gr.name !== allChats && 
                 <ListToolBase 
-                    srcImg={thisChat?.chat.group === gr.name ? deleteFolder : addFolder}
+                    srcImg={thisChat?.chat.group.find(group => gr.id === group.id) ? deleteFolder : addFolder}
                     label={gr.name}
-                    onClick={() => handleClick(thisChat?.chat.group === gr.id ? allChats : gr.id)}
+                    onClick={() => thisChat?.chat.group.find(group => group.id === gr.id) ? handleDelete(gr) : handleAdd(gr)}
                 />
             )}
             {thisChat && <CreateGroupTool handleClose={thisChat.handleClose} chatId={thisChat.chat.id}/>}

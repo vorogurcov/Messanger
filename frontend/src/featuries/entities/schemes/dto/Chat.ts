@@ -1,5 +1,5 @@
 import { ChatType } from "../enums/chatEnum"
-import { UserLK } from "./User"
+import { IShortInfoUser, UserLK } from "./User"
 
 export interface PanelGroupButtons{
     id: string
@@ -27,12 +27,18 @@ interface ChatBaseDTO{
     type: ChatType
 }
 
+export interface IGroups{
+    id: string
+    name: string
+}
+
 export interface ChatList extends ChatBaseDTO{
     id: string
     lastMessage?: MessagesDTO
     avatar?: string
-    group: string
+    group: IGroups[]
     users: UserLK[]
+    chatOwner: IShortInfoUser
 }
 
 export interface CreateChatDTO extends ChatBaseDTO{
