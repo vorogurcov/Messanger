@@ -56,7 +56,7 @@ export class MessagesController {
             );
             return {
                 statusCode: HttpStatus.OK,
-                message: 'Get chat messages successful!',
+                message: 'Create chat message successful!',
                 chatMessage,
             };
         } catch (error) {
@@ -81,7 +81,7 @@ export class MessagesController {
             );
             return {
                 statusCode: HttpStatus.OK,
-                message: 'Get chat messages successful!',
+                message: 'Update chat message successful!',
                 chatMessage,
             };
         } catch (error) {
@@ -104,7 +104,7 @@ export class MessagesController {
             );
             return {
                 statusCode: HttpStatus.OK,
-                message: 'Get chat messages successful!',
+                message: 'Delete chat message successful!',
                 chatMessage,
             };
         } catch (error) {
