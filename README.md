@@ -1,7 +1,8 @@
 # Messanger
 
 ## Состав участников
-1. Фролов Иван(vorogurcov) - Backend
+
+1. Фролов Иван(vorogurcov) - Backend, DevOps
 2. Ткачёв Михаил(bernad0t) - Frontend
 3. Ситникова Мария(MashaaSit) - DB Architect, QA engineer
 4. Голева Кристина(Krristik) - Designer
@@ -9,12 +10,14 @@
 
 ## Планируемые технологии разработки
 1. Backend: NodeJS, NestJS
-2. Frontend: Typescript, React, Redux
-3. Database: MongoDB/PostgreSQL, LucidApp, DBeaver,Lucidchart
-4. Other: Redis, Socket.IO, Axios, TypeORM
-   
+2. DevOps: Docker(Dockerfile, Docker Compose)
+3. Frontend: Typescript, React, Redux
+4. Database: MongoDB/PostgreSQL, LucidApp, DBeaver,Lucidchart
+5. Other: Redis, Socket.IO, Axios, TypeORM
+
 ## Postman с API документацией и описанием запросов
 https://www.postman.com/messanger-6226/messanger
+
 
 ## Правила ведения веток
 1. Под каждое направление(Дизайн, Бэкенд и т.д.) создаются ветки, откуда уже выходят конкретные ветки фич.
@@ -26,5 +29,23 @@ fd = frontend
 d = design  
 db = database  
 o = other  
+do = devops
+
 ## Пример:
-Под backend разработку создается ветка backend-dev, от нее создаются ветки для фич например bd-auth-module, bd-refactor-auth.  
+Под backend разработку создается ветка backend-dev, от нее создаются ветки для фич например bd-auth-module, bd-refactor-auth.
+
+## Система Estimates:
+
+Оцениваем задачи в стори-поинтах. Общая шкала такая:
+
+| Кол-во   | Формулировка                                | Пример                                                         |
+|----------|----------------------------------------------|----------------------------------------------------------------|
+| 1 SP     | Очень простая, рутинная задача               | Поправить отступ, заменить цвет                                |
+| 2 SP     | Простая, понятная задача                     | Верстка одного UI-блока, простой API-эндпоинт                  |
+| 3 SP     | Задача средней сложности                     | Создание формы с валидацией, логика авторизации                |
+| 5 SP     | Сложная задача, требует времени              | Реализация чата, интеграция API, адаптивный интерфейс          |
+| 8 SP     | Очень сложная, с рисками и неизвестностью    | Голосовые/видеозвонки, реализация WebSockets                   |
+| 13+ SP   | Огромная задача, требует декомпозиции        | Полный модуль, монолитная фича — разбить на подзадачи          |
+
+Понятное дело, что скейлинг будет в зависимости от навыков каждого из разработчиков
+
