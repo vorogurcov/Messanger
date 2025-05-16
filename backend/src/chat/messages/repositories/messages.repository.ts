@@ -36,6 +36,7 @@ export class MessagesRepository {
         chatId: string,
         messageId: string,
     ) {
+        //TODO: Fix bug that chat's lastMessage does not change after last chat's message update
         const message = await this.repository.findOneBy({ id: messageId });
 
         if (!message) throw new NotFoundException('Message not found!');
