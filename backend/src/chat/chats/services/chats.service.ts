@@ -25,18 +25,23 @@ export class ChatsService {
     async getChatById(chatId: string) {
         return await this.chatsRepository.findChatById(chatId);
     }
+
+    async getChatMessages(userId: string, chatId: string) {
+        return await this.chatsRepository.getChatMessages(userId, chatId);
+    }
+
     async addUserChat(ownerId: string, createChatDto: CreateChatDto) {
         const chatOwner = (await this.profileService.getUserProfileById(
             ownerId,
         )) as UserProfile;
         if (!chatOwner)
             throw new NotFoundException('Owner user was not found!');
+        createChatDto.userIds.push(chatOwner.id);
         const users = (await Promise.all(
             createChatDto.userIds.map(async (userId) => {
                 return await this.profileService.getUserProfileById(userId);
             }),
         )) as UserProfile[];
-
         const chatInfo = {
             type: createChatDto.type,
             name: createChatDto.name,

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {ArrayContains, Repository} from 'typeorm';
 import { Chat } from '../entities/chat.entity';
 import { Message } from '../../messages/entities/message.entity';
 
@@ -15,7 +15,6 @@ export class ChatsRepository {
     async findChatById(chatId: string) {
         const chat = await this.repository.findOne({
             relations: {
-                messages: true,
                 users: true,
                 lastMessage: true,
                 group: true
@@ -28,13 +27,33 @@ export class ChatsRepository {
         return chat;
     }
 
+    async getChatMessages(userId:string, chatId: string) {
+        console.log(userId)
+        const chat = await this.repository.findOne({
+            relations: {
+                messages:true,
+                users:true,
+            },
+            where: {
+                id: chatId,
+                users:{
+                    id:userId,
+                }
+            }
+        })
+
+        if (!chat) throw new NotFoundException('Chat was not found!');
+
+        return chat.messages;
+    }
+
+
     async findUserChats(userId: string): Promise<Chat[]> {
         const chats = await this.repository
             .createQueryBuilder('chat')
             .innerJoin('chat.users', 'filterUser', 'filterUser.id = :userId')
             .leftJoinAndSelect('chat.users', 'user')
             .leftJoinAndSelect('chat.lastMessage', 'lastMessage')
-            .leftJoinAndSelect('chat.messages', 'message')
             .leftJoinAndSelect('chat.group','groups')
             .leftJoinAndSelect('chat.chatOwner', 'owner')
             .setParameter('userId', userId)
@@ -44,10 +63,6 @@ export class ChatsRepository {
                 'chat.name',
                 'chat.createdAt',
                 'chat.chatOwner',
-                'message.id',
-                'message.context',
-                'message.senderId',
-                'message.createdAt',
                 'lastMessage.id',
                 'lastMessage.context',
                 'lastMessage.senderId',

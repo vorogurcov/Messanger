@@ -17,14 +17,7 @@ export class MessagesService {
     ) {}
     async getChatMessages(userId: string, chatId: string) {
         try {
-            const userChats = await this.chatsService.getUserChats(userId);
-            if (!userChats.map((chat) => chat.id).includes(chatId))
-                throw new ForbiddenException(
-                    'You do not have permission to look through this chat',
-                );
-            const chat = await this.chatsService.getChatById(chatId);
-            console.log(chat);
-            return chat.messages;
+            return await this.chatsService.getChatMessages(userId, chatId);
         } catch (error) {
             throw error;
         }
@@ -83,6 +76,8 @@ export class MessagesService {
 
         if (!chat) throw new NotFoundException('Chat not found');
 
+        const chatMessages = await this.getChatMessages(userId, chatId);
+
         const isParticipant = chat.users.some((user) => user.id === userId);
         if (!isParticipant) {
             throw new ForbiddenException(
@@ -101,7 +96,7 @@ export class MessagesService {
         }
 
         if (chat.lastMessage?.id === messageId) {
-            const remainingMessages = chat.messages.filter(
+            const remainingMessages = chatMessages.filter(
                 (m) => m.id !== messageId,
             );
 
