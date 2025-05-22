@@ -39,6 +39,11 @@ export class ChatsRepository {
                 users:{
                     id:userId,
                 }
+            },
+            order: {
+                messages: {
+                    createdAt: 'ASC',
+                }
             }
         })
 
