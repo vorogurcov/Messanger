@@ -16,5 +16,14 @@
     flex: 1;
     height: 100%;
     padding-top: 3px;
-    line-height: 1.5
+    line-height: 1.5;
+    font-size: 90%;
+}
+
+.entity{
+    &:hover{
+        background-color: $light-background;
+        cursor: pointer;
+        color: black;
+    }
 }

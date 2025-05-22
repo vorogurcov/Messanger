@@ -1,0 +1,13 @@
+@import '../../../../../mixins/mixinsCss/colors.scss';
+
+.assignedTitle {
+    color: white;
+    width: 100%;
+    background-color: $primary-blue;
+    border-left: 5px solid $focsed-blue;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

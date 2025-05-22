@@ -20,6 +20,11 @@ export interface FolderToolProps extends IToolProps{
     thisFolder?: PanelGroupButtons
 }
 
+export interface IMessageToolsModal extends IToolProps{
+    handleChange: () => void
+    handleDelete: () => void
+}
+
 export enum ActionChatEnum {
     "delete",
     "changeGroup"

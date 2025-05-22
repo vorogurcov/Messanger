@@ -133,4 +133,12 @@ export default class ApiQuery{
         const mess = (await authInstance.post(ApiQuery.generateUrlServer(`/chats/${chatId}/messages/`), {context})).data.chatMessage
         return mess
     }
+
+    static async updateMessage(chatId: string, message: MessagesDTO){
+        await authInstance.patch(ApiQuery.generateUrlServer(`/chats/${chatId}/messages/${message.id}`), {context: message.context})
+    }
+
+    static async deleteMessage(chatId: string, messageId: string){
+        await authInstance.delete(ApiQuery.generateUrlServer(`/chats/${chatId}/messages/${messageId}`))
+    }
 }

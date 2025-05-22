@@ -24,7 +24,7 @@ export default function useMessages(chatId: string){
 
     const processCreateChat = useCallback(async (chat: ChatListAdaptedProps) => {
         const newUser = chat.users.find(us => us.id !== user.id) ?? {id: ""}
-        const newChat = processingCreateChat(createNameChat(chat.name, user.userName), ChatType.personal, chat.users.map(us => us.id))
+        const newChat = processingCreateChat(createNameChat(chat.name, user.userName), ChatType.personal, [newUser.id])
         const createdChat = {...(await ApiQuery.createChat(newChat)), active: true}
         dispatch(ChatSliceManager.redusers.updateSearch(
             chatState.searched.filter(serchchat => serchchat.id !== newUser.id))
@@ -40,6 +40,7 @@ export default function useMessages(chatId: string){
         }
         const mess = await ApiQuery.sendMessage(message, newChat.id)
         newChat = {...newChat, lastMessage: mess}
+        dispatch(ChatSliceManager.redusers.selectChat(newChat))
         if (chatState.data.find(curchat => curchat.id === chat.id)){
             dispatch(ChatSliceManager.redusers.update(chatState.data.map(curchat => curchat.id === newChat.id ? newChat : curchat)))
         } else{
@@ -48,5 +49,26 @@ export default function useMessages(chatId: string){
         setMessages([...messages, mess])
     }, [chatState.data, dispatch, messages, processCreateChat])
 
-    return {messages, isLoadingChat, sendMessage}
+    const updateMessage = useCallback((chat: ChatListAdaptedProps, message: MessagesDTO) => {
+        ApiQuery.updateMessage(chat.id, message)
+        if (message.id === chat.lastMessage?.id){
+            const newChat: ChatListAdaptedProps = {...chat, lastMessage: message}
+            dispatch(ChatSliceManager.redusers.update(chatState.data.map(curchat => curchat.id === newChat.id ? newChat : curchat)))
+        }
+        setMessages(messages.map(mess => mess.id === message.id ? message : mess))
+    }, [chatState.data, dispatch, messages])
+
+    const deleteMessage = useCallback((chat: ChatListAdaptedProps, message: MessagesDTO) => {
+        ApiQuery.deleteMessage(chat.id, message.id)
+        if (message.id === chat.lastMessage?.id){
+            const newChat: ChatListAdaptedProps = {
+                ...chat, 
+                lastMessage: messages[messages.length - 2]
+            }
+            dispatch(ChatSliceManager.redusers.update(chatState.data.map(curchat => curchat.id === newChat.id ? newChat : curchat)))
+        }
+        setMessages(messages.filter(mess => mess.id !== message.id))
+    }, [chatState.data, dispatch, messages])
+
+    return {messages, isLoadingChat, sendMessage, updateMessage, deleteMessage}
 }

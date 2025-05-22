@@ -1,0 +1,69 @@
+@import "../../../../../../../../../mixins/mixinsCss/colors.scss";
+
+.radioGroup {
+  display: flex;
+  gap: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.radioCustom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid $primary-blue;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.radioCustom::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: $primary-blue;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+input[type="radio"]:checked + .radioCustom {
+  border-color: $primary-blue;
+}
+
+input[type="radio"]:checked + .radioCustom::after {
+  opacity: 1;
+}
+
+.radioText {
+  color: #333;
+  font-size: 16px;
+}
+
+.wrapperButtons{
+    float: right;
+    display: flex;
+}
+
+.but{
+    padding: 5px 5px 0px 5px;
+    position: relative;
+}
+
+.content{
+    margin-left: 20px;
+}

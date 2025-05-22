@@ -8,7 +8,6 @@ export default function useChangeNameGroup(thisGroup: PanelGroupButtons, inputRe
     const groups = useGroupListContext()
     const chats = useAppSelector(ChatSliceManager.selectors.selectChats)
     const dispatch = useAppDispatch()
-    console.log("groups in useChangeNameGroup", groups)
 
     const handleBlur = useCallback(() => {
         // Обработка ухода с фокуса

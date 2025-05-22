@@ -21,11 +21,11 @@ function TextInfo({userName, bio}: {userName: string, bio?: string}){
     )
 }
 
-const OneUserWrapper = memo(function ({user, ...props}: Props){
+const OneUserWrapper = memo(function ({user, className, ...props}: Props){
     return(
         <EntityOnPanelWrapper
             {...props}
-            className={css.wrapperEntityOnPanel}
+            className={`${css.wrapperEntityOnPanel} ${className}`}
             avatar={user.avatarUrl}
         >
             <TextInfo {...user}/>
