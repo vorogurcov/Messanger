@@ -26,6 +26,10 @@
     display: flex;
 }
 
+.isChanging{
+    background-color: $purple;
+}
+
 .mesWrapperOwner{
     display: inline-block;
 }

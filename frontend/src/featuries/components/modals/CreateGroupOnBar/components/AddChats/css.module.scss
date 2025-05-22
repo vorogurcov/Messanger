@@ -1,4 +1,5 @@
 @import "../../../../../../mixins/mixinsCss/classes.module.scss";
+@import "../../../../../../mixins/mixinsCss/colors.scss";
 
 .buttonWrapper{
     position: absolute;
@@ -19,6 +20,6 @@
 .wrapEntity{
     &:hover{
         cursor: pointer;
-        background-color: rgb(232, 232, 232);
+        background-color: $light-background;
     }
 }

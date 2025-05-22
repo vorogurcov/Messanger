@@ -6,10 +6,13 @@ import ApiQuery from "../../../api/query";
 import OneUserWrapper from "../OneUserWrapper/OneUserWrapper";
 import css from "./css.module.scss"
 import LoadingComponent from "../LoadingComponent";
+import { useAppSelector } from "../../../../hooks/useStore";
+import { UserSliceManager } from "../../../entities/store/featuries/userSlice";
 
 export default function AddUserPanel({handleSelect}: {handleSelect: (user: UserLK) => void}){
     const [search, setSearch] = useState("")
     const {data: users, isLoading} = useSearch<UserLK>(search, ApiQuery.findUsers)
+    const thisUser = useAppSelector(UserSliceManager.selectors.selectUser)
 
     const handleClick = useCallback((user: UserLK) => {
         setSearch("")
@@ -23,8 +26,9 @@ export default function AddUserPanel({handleSelect}: {handleSelect: (user: UserL
             </div>
             <LoadingComponent loading={isLoading}>
                 <div className={css.users}>
-                    {users.map(us => 
+                    {users.map(us => us.id !== thisUser.id && 
                     <OneUserWrapper 
+                        key={us.id}
                         user={us} 
                         onClick={() => handleClick(us)}
                         className={css.wrapperEntityOnPanel}

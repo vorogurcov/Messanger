@@ -1,27 +1,10 @@
 import { useMemo, useState } from "react";
-import MainModal from "../../../../modals/MainModal/MainModal";
 import CreateGroupOnBar from "../../../../modals/CreateGroupOnBar/CreateGroupOnBar";
+import CreateChat from "../components/CreateChat/CreateChat";
 
 export enum TypeOfClick{
     chat = "chat",
     folder = "folder"
-}  
-
-function CreateChat({onClose}: {onClose: () => void}){
-    const [isOpen, setisOpen] = useState(true)
-    return(
-        <MainModal
-            isOpen={isOpen}
-            onRequestClose={() => {
-                setisOpen(false)
-                onClose()
-            }}
-        >
-            <div>
-                Создание чата
-            </div>
-        </MainModal>
-    )
 }
 
 function CreateGroupLocal({onClose}: {onClose: () => void} ){
