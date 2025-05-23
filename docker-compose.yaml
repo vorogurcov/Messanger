@@ -48,7 +48,25 @@ services:
     depends_on:
       - backend
 
+  centrifugo:
+    image: centrifugo/centrifugo:v6
+    environment:
+      DOCKER_ENV: true
+    env_file:
+      - ./backend/docker.env
+    volumes:
+      - ./centrifugo-config.json:/centrifugo/config.json
+    command: centrifugo -c config.json
+    ports:
+      - '8081:8081'
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    depends_on:
+      - backend
 
 volumes:
   db_data:
   redis_data:
+  centrifugo-config.json:
