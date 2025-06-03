@@ -1,5 +1,5 @@
 const apiBaseUrl = "http://localhost:8080"
-
+const centrifugoBaseUrl = 'http://localhost:8081'
 class ServerEndpoints{
     enterAuth = `${apiBaseUrl}/auth/login`
     regAuth = `${apiBaseUrl}/auth/register`
@@ -8,6 +8,10 @@ class ServerEndpoints{
     allChats = `${apiBaseUrl}/chats`
     groups = `${apiBaseUrl}/groups`
     searchUsers = `${apiBaseUrl}/profile/search`
+}
+
+class CentrifugoEndpoints{
+    websocket = `ws://localhost:8081/connection/websocket`
 }
 
 class FrontendEndpoints{
@@ -27,11 +31,14 @@ class Core{
         this.serverEdnpoints = new ServerEndpoints()
         this.frontendEndpoints = new FrontendEndpoints()
         this.localStorageKeys = LocalStorageKeys
+        this.centrifugoEndpoints = new CentrifugoEndpoints()
     }
     apiBaseUrl = apiBaseUrl
     serverEdnpoints
     frontendEndpoints
     localStorageKeys
+
+    centrifugoEndpoints
 }
 
 const core = new Core()
