@@ -10,12 +10,14 @@ import { Chat } from '../entities/chat.entity';
 import { UserProfile } from '../../../user/profile/entities/user-profile.entity';
 import { ProfileService } from '../../../user/profile/profile.service';
 import { Message } from '../../messages/entities/message.entity';
+import {CentrifugoService} from "../../../common/centrifugo/centrifugo.service";
 
 @Injectable()
 export class ChatsService {
     constructor(
         private chatsRepository: ChatsRepository,
         private profileService: ProfileService,
+        private centrifugoService: CentrifugoService,
     ) {}
     async getUserChats(userId: string) {
         const chats = await this.chatsRepository.findUserChats(userId);
@@ -120,7 +122,24 @@ export class ChatsService {
     async updateLastMessage(chatId: string, message: Message) {
         const chatInfo = await this.chatsRepository.findChatById(chatId);
         chatInfo.lastMessage = message;
-        return await this.chatsRepository.updateChat(chatInfo);
+        const chat = await this.chatsRepository.updateChat(chatInfo);
+        const users = chatInfo.users;
+
+        users.forEach((user)=>{
+            const userId = user.id;
+            const userChannel = `#${userId}`;
+            this.centrifugoService.centrifugoClient.publish({
+                channel:userChannel,
+                data:{
+                    lastMessageChange:{
+                        chatId,
+                        lastMessage: message,
+                    }
+                }
+            })
+        })
+
+        return chat
     }
 
     async deleteUserFromChat(
