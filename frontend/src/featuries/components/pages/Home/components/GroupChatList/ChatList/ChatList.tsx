@@ -1,13 +1,29 @@
-import { useCallback } from "react"
+import {useCallback, useEffect} from "react"
 import ChatOnPanel from "./components/ChatOnPanel/ChatOnPanel"
 import css from "./css.module.scss"
 import { ChatSliceManager } from "../../../../../../entities/store/featuries/chatSlice"
 import { useAppDispatch, useAppSelector } from "../../../../../../../hooks/useStore"
+import centrifuge from "../../../../../../entities/centrifugo/centrifugo";
 
 export default function ChatList(){ 
     const chats = useAppSelector(ChatSliceManager.selectors.selectChats) // наверное будут серчед и просто, у серчед будет свой хендлклик
     const searchedChats = useAppSelector(ChatSliceManager.selectors.selectSearched)
     const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        const sub = centrifuge.on("publication", (ctx) => {
+            const event = ctx.data.lastMessageChange;
+            if (!event) return;
+
+            dispatch(ChatSliceManager.redusers.updateChatLastMessage({
+                chatId: event.chatId,
+                lastMessage: event.lastMessage
+            }));
+        });
+
+    }, []);
+
+
 
     const reset = useCallback(() => { // не должно быть активных серчей и основных
         dispatch(ChatSliceManager.redusers.update(chats.map(chat => {return {...chat, active: false}})))

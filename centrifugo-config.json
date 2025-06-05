@@ -3,7 +3,10 @@
     "token": {
       "hmac_secret_key": ""
     },
-    "allowed_origins": ["*"]
+    "allowed_origins": ["*"],
+    "subscribe_to_user_personal_channel": {
+      "enabled": true
+    }
   },
   "http_api": {
     "key": ""
