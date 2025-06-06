@@ -12,6 +12,7 @@ import { formatDateToDMYLocal, isNextDay } from "./utils"
 import { ChatListAdaptedProps } from "../../../../../entities/schemes/client/chat"
 import { ChatType } from "../../../../../entities/schemes/enums/chatEnum"
 import { ManageMessageContext } from "./hooks/useManageMessageContext"
+import centrifuge from "../../../../../entities/centrifugo/centrifugo";
 
 export interface IMessageAdapted extends MessagesDTO{
     isChanging?: boolean 
@@ -39,7 +40,7 @@ function ContextDay({prevMes, curMes, senderIsOwner, chat}: {
 export default function Chat(){
     const chat = useAppSelector(ChatSliceManager.selectors.selectSelected)
     const user = useAppSelector(UserSliceManager.selectors.selectUser)
-    const {messages, sendMessage, updateMessage, deleteMessage} = useMessages(chat?.id ?? "")
+    const {messages, sendMessage, updateMessage, deleteMessage, updateLocalMessage, deleteLocalMessage, createLocalMessage} = useMessages(chat?.id ?? "")
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null)
     const [changingMessage, setChangingMessage] = useState<MessagesDTO | null>(null)
@@ -48,6 +49,25 @@ export default function Chat(){
     useEffect(() => {
         scrollToBottom();
     }, [messages]); // Зависимость от массива сообщений
+
+    useEffect(()=>{
+        const handler = (ctx: any) => {
+            const { updateChatMessage, deleteChatMessage, createChatMessage } = ctx.data;
+            if (updateChatMessage) {
+                updateLocalMessage(chat!, updateChatMessage.message);
+            }
+            if(deleteChatMessage)
+                deleteLocalMessage(chat!, deleteChatMessage.message)
+            if(createChatMessage)
+                createLocalMessage(chat!, createChatMessage.message)
+        };
+        centrifuge.on("publication", handler);
+
+        return () => {
+            // Убираем слушатель при размонтировании
+            centrifuge.off("publication", handler);
+        };
+    },[chat])
 
     const handleSend = () => {
         if (inputRef.current && chat){

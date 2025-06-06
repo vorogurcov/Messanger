@@ -143,7 +143,7 @@ export class MessagesService {
             data:{
                 deleteChatMessage:{
                     chatId,
-                    mes,
+                    message:mes,
                 }
             }
         })
