@@ -60,12 +60,18 @@ export class MessagesService {
                 throw new ForbiddenException(
                     'You do not have permission to change this chat',
                 );
-            return await this.messagesRepository.updateChatMessage(
+            const message = await this.messagesRepository.updateChatMessage(
                 updateMessageDto,
                 userId,
                 chatId,
                 messageId,
             );
+
+            const lastMessage = await this.messagesRepository.findLastMessage(chatId)
+            console.log(lastMessage, message)
+            if(lastMessage.id === messageId)
+                await this.chatsService.updateLastMessage(chatId, message)
+
         } catch (error) {
             throw error;
         }
