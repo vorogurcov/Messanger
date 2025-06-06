@@ -29,7 +29,14 @@ export class ChatsService {
     }
 
     async getChatMessages(userId: string, chatId: string) {
-        return await this.chatsRepository.getChatMessages(userId, chatId);
+        const chatMessages = await this.chatsRepository.getChatMessages(userId, chatId);
+
+        await this.centrifugoService.centrifugoClient.subscribe({
+            user: userId,
+            channel: `chat-${chatId}`,
+        })
+
+        return chatMessages;
     }
 
     async addUserChat(ownerId: string, createChatDto: CreateChatDto) {
