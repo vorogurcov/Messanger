@@ -1,7 +1,7 @@
 import axios from "axios";
 import core from "../../core/core";
 
-async function updateAccessToken() : Promise<string>{
+export async function updateAccessToken() : Promise<string>{
     return axios.post(core.serverEdnpoints.updateRefresh, {}, {withCredentials: true})
     .then(({data}) => data.accessToken)
 }

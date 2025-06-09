@@ -30,6 +30,20 @@ export class MessagesRepository {
         return await this.repository.save(newMessage);
     }
 
+
+    async findLastMessage(chatId: string) {
+        const [lastMessage] = await this.repository.find(
+            {
+                where:{
+                    chatId,
+                },
+                order:
+                    {createdAt: "DESC"},
+                take:1,
+            }
+        )
+        return lastMessage
+    }
     async updateChatMessage(
         updateMessageDto: UpdateMessageDto,
         userId: string,
@@ -44,20 +58,17 @@ export class MessagesRepository {
         if (message.senderId !== userId)
             throw new ForbiddenException('You can not update this message');
 
-        const newMessage = await this.repository.create({
-            ...updateMessageDto,
-            chatId,
-            senderId: userId,
-        });
 
-        const result = await this.repository.update(
-            {
-                id: messageId,
-            },
-            newMessage,
+        message.context = updateMessageDto.context
+
+
+        const updatedMessage =  await this.repository.save(
+            message,
         );
 
-        return newMessage;
+
+        console.log(updatedMessage)
+        return updatedMessage;
     }
 
     async deleteChatMessage(message: Message) {

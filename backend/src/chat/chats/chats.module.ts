@@ -6,12 +6,14 @@ import { Chat } from './entities/chat.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatsRepository } from './repositories/chats.repository';
 import { ProfileModule } from '../../user/profile/profile.module';
+import {CentrifugoModule} from "../../common/centrifugo/centrifugo.module";
 
 @Module({
     imports: [
         JwtStrategyModule,
         TypeOrmModule.forFeature([Chat]),
         ProfileModule,
+        CentrifugoModule,
     ],
     providers: [ChatsService, ChatsRepository],
     controllers: [ChatsController],

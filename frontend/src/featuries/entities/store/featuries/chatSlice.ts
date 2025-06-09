@@ -56,13 +56,21 @@ const chatSlice = createSlice({
     name: "chatList",
     initialState: initial,
     reducers: {
-        update(state, action: PayloadAction<ChatListAdaptedProps[]>){
-            state.data = action.payload
+        update(state, action: PayloadAction<ChatListAdaptedProps[]>) {
+            state.data = action.payload;
         },
-        selectChat(state, action: PayloadAction<ChatListAdaptedProps | null>){
-            state.selected = action.payload
+        selectChat(state, action: PayloadAction<ChatListAdaptedProps | null>) {
+            state.selected = action.payload;
+        },
+        updateChatLastMessage(state, action: PayloadAction<{ chatId: string, lastMessage: ChatListAdaptedProps["lastMessage"] }>) {
+            const { chatId, lastMessage } = action.payload;
+            const chat = state.data.find(chat => chat.id === chatId);
+            if (chat) {
+                chat.lastMessage = lastMessage;
+            }
         }
     },
+
     selectors: {
         selectChats: (state) => {
             return state.data 
@@ -99,6 +107,7 @@ export const ChatSliceManager = {
         update: chatSlice.actions.update,
         updateSearch: updateSearch,
         selectChat: chatSlice.actions.selectChat,
+        updateChatLastMessage: chatSlice.actions.updateChatLastMessage
     },
 
     selectors: {

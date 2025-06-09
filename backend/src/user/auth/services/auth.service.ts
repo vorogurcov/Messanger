@@ -88,7 +88,7 @@ export class AuthService {
                 throw new ForbiddenException('Email is not verified!');
             }
 
-            const userData: JwtPayloadDto = { id: user.id, login: user.login };
+            const userData: JwtPayloadDto = {sub:user.id, id: user.id, login: user.login };
 
             const accessToken = await this.jwtService.signAsync(userData, {
                 secret: process.env.JWT_SECRET_KEY,
@@ -105,7 +105,7 @@ export class AuthService {
     }
 
     async refreshToken(user: UserAuth) {
-        const userData: JwtPayloadDto = { id: user.id, login: user.login };
+        const userData: JwtPayloadDto = {sub:user.id, id: user.id, login: user.login };
 
         const accessToken = await this.jwtService.signAsync(userData, {
             secret: process.env.JWT_SECRET_KEY,
