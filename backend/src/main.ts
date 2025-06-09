@@ -14,7 +14,7 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
     const corsOptions = {
-        origin: [`http://${process.env.FRONTEND_HOST}:${process.env.FRONTEND_PORT}`,'http://10.210.12.9:3000/'],
+        origin: [`http://${process.env.FRONTEND_HOST}:${process.env.FRONTEND_PORT}`],
         methods: 'GET,POST,OPTIONS,AUTHORIZATION,PATCH, DELETE',
         allowedHeaders: 'Content-Type, Authorization',
         credentials: true,
